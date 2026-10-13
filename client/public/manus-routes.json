@@ -1,0 +1,1 @@
+{"routes":[{"path":"/","title":"Webzip — 기능 라이브러리"},{"path":"/saved","title":"내 컬렉션"},{"path":"/features/:id","title":"기능 상세 가이드"},{"path":"/compare","title":"기능 비교"},{"path":"/checklist","title":"서비스 체크리스트"},{"path":"/about","title":"Webzip 소개"}]}

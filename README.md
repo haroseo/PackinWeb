@@ -1,14 +1,39 @@
 # Webzip
 
-React / Express / tRPC / Drizzle starter, adapted from the Sandbox web-db-user template.
+웹사이트 기능을 이해하고 선택하는 한국어 레퍼런스입니다. Apple HIG의 단순함, 일관성, 계층, 피드백과 접근성 원칙을 참고한 반응형 흑백 UI를 사용합니다. Apple의 공식 제품 또는 인증 서비스는 아닙니다.
 
-- `pnpm dev`: development server; honors `PORT` (default 3000).
-- `pnpm build` / `pnpm start`: build and serve `dist/index.js` and `dist/public/`.
-- `pnpm db:migrate`: apply checked-in migrations. `pnpm db:push`: generate and apply new schema changes.
-- `pnpm check` / `pnpm test`: types and application tests.
+## 제공 기능
 
-Start with the Webdev skill's default-template guide. Platform login, storage, payments and service contracts live in its shared references; read the relevant capability before extending its helper.
+인증·계정, 결제·커머스, 콘텐츠·미디어, 검색·탐색, 소셜·커뮤니케이션, 운영·보안의 6개 분야에 총 48개 상세 가이드가 있습니다. 각 가이드는 개요, 도입 이유, 사용자 흐름, 필수 구성 요소, 예외 상황, 보안·개인정보·접근성·법적 고려사항, 구현 방식 비교, 체크리스트와 공식 참고 자료를 제공합니다.
 
-`server/_core/publicConfig.ts` exposes only named public runtime values. Private keys stay server-side. The platform serves managed `/manus-storage/` assets; the application does not register a second proxy.
+라이브러리에서는 한글·영문 키워드 검색, 카테고리·목적·난이도 필터, 추천순·이름순·난이도순 정렬 및 카드·목록 보기를 사용할 수 있습니다. 최대 3개 기능을 나란히 비교하고, 북마크를 내 컬렉션에 모아둘 수 있습니다. SaaS·온라인 스토어·콘텐츠·커뮤니티별로 10개 추천 기능의 서비스 체크리스트를 제공하며 JSON 파일로 다운로드할 수 있습니다.
 
-Platform configuration is readable and editable through `webdev.config`. Default settings are initial values, not enforced constraints. The agent may modify the files, commands and configuration or follow the flexible guide for another stack.
+## 실행
+
+Node.js 및 고정된 pnpm 10.18.0을 사용합니다.
+
+```sh
+pnpm install --frozen-lockfile
+pnpm dev:static
+pnpm check
+pnpm test
+pnpm build:static
+```
+
+개발 서버는 PORT(기본 3000)에 바인딩합니다. 정적 빌드 출력은 `dist/public`입니다. 현재 활성 웹 기능은 정적 프론트엔드이며, 템플릿에 남아 있는 서버·인증·DB 파일은 사용하지 않습니다. 실제 회원가입이나 결제를 수행하는 사이트가 아닙니다.
+
+## 프로젝트 구조
+
+`client/src/data/`에는 분야별 JSON, 분류와 서비스 템플릿, 검색 및 저장 로직, 데이터 테스트가 있습니다. `components/webzip/`은 사이트 레이아웃·아이콘·카드를 담당합니다. `pages/`에 라이브러리·상세·비교·체크리스트·소개 페이지가 있으며 `contexts/LibraryContext.tsx`와 `hooks/useLibrary.ts`가 브라우저 상태를 관리합니다. `research/`에는 콘텐츠에 사용한 공식 자료 조사 메모가 있습니다.
+
+페이지 경로는 `/`, `/features/:id`, `/saved`, `/compare`, `/checklist`, `/about`이며 `client/public/manus-routes.json`에 동기화되어 있습니다.
+
+## 데이터와 범위
+
+컬렉션과 확인 상태는 `webzip:saved`, `webzip:checked` 키로 현재 브라우저의 localStorage에만 저장합니다. 서버 전송, 계정 또는 기기간 동기화는 제공하지 않습니다. 저장 공간이 차단되면 화면 상태는 유지하고 저장 실패 안내를 표시합니다. 비교 선택은 현재 페이지 세션 동안만 유지합니다.
+
+이 목록은 주요 기능의 폭넓은 출발점이며 존재하는 모든 기능 또는 산업별 의무를 완전히 망라하지 않습니다. 난이도는 참고 분류이고 법적 지침은 법률 자문이 아닙니다. 적용 전에 각 가이드의 공식 자료와 관할 지역의 요구사항을 확인하세요.
+
+## 검증
+
+TypeScript 검사, 정적 빌드 및 20개 테스트 통과. 기능 개수와 분류, 실제 JSON 배열 형식, 관련 ID, 공식 HTTPS 링크, 검색·필터·정렬, 로컬 저장 복구, 비교 제한을 검사합니다. 읽기 전용 구현 점검에서 발견된 검색·탐색의 예외 데이터 형식을 수정하고, 모바일 메뉴에 inert·포커스 이동/순환/복귀 및 스크롤 잠금을 적용했습니다. 실제 390px 미리보기 컨텍스트에서 메뉴 포커스와 가로 넘침, 검색 상세 페이지의 정상 렌더링을 확인했습니다.
