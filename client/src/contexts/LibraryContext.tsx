@@ -13,8 +13,8 @@ interface LibraryState {
 }
 const LibraryContext = createContext<LibraryState | null>(null);
 export function LibraryProvider({ children }: { children: ReactNode }) {
-  const saved = useStoredList("webzip:saved");
-  const checked = useStoredList("webzip:checked");
+  const saved = useStoredList("packinweb:saved");
+  const checked = useStoredList("packinweb:checked");
   const [compare, setCompare] = useState<string[]>([]);
   function toggleCompare(id: string) {
     if (!compare.includes(id) && compare.length >= 3) {

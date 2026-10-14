@@ -18,6 +18,8 @@ import { features, categories } from "@/data/catalog";
 import { useLibrary } from "@/contexts/LibraryContext";
 import { featureIcons, categoryIcons } from "@/components/webzip/Icons";
 import FeatureCard from "@/components/webzip/FeatureCard";
+import CodeExample from "@/components/webzip/CodeExample";
+import { getCodeExample } from "@/data/codeExamples";
 import NotFound from "./NotFound";
 const sections = [
   ["overview", "기능 이해하기"],
@@ -28,15 +30,16 @@ const sections = [
   ["options", "구현 방식 비교"],
   ["checklist", "구현 체크리스트"],
   ["sources", "공식 참고 자료"],
+  ["example", "실제 구현 예시"],
 ];
 export default function FeatureDetail({ id }: { id: string }) {
   const feature = features.find(f => f.id === id);
   const { saved, toggleSaved, compare, toggleCompare, checked, toggleChecked } =
     useLibrary();
   useEffect(() => {
-    if (feature) document.title = `${feature.title} 가이드 — Webzip`;
+    if (feature) document.title = `${feature.title} 가이드 — 패킨웹`;
     return () => {
-      document.title = "Webzip — 웹을 이루는 모든 기능";
+      document.title = "패킨웹 — 웹을 이루는 모든 기능";
     };
   }, [feature]);
   if (!feature) return <NotFound />;
@@ -253,6 +256,7 @@ export default function FeatureDetail({ id }: { id: string }) {
               ))}
             </div>
           </section>
+          <CodeExample example={getCodeExample(feature)} />
         </article>
         <aside className="guide-toc">
           <div className="toc-inner">

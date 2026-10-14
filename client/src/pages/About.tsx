@@ -7,7 +7,7 @@ export default function About() {
     <div className="page about-page">
       <div className="about-brand">
         <BrandMark />
-        <span>webzip.</span>
+        <span>PackinWeb</span>
       </div>
       <div className="eyebrow">웹 기능 안내서</div>
       <h1>
@@ -17,7 +17,7 @@ export default function About() {
       </h1>
       <p className="about-lead">
         좋은 아이디어가 있어도, 어떤 기능이 필요한지 막막할 때가 있습니다.
-        Webzip은 기획자, 디자이너, 개발자가 같은 언어로 이야기할 수 있도록 웹
+        패킨웹은 기획자, 디자이너, 개발자가 같은 언어로 이야기할 수 있도록 웹
         기능을 정리한 한국어 레퍼런스입니다.
       </p>
       <div className="about-stats">
@@ -88,13 +88,13 @@ export default function About() {
         </p>
         <p>
           로그인, 결제 등은 작동 원리와 구현 방법을 설명하는 가이드입니다.
-          Webzip 자체에서 실제 회원가입이나 금융 거래를 수행하지 않습니다. 공식
+          패킨웹 자체에서 실제 회원가입이나 금융 거래를 수행하지 않습니다. 공식
           참고 자료를 통해 적용 시점의 최신 내용을 확인하세요. 법적 고려사항은
           일반적인 점검 안내이며 법률 자문이 아닙니다.
         </p>
         <p>
           컬렉션과 체크리스트는 이 브라우저에만 저장됩니다. 브라우저 데이터를
-          지우면 삭제될 수 있으며 다른 기기와 동기화되지 않습니다. Webzip은 이
+          지우면 삭제될 수 있으며 다른 기기와 동기화되지 않습니다. 패킨웹은 이
           저장 데이터를 서버로 전송하지 않습니다.
         </p>
       </section>

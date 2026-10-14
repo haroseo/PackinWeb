@@ -114,7 +114,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <Link className="wordmark" href="/">
           <BrandMark />
           <span>
-            webzip<span className="wordmark-dot">.</span>
+            PackinWeb<span className="wordmark-dot">.</span>
           </span>
         </Link>
         <button
@@ -124,7 +124,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         >
           <X size={20} />
         </button>
-        <div className="sidebar-caption">웹 기능 모음</div>
+        <div className="sidebar-caption">패킨웹 기능 모음</div>
         <nav className="primary-nav">
           <Link className={`nav-item ${selected ? "active" : ""}`} href="/">
             <Grid2X2 size={18} />
@@ -191,12 +191,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <Link className="about-link" href="/about">
-            <BookOpen size={15} /> Webzip 소개 <ArrowUpRight size={13} />
+            <BookOpen size={15} /> 패킨웹 소개 <ArrowUpRight size={13} />
           </Link>
           <div className="sidebar-footer">
             작은 기능이 모여, 더 나은 웹이 됩니다.
             <br />
-            <span>© 2026 Webzip</span>
+            <span>© 2026 PackinWeb</span>
           </div>
         </div>
       </aside>
@@ -223,7 +223,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                   : location === "/checklist"
                     ? "서비스 체크리스트"
                     : location === "/about"
-                      ? "Webzip 소개"
+                      ? "패킨웹 소개"
                       : location.startsWith("/features/")
                         ? "기능 가이드"
                         : "둘러보기"}
@@ -257,7 +257,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <footer className="main-footer">
           <span>필요한 기능을 찾고, 더 나은 웹을 만드세요.</span>
           <Link href="/about">
-            Webzip 소개 <ArrowUpRight size={12} />
+            패킨웹 소개 <ArrowUpRight size={12} />
           </Link>
         </footer>
       </div>

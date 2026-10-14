@@ -25,7 +25,7 @@ export default function Checklist() {
   function download() {
     const data = {
       name: template.name,
-      source: "Webzip",
+      source: "PackinWeb",
       note: "서비스 기획을 위한 참고 체크리스트이며 전체 법적·기술적 요건을 보장하지 않습니다.",
       features: selected.map(f => ({
         id: f.id,
@@ -41,7 +41,7 @@ export default function Checklist() {
     );
     const a = document.createElement("a");
     a.href = url;
-    a.download = `webzip-${template.id}-checklist.json`;
+    a.download = `packinweb-${template.id}-checklist.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast.success("체크리스트를 다운로드했어요.");
