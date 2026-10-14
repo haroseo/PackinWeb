@@ -9,7 +9,6 @@ export default function About() {
         <BrandMark />
         <span>PackinWeb</span>
       </div>
-      <div className="eyebrow">웹 기능 안내서</div>
       <h1>
         웹을 이루는 기능을,
         <br />

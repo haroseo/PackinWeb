@@ -54,13 +54,6 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
   return (
     <div className="page library-page">
       <section className={`hero ${savedOnly ? "small-hero" : ""}`}>
-        <div className="eyebrow">
-          {savedOnly
-            ? "내 컬렉션"
-            : activeCategory
-              ? "카테고리"
-              : "웹 기능 라이브러리"}
-        </div>
         {savedOnly ? (
           <>
             <h1>

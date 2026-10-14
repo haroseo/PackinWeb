@@ -11,10 +11,6 @@ export default function Compare() {
   return (
     <div className="page compare-page">
       <section className="hero small-hero">
-        <div className="eyebrow">
-          <span />
-          SIDE BY SIDE
-        </div>
         <h1>
           같이 보면,
           <br />

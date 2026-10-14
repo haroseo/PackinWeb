@@ -73,7 +73,6 @@ export default function FeatureDetail({ id }: { id: string }) {
           <Icon size={31} strokeWidth={1.5} />
         </span>
         <div className="detail-title">
-          <div className="eyebrow">기능 안내</div>
           <h1>
             {feature.title}
             <span>.</span>

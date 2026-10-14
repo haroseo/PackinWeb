@@ -49,7 +49,6 @@ export default function Checklist() {
   return (
     <div className="page checklist-page">
       <section className="hero small-hero">
-        <div className="eyebrow">서비스 준비 체크리스트</div>
         <h1>
           만들고 싶은 서비스,
           <br />

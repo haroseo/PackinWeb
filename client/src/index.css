@@ -3637,3 +3637,121 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* 제목 위 보조 라벨은 덜어내고, 실제 읽는 내용에 시선을 모읍니다. */
+.eyebrow,
+.guide-section-label {
+  display: none;
+}
+.hero h1,
+.detail-title h1,
+.about-page h1,
+.section-title h2,
+.guide-content h2,
+.template-title h2,
+.about-page section h2,
+.card-link h3,
+.feature-card h3,
+.empty-state h3 {
+  font-weight: 750;
+}
+.hero > p,
+.guide-banner > div > span,
+.card-link p,
+.about-lead,
+.about-page section > p,
+.guide-content p,
+.template-title p,
+.service-row-copy p,
+.checklist-disclaimer p,
+.quiet-note,
+.approach-card dd,
+.considerations p,
+.guide-checklist label > span,
+.comparison-table td {
+  font-weight: 500;
+}
+.nav-item,
+.category-pills a,
+.filter-button,
+.button,
+.guide-banner strong,
+.guide-banner-cta,
+.text-button,
+.load-more,
+.source-links strong,
+.about-steps h3,
+.service-row-copy h3,
+.considerations h3,
+.approach-card h3,
+.why-box strong {
+  font-weight: 600;
+}
+.results-toolbar,
+.saved-hint,
+.local-note,
+.source-links span,
+.toc-note p,
+.hero-meta,
+.sidebar-footer,
+.start-note p {
+  font-weight: 500;
+}
+@media (max-width: 760px) {
+  .hero h1,
+  .detail-title h1,
+  .about-page h1 {
+    font-weight: 750;
+  }
+}
+
+/* 넓은 화면에서는 카드와 설명을 더 편하게 읽을 수 있게 확장 */
+.hero > p,
+.guide-banner > div > span,
+.card-link p,
+.about-lead,
+.about-page section > p,
+.guide-content p,
+.template-title p,
+.service-row-copy p,
+.checklist-disclaimer p,
+.quiet-note {
+  font-size: 15px;
+}
+.card-link h3 {
+  font-size: 18px;
+}
+.card-category,
+.difficulty,
+.compare-toggle,
+.essential {
+  font-size: 13px;
+}
+.section-title h2 {
+  font-size: 20px;
+}
+.guide-content h2 {
+  font-size: 24px;
+}
+@media (max-width: 760px) {
+  .hero > p,
+  .guide-banner > div > span,
+  .card-link p,
+  .about-lead,
+  .about-page section > p,
+  .guide-content p {
+    font-size: 14px;
+  }
+  .card-link h3 {
+    font-size: 16px;
+  }
+  .card-category,
+  .difficulty,
+  .compare-toggle,
+  .essential {
+    font-size: 12px;
+  }
+  .guide-content h2 {
+    font-size: 22px;
+  }
+}
