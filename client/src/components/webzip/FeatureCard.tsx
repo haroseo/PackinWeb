@@ -43,7 +43,6 @@ export default function FeatureCard({
           {feature.title}
           <ArrowUpRight size={17} />
         </h3>
-        <div className="card-english">{feature.english}</div>
         <p>{feature.description}</p>
       </Link>
       <div className="card-footer">

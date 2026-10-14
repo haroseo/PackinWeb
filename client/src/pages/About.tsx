@@ -9,7 +9,7 @@ export default function About() {
         <BrandMark />
         <span>webzip.</span>
       </div>
-      <div className="eyebrow">YOUR WEB, UNZIPPED</div>
+      <div className="eyebrow">웹 기능 안내서</div>
       <h1>
         웹을 이루는 기능을,
         <br />
@@ -63,12 +63,11 @@ export default function About() {
         </div>
       </section>
       <section>
-        <h2>명확한 콘텐츠, 조용한 인터페이스.</h2>
+        <h2>읽기 쉬운 콘텐츠, 단정한 화면.</h2>
         <p>
-          Apple의 Human Interface Guidelines에서 강조하는 단순함, 일관성, 사용자
-          주도권, 피드백과 접근성을 웹 환경에 참고했습니다. 흑백의 절제된 화면은
-          기능과 내용에 집중하기 위한 선택입니다. Webzip은 Apple의 공식 서비스나
-          인증 제품이 아닙니다.
+          화면의 단순함, 일관성, 사용자 주도권, 피드백과 접근성을 기준으로
+          구성했습니다. 흑백의 절제된 화면은 기능 설명과 내용에 집중하기 위한
+          선택입니다.
         </p>
         <a
           className="text-link"
@@ -76,7 +75,7 @@ export default function About() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Apple HIG 디자인 원칙 <ArrowUpRight size={14} />
+          화면 구성 원칙 <ArrowUpRight size={14} />
         </a>
       </section>
       <section>

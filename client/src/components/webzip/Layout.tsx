@@ -124,7 +124,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         >
           <X size={20} />
         </button>
-        <div className="sidebar-caption">YOUR WEB, UNZIPPED</div>
+        <div className="sidebar-caption">웹 기능 모음</div>
         <nav className="primary-nav">
           <Link className={`nav-item ${selected ? "active" : ""}`} href="/">
             <Grid2X2 size={18} />
@@ -259,8 +259,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <footer className="main-footer">
           <span>필요한 기능을 찾고, 더 나은 웹을 만드세요.</span>
           <Link href="/about">
-            Designed with clarity.
-            <ArrowUpRight size={12} />
+            Webzip 소개 <ArrowUpRight size={12} />
           </Link>
         </footer>
       </div>

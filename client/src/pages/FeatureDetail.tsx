@@ -70,7 +70,7 @@ export default function FeatureDetail({ id }: { id: string }) {
           <Icon size={31} strokeWidth={1.5} />
         </span>
         <div className="detail-title">
-          <div className="eyebrow">{feature.english.toUpperCase()}</div>
+          <div className="eyebrow">기능 안내</div>
           <h1>
             {feature.title}
             <span>.</span>
@@ -111,7 +111,7 @@ export default function FeatureDetail({ id }: { id: string }) {
       <div className="detail-layout">
         <article className="guide-content">
           <section id="overview">
-            <div className="guide-section-label">01 / OVERVIEW</div>
+            <div className="guide-section-label">01 / 기능 이해</div>
             <h2>기능 이해하기</h2>
             <p>{feature.overview}</p>
             <div className="why-box">
@@ -120,7 +120,7 @@ export default function FeatureDetail({ id }: { id: string }) {
             </div>
           </section>
           <section id="flow">
-            <div className="guide-section-label">02 / USER FLOW</div>
+            <div className="guide-section-label">02 / 사용자 흐름</div>
             <h2>사용자는 이렇게 경험해요</h2>
             <ol className="flow-list">
               {feature.flow.map((step, i) => (
@@ -132,7 +132,7 @@ export default function FeatureDetail({ id }: { id: string }) {
             </ol>
           </section>
           <section id="components">
-            <div className="guide-section-label">03 / BUILDING BLOCKS</div>
+            <div className="guide-section-label">03 / 구성 요소</div>
             <h2>필수 구성 요소</h2>
             <div className="component-list">
               {feature.components.map((item, i) => (
@@ -144,7 +144,7 @@ export default function FeatureDetail({ id }: { id: string }) {
             </div>
           </section>
           <section id="exceptions">
-            <div className="guide-section-label">04 / EDGE CASES</div>
+            <div className="guide-section-label">04 / 예외 상황</div>
             <h2>놓치기 쉬운 예외 상황</h2>
             {feature.exceptions.map((item, i) => (
               <div className="exception-item" key={i}>
@@ -154,7 +154,7 @@ export default function FeatureDetail({ id }: { id: string }) {
             ))}
           </section>
           <section id="considerations">
-            <div className="guide-section-label">05 / CONSIDERATIONS</div>
+            <div className="guide-section-label">05 / 도입 전 확인</div>
             <h2>도입 전, 꼭 확인하세요</h2>
             <div className="considerations">
               {[
@@ -182,7 +182,7 @@ export default function FeatureDetail({ id }: { id: string }) {
             </p>
           </section>
           <section id="options">
-            <div className="guide-section-label">06 / APPROACHES</div>
+            <div className="guide-section-label">06 / 구현 방식</div>
             <h2>어떤 방식으로 구현할까요?</h2>
             <div className="approach-grid">
               {feature.options.map(option => (
@@ -201,7 +201,7 @@ export default function FeatureDetail({ id }: { id: string }) {
             </div>
           </section>
           <section id="checklist">
-            <div className="guide-section-label">07 / READY TO BUILD</div>
+            <div className="guide-section-label">07 / 구현 체크</div>
             <div className="checklist-heading">
               <h2>구현 체크리스트</h2>
               <span>
@@ -234,7 +234,7 @@ export default function FeatureDetail({ id }: { id: string }) {
             </span>
           </section>
           <section id="sources">
-            <div className="guide-section-label">08 / GO DEEPER</div>
+            <div className="guide-section-label">08 / 참고 자료</div>
             <h2>공식 참고 자료</h2>
             <div className="source-links">
               {feature.sources.map(source => (

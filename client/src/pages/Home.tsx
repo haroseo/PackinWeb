@@ -55,12 +55,11 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
     <div className="page library-page">
       <section className={`hero ${savedOnly ? "small-hero" : ""}`}>
         <div className="eyebrow">
-          <span />
           {savedOnly
-            ? "YOUR PERSONAL LIBRARY"
+            ? "내 컬렉션"
             : activeCategory
-              ? "EXPLORE THE POSSIBILITIES"
-              : "THE WEB FUNCTION LIBRARY"}
+              ? "카테고리"
+              : "웹 기능 라이브러리"}
         </div>
         {savedOnly ? (
           <>
@@ -116,20 +115,6 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
           <i />
           <span>구현 체크리스트 제공</span>
         </div>
-        {!savedOnly && !activeCategory && (
-          <div className="hero-side">
-            <span className="hero-side-label">FROM IDEA TO INTERFACE</span>
-            <div className="hero-side-symbol">
-              <span>⌘</span>
-              <span>↗</span>
-            </div>
-            <p>
-              복잡한 기능을,
-              <br />
-              <strong>명확한 가이드로.</strong>
-            </p>
-          </div>
-        )}
       </section>
       {!savedOnly && !activeCategory && (
         <Link href="/checklist" className="guide-banner">
@@ -202,7 +187,7 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
                 <X size={15} />
               </button>
             ) : (
-              <kbd>⌘ K</kbd>
+              <kbd>검색</kbd>
             )}
           </div>
           <button
