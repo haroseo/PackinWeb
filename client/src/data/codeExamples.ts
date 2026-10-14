@@ -80,15 +80,24 @@ return res.status(202).end();`,
 };
 export function getCodeExample(feature: Feature): CodeExample {
   const item = examples[feature.id];
+  const name = feature.id.replace(/-/g, "_");
   const code =
     item?.code ||
-    `const ${feature.id.replace(/-/g, "_")} = await service.create({
-  userId: session.userId,
-  status: 'active',
-  metadata: { source: 'packinweb' },
-});
+    `type FeatureService = {
+  create(input: Record<string, unknown>): Promise<unknown>;
+};
 
-return response.json(${feature.id.replace(/-/g, "_")});`;
+export async function create_${name}(
+  service: FeatureService,
+  session: { userId: string },
+) {
+  const created = await service.create({
+    userId: session.userId,
+    status: 'active',
+    metadata: { source: 'packinweb' },
+  });
+  return created;
+}`;
   return {
     title: item?.title || `${feature.title} 기본 흐름 연결하기`,
     language: item?.language || "TypeScript",
