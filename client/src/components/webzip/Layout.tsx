@@ -242,9 +242,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             >
               <Search size={15} />
               <span>빠른 검색</span>
-              <kbd>
-                <Command size={10} /> K
-              </kbd>
+              <kbd>검색</kbd>
             </button>
             <div className="header-divider" />
             <Link className="header-bookmark" href="/saved">
