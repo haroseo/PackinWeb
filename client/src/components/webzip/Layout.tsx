@@ -32,6 +32,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const { saved, compare, setCompare } = useLibrary();
   const {
     user,
+    isAnonymous,
     loading: authLoading,
     configured,
     signInWithGoogle,
@@ -237,7 +238,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </span>
           </div>
           <div className="topbar-actions">
-            {user ? (
+            {user && !isAnonymous ? (
               <button
                 className="account-action"
                 onClick={async () => {
@@ -265,7 +266,9 @@ export default function Layout({ children }: { children: ReactNode }) {
                 title="Google로 로그인"
               >
                 <LogIn size={15} />
-                <span>Google 로그인</span>
+                <span>
+                  {isAnonymous ? "Google 계정 연결" : "Google 로그인"}
+                </span>
               </button>
             )}
             <Link className="header-bookmark" href="/saved">

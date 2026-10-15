@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase";
 
 interface AuthState {
   user: User | null;
+  isAnonymous: boolean;
   loading: boolean;
   configured: boolean;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
@@ -24,14 +25,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!supabase) return;
+    const client = supabase;
     let active = true;
-    void supabase.auth.getSession().then(({ data }) => {
+    void client.auth.getSession().then(({ data }) => {
       if (active) {
         setUser(data.session?.user ?? null);
         setLoading(false);
+        if (!data.session) {
+          void client.auth
+            .signInAnonymously()
+            .then(({ data: anonymousData }) => {
+              if (active) setUser(anonymousData.user ?? null);
+            });
+        }
       }
     });
-    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data } = client.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
@@ -45,10 +54,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!supabase) {
       return { error: new Error("Supabase가 아직 연결되지 않았습니다.") };
     }
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: window.location.origin },
-    });
+    const { data } = await supabase.auth.getSession();
+    const { error } = data.session?.user.is_anonymous
+      ? await supabase.auth.linkIdentity({ provider: "google" })
+      : await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: { redirectTo: window.location.origin },
+        });
     return { error };
   }
 
@@ -62,6 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        isAnonymous: Boolean(user?.is_anonymous),
         loading,
         configured: Boolean(supabase),
         signInWithGoogle,
