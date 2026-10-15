@@ -11,10 +11,14 @@ import {
   X,
   Layers,
   BookOpen,
+  LogIn,
+  LogOut,
 } from "lucide-react";
+import { toast } from "sonner";
 import { categories, features } from "@/data/catalog";
 import { useLibrary } from "@/contexts/LibraryContext";
 import { BrandMark, categoryIcons } from "./Icons";
+import { useAuth } from "@/contexts/AuthContext";
 export default function Layout({ children }: { children: ReactNode }) {
   const [location, navigate] = useLocation();
   const query = useSearch();
@@ -26,6 +30,13 @@ export default function Layout({ children }: { children: ReactNode }) {
   const sidebarRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const { saved, compare, setCompare } = useLibrary();
+  const {
+    user,
+    loading: authLoading,
+    configured,
+    signInWithGoogle,
+    signOut,
+  } = useAuth();
   useEffect(() => {
     const media = window.matchMedia("(max-width: 760px)");
     const update = () => {
@@ -226,6 +237,37 @@ export default function Layout({ children }: { children: ReactNode }) {
             </span>
           </div>
           <div className="topbar-actions">
+            {user ? (
+              <button
+                className="account-action"
+                onClick={async () => {
+                  const { error } = await signOut();
+                  if (error) toast.error("로그아웃하지 못했습니다.");
+                }}
+                title="Google 계정 로그아웃"
+              >
+                <span>{user.email?.split("@")[0] || "내 계정"}</span>
+                <LogOut size={15} />
+              </button>
+            ) : (
+              <button
+                className="account-action"
+                disabled={authLoading}
+                onClick={async () => {
+                  if (!configured) {
+                    toast("Supabase 연결 후 Google 로그인을 사용할 수 있어요.");
+                    return;
+                  }
+                  const { error } = await signInWithGoogle();
+                  if (error)
+                    toast.error("Google 로그인을 시작하지 못했습니다.");
+                }}
+                title="Google로 로그인"
+              >
+                <LogIn size={15} />
+                <span>Google 로그인</span>
+              </button>
+            )}
             <Link className="header-bookmark" href="/saved">
               <Bookmark size={16} />
               <span>내 컬렉션</span>

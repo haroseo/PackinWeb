@@ -3864,3 +3864,41 @@ a {
     height: 28px;
   }
 }
+
+.account-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--line, #e5e7eb);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink, #181818);
+  font-family: Pretendard, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.account-action:hover {
+  background: #f4f5f3;
+}
+.account-action:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.topbar-actions {
+  gap: 10px;
+}
+@media (max-width: 760px) {
+  .account-action span {
+    max-width: 96px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .account-action {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+}

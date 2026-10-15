@@ -29,5 +29,9 @@ export function useStoredList(key: string) {
     setItems(current => toggleListItem(current, id));
     setChanged(true);
   }, []);
-  return { items, toggle };
+  const replace = useCallback((next: string[]) => {
+    setItems(next);
+    setChanged(false);
+  }, []);
+  return { items, toggle, replace };
 }
