@@ -73,10 +73,7 @@ export default function FeatureDetail({ id }: { id: string }) {
           <Icon size={31} strokeWidth={1.5} />
         </span>
         <div className="detail-title">
-          <h1>
-            {feature.title}
-            <span>.</span>
-          </h1>
+          <h1>{feature.title}</h1>
           <p>{feature.description}</p>
           <div className="detail-badges">
             <span>{feature.difficulty}</span>

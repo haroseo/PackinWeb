@@ -52,7 +52,7 @@ export default function Checklist() {
         <h1>
           만들고 싶은 서비스,
           <br />
-          필요한 기능부터<span>.</span>
+          필요한 기능부터
         </h1>
         <p>
           서비스 유형에 맞는 기본 기능을 한눈에 확인하세요.

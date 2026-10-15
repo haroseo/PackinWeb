@@ -68,10 +68,7 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
           </>
         ) : activeCategory ? (
           <>
-            <h1>
-              {activeCategory.label}
-              <span className="title-period">.</span>
-            </h1>
+            <h1>{activeCategory.label}</h1>
             <p>
               {activeCategory.description}
               <br />
@@ -83,7 +80,7 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
             <h1>
               좋은 웹사이트의 시작,
               <br />
-              필요한 모든 기능을 한곳에<span className="title-period">.</span>
+              필요한 모든 기능을 한곳에
             </h1>
             <p>
               로그인부터 결제까지, 웹을 이루는 기능들을 한눈에.

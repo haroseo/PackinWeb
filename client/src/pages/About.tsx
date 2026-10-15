@@ -12,7 +12,7 @@ export default function About() {
       <h1>
         웹을 이루는 기능을,
         <br />
-        누구나 이해할 수 있게<span>.</span>
+        누구나 이해할 수 있게
       </h1>
       <p className="about-lead">
         좋은 아이디어가 있어도, 어떤 기능이 필요한지 막막할 때가 있습니다.
@@ -34,7 +34,7 @@ export default function About() {
         </div>
       </div>
       <section>
-        <h2>필요한 만큼, 이렇게 사용하세요.</h2>
+        <h2>필요한 만큼, 이렇게 사용하세요</h2>
         <div className="about-steps">
           {[
             {
@@ -62,7 +62,7 @@ export default function About() {
         </div>
       </section>
       <section>
-        <h2>읽기 쉬운 콘텐츠, 단정한 화면.</h2>
+        <h2>읽기 쉬운 콘텐츠, 단정한 화면</h2>
         <p>
           화면의 단순함, 일관성, 사용자 주도권, 피드백과 접근성을 기준으로
           구성했습니다. 흑백의 절제된 화면은 기능 설명과 내용에 집중하기 위한

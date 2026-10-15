@@ -14,7 +14,7 @@ export default function Compare() {
         <h1>
           같이 보면,
           <br />
-          차이가 보입니다<span>.</span>
+          차이가 보입니다
         </h1>
         <p>
           기능의 목적부터 구현할 때 고려할 점까지.
@@ -85,7 +85,7 @@ export default function Compare() {
       {selected.length < 2 ? (
         <div className="empty-state">
           <GitCompareArrows size={35} strokeWidth={1.3} />
-          <h3>두 가지 이상을 선택해 주세요.</h3>
+          <h3>두 가지 이상을 선택해 주세요</h3>
           <p>
             위에서 기능을 고르거나, 빠른 비교로 시작해 보세요.
             <br />
