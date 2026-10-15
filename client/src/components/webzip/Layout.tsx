@@ -113,9 +113,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       >
         <Link className="wordmark" href="/">
           <BrandMark />
-          <span>
-            PackinWeb<span className="wordmark-dot">.</span>
-          </span>
+          <span>PackinWeb</span>
         </Link>
         <button
           className="mobile-close icon-button"
@@ -255,45 +253,10 @@ export default function Layout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <footer className="main-footer">
-          <div className="footer-grid">
-            <div className="footer-brand">
-              <Link className="footer-wordmark" href="/">
-                <BrandMark small />
-                <strong>PackinWeb</strong>
-              </Link>
-              <p>
-                필요한 내용을 모으고
-                <br />내 방식으로 서비스를 설계해 보세요
-              </p>
-              <Link className="footer-contact" href="/about">
-                패킨웹 알아보기 <ArrowUpRight size={14} />
-              </Link>
-            </div>
-            <div className="footer-column">
-              <strong>둘러보기</strong>
-              <Link href="/">모든 기능</Link>
-              <Link href="/compare">기능 비교</Link>
-              <Link href="/checklist">서비스 체크리스트</Link>
-              <Link href="/saved">내 컬렉션</Link>
-            </div>
-            <div className="footer-column">
-              <strong>기준과 안내</strong>
-              <Link href="/about">패킨웹 소개</Link>
-              <a
-                href="https://developer.apple.com/design/human-interface-guidelines/design-principles"
-                target="_blank"
-                rel="noreferrer"
-              >
-                화면 구성 원칙 <ArrowUpRight size={12} />
-              </a>
-              <Link href="/features/security">웹 보안 가이드</Link>
-              <Link href="/features/accessibility">웹 접근성 가이드</Link>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <span>© 2026 PackinWeb</span>
-            <span>작은 기능이 모여 더 나은 웹이 됩니다</span>
-          </div>
+          <span>필요한 기능을 찾고, 더 나은 웹을 만드세요</span>
+          <Link href="/about">
+            패킨웹 소개 <ArrowUpRight size={12} />
+          </Link>
         </footer>
       </div>
       {compare.length > 0 && location !== "/compare" && (
