@@ -5,11 +5,9 @@ import {
   Bookmark,
   CheckCheck,
   ChevronRight,
-  Command,
   Grid2X2,
   GitCompareArrows,
   Menu,
-  Search,
   X,
   Layers,
   BookOpen,
@@ -228,21 +226,6 @@ export default function Layout({ children }: { children: ReactNode }) {
             </span>
           </div>
           <div className="topbar-actions">
-            <button
-              className="quick-search"
-              onClick={() => {
-                if (location !== "/") navigate("/");
-                setTimeout(
-                  () => document.getElementById("feature-search")?.focus(),
-                  80
-                );
-              }}
-            >
-              <Search size={15} />
-              <span>빠른 검색</span>
-              <kbd>검색</kbd>
-            </button>
-            <div className="header-divider" />
             <Link className="header-bookmark" href="/saved">
               <Bookmark size={16} />
               <span>내 컬렉션</span>

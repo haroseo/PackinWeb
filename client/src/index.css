@@ -3829,3 +3829,38 @@ a {
     font-size: 13px;
   }
 }
+
+/* 로고 비율 정리 */
+.wordmark {
+  gap: 8px;
+  padding-left: 8px;
+  font-family: Pretendard, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.07em;
+  white-space: nowrap;
+}
+.wordmark .brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+.wordmark .brand-mark svg {
+  width: 21px;
+  height: 21px;
+}
+.topbar-actions {
+  gap: 0;
+}
+.header-bookmark {
+  font-size: 13px;
+}
+@media (max-width: 760px) {
+  .wordmark {
+    font-size: 21px;
+  }
+  .wordmark .brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+}
