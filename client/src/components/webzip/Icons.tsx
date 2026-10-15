@@ -114,11 +114,13 @@ export function BrandMark({ small = false }: { small?: boolean }) {
     <span className={`brand-mark ${small ? "small" : ""}`} aria-hidden="true">
       <svg viewBox="0 0 28 28" fill="none">
         <path
-          d="M8 21V7h6.2a4.2 4.2 0 1 1 0 8.4H8"
+          d="M5 6h7v5H5zM16 6h7v5h-7zM5 14h7v5H5zM16 14h7v5h-7z"
+          fill="currentColor"
+        />
+        <path
+          d="M12 8.5h4M12 16.5h4M14 8.5v15"
           stroke="currentColor"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          strokeWidth="2"
         />
       </svg>
     </span>
