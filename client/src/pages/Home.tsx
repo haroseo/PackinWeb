@@ -15,6 +15,7 @@ import {
 import { categories, features, filterFeatures } from "@/data/catalog";
 import { useLibrary } from "@/contexts/LibraryContext";
 import FeatureCard from "@/components/webzip/FeatureCard";
+import { applySeo } from "@/lib/seo";
 export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
   const params = useSearch();
   const category = new URLSearchParams(params).get("category") || "all";
@@ -45,6 +46,33 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
     () => setLimit(12),
     [query, category, difficulty, purpose, sort, savedOnly]
   );
+  useEffect(() => {
+    if (savedOnly) {
+      applySeo({
+        title: "내 컬렉션 — 패킨웹",
+        description:
+          "저장한 웹 기능과 체크리스트를 다시 확인하는 패킨웹 컬렉션",
+        path: "/saved",
+        noindex: true,
+      });
+      return;
+    }
+    if (activeCategory) {
+      applySeo({
+        title: `${activeCategory.label} 기능 가이드 — 패킨웹`,
+        description: `${activeCategory.description} 패킨웹에서 관련 기능의 흐름과 구현 기준을 확인하세요.`,
+        path: "/",
+        noindex: true,
+      });
+      return;
+    }
+    applySeo({
+      title: "패킨웹 — 웹사이트 기능 라이브러리",
+      description:
+        "로그인, 결제, 콘텐츠, 검색, 커뮤니케이션, 운영에 필요한 웹 기능을 한국어 가이드와 코드 예시로 정리했습니다.",
+      path: "/",
+    });
+  }, [activeCategory, savedOnly]);
   function reset() {
     setQuery("");
     setDifficulty("all");

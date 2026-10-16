@@ -2,7 +2,17 @@ import { Link } from "wouter";
 import { ArrowUpRight, Bookmark, GitCompareArrows, Search } from "lucide-react";
 import { BrandMark } from "@/components/webzip/Icons";
 import { features, categories } from "@/data/catalog";
+import { useEffect } from "react";
+import { applySeo } from "@/lib/seo";
 export default function About() {
+  useEffect(() => {
+    applySeo({
+      title: "패킨웹 소개 — 웹 기능을 이해하는 레퍼런스",
+      description:
+        "패킨웹은 기획자, 디자이너, 개발자가 웹 기능을 같은 언어로 이해하도록 돕는 한국어 레퍼런스입니다.",
+      path: "/about",
+    });
+  }, []);
   return (
     <div className="page about-page">
       <div className="about-brand">

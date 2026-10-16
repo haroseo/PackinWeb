@@ -20,6 +20,7 @@ import { featureIcons, categoryIcons } from "@/components/webzip/Icons";
 import FeatureCard from "@/components/webzip/FeatureCard";
 import CodeExample from "@/components/webzip/CodeExample";
 import { getCodeExample } from "@/data/codeExamples";
+import { applySeo } from "@/lib/seo";
 import NotFound from "./NotFound";
 const sections = [
   ["overview", "기능 이해하기"],
@@ -37,9 +38,23 @@ export default function FeatureDetail({ id }: { id: string }) {
   const { saved, toggleSaved, compare, toggleCompare, checked, toggleChecked } =
     useLibrary();
   useEffect(() => {
-    if (feature) document.title = `${feature.title} 가이드 — 패킨웹`;
+    if (feature) {
+      applySeo({
+        title: `${feature.title} 가이드 — 패킨웹`,
+        description: `${feature.description} 목적, 사용자 흐름, 보안·접근성 기준과 구현 코드 예시를 확인하세요.`,
+        path: `/features/${id}`,
+        type: "article",
+      });
+    } else {
+      applySeo({
+        title: "페이지를 찾을 수 없음 — 패킨웹",
+        description: "요청한 기능 가이드를 찾을 수 없습니다.",
+        path: `/features/${id}`,
+        noindex: true,
+      });
+    }
     return () => {
-      document.title = "패킨웹 — 웹을 이루는 모든 기능";
+      document.title = "패킨웹 — 웹사이트 기능 라이브러리";
     };
   }, [feature]);
   if (!feature) return <NotFound />;

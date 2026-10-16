@@ -1,6 +1,16 @@
 import { Link } from "wouter";
 import { ArrowLeft, FileQuestion } from "lucide-react";
+import { useEffect } from "react";
+import { applySeo } from "@/lib/seo";
 export default function NotFound() {
+  useEffect(() => {
+    applySeo({
+      title: "페이지를 찾을 수 없음 — 패킨웹",
+      description:
+        "요청한 페이지를 찾을 수 없습니다. 패킨웹 기능 라이브러리에서 다시 찾아보세요.",
+      noindex: true,
+    });
+  }, []);
   return (
     <div className="page">
       <div className="empty-state not-found">

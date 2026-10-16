@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowUpRight,
@@ -12,6 +12,7 @@ import { features, serviceTemplates } from "@/data/catalog";
 import { featureIcons } from "@/components/webzip/Icons";
 import { useLibrary } from "@/contexts/LibraryContext";
 import { toast } from "sonner";
+import { applySeo } from "@/lib/seo";
 export default function Checklist() {
   const [templateId, setTemplateId] = useState("saas");
   const { checked, toggleChecked, saved, toggleSaved } = useLibrary();
@@ -22,6 +23,14 @@ export default function Checklist() {
   const done = selected.filter(f =>
     checked.includes(`service:${template.id}:${f.id}`)
   ).length;
+  useEffect(() => {
+    applySeo({
+      title: "서비스 기능 체크리스트 — 패킨웹",
+      description:
+        "SaaS, 커머스, 콘텐츠, 커뮤니티 서비스에 필요한 웹 기능을 유형별 체크리스트로 확인하세요.",
+      path: "/checklist",
+    });
+  }, []);
   function download() {
     const data = {
       name: template.name,
