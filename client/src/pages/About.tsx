@@ -38,10 +38,6 @@ export default function About() {
           <strong>{categories.length}</strong>
           <span>핵심 카테고리</span>
         </div>
-        <div>
-          <strong>0</strong>
-          <span>시작에 필요한 계정</span>
-        </div>
       </div>
       <section>
         <h2>필요한 만큼, 이렇게 사용하세요</h2>
@@ -60,7 +56,7 @@ export default function About() {
             {
               Icon: Bookmark,
               title: "내 아이디어에 모아두기",
-              text: "필요한 기능을 저장하고 서비스별 체크리스트를 확인하세요. 저장과 체크 상태는 계정 없이 현재 브라우저의 로컬 저장소에 유지됩니다.",
+              text: "필요한 기능을 저장하고 서비스별 체크리스트를 확인하세요. 브라우저에 저장되며, Supabase가 연결된 배포에서는 임시 세션에도 동기화될 수 있습니다.",
             },
           ].map(({ Icon, title, text }) => (
             <div key={title}>
@@ -102,9 +98,10 @@ export default function About() {
           일반적인 점검 안내이며 법률 자문이 아닙니다.
         </p>
         <p>
-          컬렉션과 체크리스트는 이 브라우저에만 저장됩니다. 브라우저 데이터를
-          지우면 삭제될 수 있으며 다른 기기와 동기화되지 않습니다. 패킨웹은 이
-          저장 데이터를 서버로 전송하지 않습니다.
+          컬렉션과 체크리스트는 브라우저에 저장됩니다. Supabase가 연결된 배포에서는
+          비로그인 방문자도 임시 세션을 통해 서버에 동기화될 수 있고, Google 계정을
+          연결하면 계정에 동기화됩니다. 브라우저 저장 데이터는 브라우저 데이터를
+          지우면 삭제될 수 있습니다.
         </p>
       </section>
       <Link className="button dark" href="/">

@@ -122,6 +122,16 @@ export default function FeatureDetail({ id }: { id: string }) {
           <Link2 size={17} />
         </button>
       </div>
+      <details className="mobile-guide-toc">
+        <summary>이 가이드에서</summary>
+        <nav aria-label="가이드 목차">
+          {sections.map(([sectionId, title], i) => (
+            <a key={sectionId} href={`#${sectionId}`}>
+              <span>0{i + 1}</span> {title}
+            </a>
+          ))}
+        </nav>
+      </details>
       <div className="detail-layout">
         <article className="guide-content">
           <section id="overview">
@@ -244,7 +254,8 @@ export default function FeatureDetail({ id }: { id: string }) {
               })}
             </div>
             <span className="local-note">
-              체크 상태는 이 브라우저에 저장됩니다.
+              체크 상태는 브라우저에 저장됩니다. Supabase가 연결된 배포에서는 임시
+              세션에도 동기화될 수 있습니다.
             </span>
           </section>
           <section id="sources">

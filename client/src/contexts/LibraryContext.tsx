@@ -48,7 +48,7 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
   const checked = useStoredList("packinweb:checked");
   const [compare, setCompare] = useState<string[]>([]);
   const [remoteReady, setRemoteReady] = useState(false);
-  const { user } = useAuth();
+  const { user, isAnonymous } = useAuth();
 
   useEffect(() => {
     let active = true;
@@ -115,7 +115,9 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
         : "내 컬렉션에 저장했어요.",
       {
         description: user
-          ? "Google 계정에 동기화됩니다."
+          ? isAnonymous
+            ? "임시 세션에 동기화됩니다."
+            : "Google 계정에 동기화됩니다."
           : "이 브라우저에 저장됩니다.",
       }
     );
@@ -123,7 +125,9 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
 
   function toggleChecked(id: string) {
     checked.toggle(id);
-    if (user) toast("체크리스트를 Google 계정에 동기화합니다.");
+    if (user && !isAnonymous)
+      toast("체크리스트를 Google 계정에 동기화합니다.");
+    else if (user) toast("체크리스트를 임시 세션에 동기화합니다.");
   }
 
   return (

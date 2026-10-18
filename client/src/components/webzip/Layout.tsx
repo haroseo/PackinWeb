@@ -250,15 +250,11 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <span>{user.email?.split("@")[0] || "내 계정"}</span>
                 <LogOut size={15} />
               </button>
-            ) : (
+            ) : configured ? (
               <button
                 className="account-action"
                 disabled={authLoading}
                 onClick={async () => {
-                  if (!configured) {
-                    toast("Supabase 연결 후 Google 로그인을 사용할 수 있어요.");
-                    return;
-                  }
                   const { error } = await signInWithGoogle();
                   if (error)
                     toast.error("Google 로그인을 시작하지 못했습니다.");
@@ -270,7 +266,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                   {isAnonymous ? "Google 계정 연결" : "Google 로그인"}
                 </span>
               </button>
-            )}
+            ) : null}
             <Link className="header-bookmark" href="/saved">
               <Bookmark size={16} />
               <span>내 컬렉션</span>

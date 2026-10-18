@@ -108,7 +108,7 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
             <h1>
               좋은 웹사이트의 시작,
               <br />
-              필요한 모든 기능을 한곳에
+              웹서비스 기능 가이드를 한곳에
             </h1>
             <p>
               로그인부터 결제까지, 웹을 이루는 기능들을 한눈에.
@@ -297,7 +297,7 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
               value={sort}
               onChange={e => setSort(e.target.value)}
             >
-              <option value="popular">추천순</option>
+              <option value="popular">기본순</option>
               <option value="name">이름순</option>
               <option value="difficulty">쉬운 난이도순</option>
             </select>
