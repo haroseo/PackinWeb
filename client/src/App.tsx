@@ -21,6 +21,9 @@ export default function App() {
             <Layout>
               <Switch>
                 <Route path="/">{() => <Home />}</Route>
+                <Route path="/categories/:id">
+                  {params => <Home categoryId={params.id} />}
+                </Route>
                 <Route path="/saved">{() => <Home savedOnly />}</Route>
                 <Route path="/features/:id">
                   {params => <FeatureDetail id={params.id} />}

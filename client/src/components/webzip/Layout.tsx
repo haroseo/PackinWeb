@@ -20,9 +20,12 @@ import { useLibrary } from "@/contexts/LibraryContext";
 import { BrandMark, categoryIcons } from "./Icons";
 import { useAuth } from "@/contexts/AuthContext";
 export default function Layout({ children }: { children: ReactNode }) {
-  const [location, navigate] = useLocation();
+  const [rawLocation, navigate] = useLocation();
+  const location = rawLocation.replace(/\/$/, "") || "/";
   const query = useSearch();
-  const category = new URLSearchParams(query).get("category");
+  const category =
+    location.match(/^\/categories\/([^/]+)$/)?.[1] ||
+    new URLSearchParams(query).get("category");
   const [menu, setMenu] = useState(false);
   const [isMobile, setIsMobile] = useState(
     () => window.matchMedia("(max-width: 760px)").matches
@@ -141,7 +144,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Link>
           <Link
             className={`nav-item ${location === "/saved" ? "active" : ""}`}
-            href="/saved"
+            href="/saved/"
           >
             <Bookmark size={18} />
             <span>내 컬렉션</span>
@@ -151,14 +154,14 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Link>
           <Link
             className={`nav-item ${location === "/compare" ? "active" : ""}`}
-            href="/compare"
+            href="/compare/"
           >
             <GitCompareArrows size={18} />
             <span>기능 비교</span>
           </Link>
           <Link
             className={`nav-item ${location === "/checklist" ? "active" : ""}`}
-            href="/checklist"
+            href="/checklist/"
           >
             <CheckCheck size={18} />
             <span>서비스 체크리스트</span>
@@ -170,9 +173,9 @@ export default function Layout({ children }: { children: ReactNode }) {
             const Icon = categoryIcons[c.id];
             return (
               <Link
-                className={`nav-item ${location === "/" && category === c.id ? "active" : ""}`}
+                className={`nav-item ${category === c.id ? "active" : ""}`}
                 key={c.id}
-                href={`/?category=${c.id}`}
+                href={`/categories/${c.id}/`}
               >
                 <Icon size={18} />
                 <span>{c.label}</span>
@@ -184,7 +187,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           })}
         </nav>
         <div className="sidebar-bottom">
-          <Link className="start-note" href="/checklist">
+          <Link className="start-note" href="/checklist/">
             <span className="start-note-icon">
               <Layers size={18} />
             </span>
@@ -198,7 +201,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               체크리스트 살펴보기 <ArrowUpRight size={14} />
             </span>
           </Link>
-          <Link className="about-link" href="/about">
+          <Link className="about-link" href="/about/">
             <BookOpen size={15} /> 패킨웹 소개 <ArrowUpRight size={13} />
           </Link>
           <div className="sidebar-footer">
@@ -267,7 +270,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 </span>
               </button>
             ) : null}
-            <Link className="header-bookmark" href="/saved">
+            <Link className="header-bookmark" href="/saved/">
               <Bookmark size={16} />
               <span>내 컬렉션</span>
             </Link>
@@ -278,7 +281,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </main>
         <footer className="main-footer">
           <span>필요한 기능을 찾고, 더 나은 웹을 만드세요</span>
-          <Link href="/about">
+          <Link href="/about/">
             패킨웹 소개 <ArrowUpRight size={12} />
           </Link>
         </footer>
@@ -288,7 +291,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <GitCompareArrows size={18} />
           <strong>{compare.length}개 기능 선택</strong>
           <span>차이를 한눈에 확인해 보세요.</span>
-          <Link href="/compare" className="button dark small">
+          <Link href="/compare/" className="button dark small">
             비교하기 <ChevronRight size={14} />
           </Link>
           <button

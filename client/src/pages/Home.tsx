@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useSearch } from "wouter";
+import { Link, useSearch, Redirect } from "wouter";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -16,9 +16,18 @@ import { categories, features, filterFeatures } from "@/data/catalog";
 import { useLibrary } from "@/contexts/LibraryContext";
 import FeatureCard from "@/components/webzip/FeatureCard";
 import { applySeo } from "@/lib/seo";
-export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
+import { HOME_TITLE, HOME_DESCRIPTION } from "@shared/seo";
+import NotFound from "./NotFound";
+export default function Home({
+  savedOnly = false,
+  categoryId,
+}: {
+  savedOnly?: boolean;
+  categoryId?: string;
+}) {
   const params = useSearch();
-  const category = new URLSearchParams(params).get("category") || "all";
+  const legacyCategory = new URLSearchParams(params).get("category");
+  const category = categoryId || legacyCategory || "all";
   const [query, setQuery] = useState(""),
     [difficulty, setDifficulty] = useState("all"),
     [purpose, setPurpose] = useState("all"),
@@ -47,6 +56,15 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
     [query, category, difficulty, purpose, sort, savedOnly]
   );
   useEffect(() => {
+    if (categoryId && !activeCategory) {
+      applySeo({
+        title: "페이지를 찾을 수 없음 — 패킨웹",
+        description: "요청한 카테고리를 찾을 수 없습니다.",
+        path: `/categories/${categoryId}/`,
+        noindex: true,
+      });
+      return;
+    }
     if (savedOnly) {
       applySeo({
         title: "내 컬렉션 — 패킨웹",
@@ -61,24 +79,26 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
       applySeo({
         title: `${activeCategory.label} 기능 가이드 — 패킨웹`,
         description: `${activeCategory.description} 패킨웹에서 관련 기능의 흐름과 구현 기준을 확인하세요.`,
-        path: "/",
-        noindex: true,
+        path: `/categories/${activeCategory.id}/`,
       });
       return;
     }
     applySeo({
-      title: "패킨웹 — 웹사이트 기능 라이브러리",
-      description:
-        "로그인, 결제, 콘텐츠, 검색, 커뮤니케이션, 운영에 필요한 웹 기능을 한국어 가이드와 코드 예시로 정리했습니다.",
+      title: HOME_TITLE,
+      description: HOME_DESCRIPTION,
       path: "/",
     });
-  }, [activeCategory, savedOnly]);
+  }, [activeCategory, savedOnly, categoryId]);
   function reset() {
     setQuery("");
     setDifficulty("all");
     setPurpose("all");
   }
   const filtered = query || difficulty !== "all" || purpose !== "all";
+  if (categoryId && !activeCategory) return <NotFound />;
+  if (!categoryId && !savedOnly && activeCategory && legacyCategory) {
+    return <Redirect to={`/categories/${activeCategory.id}/`} replace />;
+  }
   return (
     <div className="page library-page">
       <section className={`hero ${savedOnly ? "small-hero" : ""}`}>
@@ -108,10 +128,10 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
             <h1>
               좋은 웹사이트의 시작,
               <br />
-              웹서비스 기능 가이드를 한곳에
+              웹사이트 기능 모음을 한곳에
             </h1>
             <p>
-              로그인부터 결제까지, 웹을 이루는 기능들을 한눈에.
+              패킨웹에서 로그인부터 결제까지, 웹을 이루는 기능들을 한눈에.
               <br />
               무엇이 필요한지 이해하고, 어떻게 만들지 알아보세요.
             </p>
@@ -135,7 +155,7 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
         </div>
       </section>
       {!savedOnly && !activeCategory && (
-        <Link href="/checklist" className="guide-banner">
+        <Link href="/checklist/" className="guide-banner">
           <span className="guide-banner-icon">
             <Layers size={21} strokeWidth={1.6} />
           </span>
@@ -261,7 +281,7 @@ export default function Home({ savedOnly = false }: { savedOnly?: boolean }) {
                 <Link
                   key={c.id}
                   className={category === c.id ? "active" : ""}
-                  href={`/?category=${c.id}`}
+                  href={`/categories/${c.id}/`}
                 >
                   {c.name}
                 </Link>

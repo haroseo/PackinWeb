@@ -24,9 +24,9 @@ pnpm build:static
 
 ## 프로젝트 구조
 
-`client/src/data/`에는 분야별 JSON과 분류·검색·저장 로직이 있습니다. `components/webzip/`은 사이트 레이아웃·아이콘·카드를 담당합니다. `pages/`에는 라이브러리·상세·비교·체크리스트·소개 페이지가 있습니다. `client/public/`에는 robots.txt, sitemap.xml, llms.txt와 정적 라우팅 설정이 있습니다.
+`client/src/data/`에는 분야별 JSON과 검색·저장 로직이 있습니다. `shared/catalog.ts`는 공통 분류, `shared/seo.ts`는 canonical과 구조화 데이터를 담당합니다. `scripts/seo-pages.ts`는 공개 HTML, sitemap.xml, llms.txt를 같은 데이터에서 자동 생성합니다. `client/public/`에는 robots.txt와 공개 소유권 확인 파일이 있습니다.
 
-페이지 경로는 `/`, `/features/:id`, `/saved`, `/compare`, `/checklist`, `/about`이며 `client/public/manus-routes.json`에 동기화되어 있습니다.
+페이지 경로는 `/`, `/categories/:id/`, `/features/:id/`, `/saved/`, `/compare/`, `/checklist/`, `/about/`이며 `client/public/manus-routes.json`에 동기화되어 있습니다. 기존 `/?category=...` 링크는 새 카테고리 주소로 이동합니다.
 
 ## 데이터와 범위
 
@@ -34,8 +34,12 @@ pnpm build:static
 
 ## 검색 노출
 
-공개 기능 상세 페이지는 빌드 시 고유 HTML, 제목, 설명, canonical, Open Graph, Twitter Card, JSON-LD를 생성합니다. `robots.txt`, `sitemap.xml`, `llms.txt`를 함께 제공합니다. 색인 요청은 각 검색엔진의 공식 웹마스터 도구에서 사이트 소유권 확인 후 제출해야 합니다.
+홈·카테고리 6개·가이드 48개·소개·체크리스트의 총 57개 URL을 사이트맵에 포함합니다. 상세 가이드는 본문, 코드 예시, 공식 출처와 관련 링크를 HTML로 제공합니다. canonical은 Cloudflare Pages의 디렉터리 URL과 일치하도록 끝에 `/`를 사용합니다. WebSite, CollectionPage, ItemList, Article, BreadcrumbList 구조화 데이터는 실제 콘텐츠로만 생성하며 클라이언트 이동 시에도 갱신합니다.
+
+`saved`·`compare`는 noindex이고 없는 주소는 `404.html`로 404 응답을 받습니다. 모든 경로를 홈페이지로 바꾸는 catch-all rewrite는 사용하지 않습니다. `llms.txt`는 문서 목록이며 AI 검색 노출을 보장하거나 대체하는 특별한 설정이 아닙니다.
+
+Google 소유권 확인용 공개 메타태그는 `client/index.html`에 있습니다. `client/public/indexnow-key.txt`는 사이트에 공개하는 소유권 증명으로 계정 비밀번호나 비밀 API 키가 아닙니다. 배포 후 `pnpm submit:indexnow`로 운영 사이트맵의 URL을 참여 검색엔진에 통지할 수 있습니다. 스크립트는 먼저 배포된 증명 파일을 확인하고, 접수 응답과 색인 완료를 구분합니다. Google·Naver 웹마스터 사이트맵 제출은 각 관리 화면에서 수행합니다. 검색 순위·색인 시점은 보장하지 않습니다.
 
 ## 검증
 
-TypeScript 검사, 정적 빌드 및 전체 테스트를 통과했습니다. 기능 개수·분류·관련 ID·공식 HTTPS 링크·검색·필터·로컬 저장·비교 제한·SEO 정적 페이지 생성을 검사합니다.
+`pnpm check`, `pnpm test`, `pnpm build:static`, `pnpm check:seo`를 실행합니다. SEO 검사는 전체 canonical URL, 구조화 데이터, 본문 섹션, 정적 자산 참조, noindex와 사이트맵을 확인합니다. 브라우저에서는 카테고리 이동, 기존 쿼리 링크 전환, 상세 가이드와 404를 확인하세요.

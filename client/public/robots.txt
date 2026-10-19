@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /saved
-Disallow: /compare
+
 Sitemap: https://packinweb.pages.dev/sitemap.xml

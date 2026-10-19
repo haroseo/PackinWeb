@@ -35,7 +35,7 @@ export default function FeatureCard({
           />
         </button>
       </div>
-      <Link href={`/features/${feature.id}`} className="card-link">
+      <Link href={`/features/${feature.id}/`} className="card-link">
         <div className="card-category">
           {categories.find(c => c.id === feature.category)?.label}
         </div>

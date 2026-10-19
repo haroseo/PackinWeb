@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import { vitePluginSeoPages } from "./scripts/seo-pages";
 import { publicPlatformScript } from "./server/_core/publicConfig";
 
 // =============================================================================
@@ -168,129 +169,6 @@ function vitePluginPublicPlatformConfig(): Plugin {
         fileName: "api/platform/config.js",
         source: publicPlatformScript(),
       });
-    },
-  };
-}
-
-function escapeHtml(value: string) {
-  return value.replace(
-    /[&<>"']/g,
-    character =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        character
-      ] ?? character
-  );
-}
-
-function vitePluginSeoPages(): Plugin {
-  return {
-    name: "packinweb-seo-pages",
-    generateBundle(_options, bundle) {
-      const javascript = Object.keys(bundle).find(
-        fileName =>
-          fileName.startsWith("assets/index-") && fileName.endsWith(".js")
-      );
-      const stylesheet = Object.keys(bundle).find(
-        fileName =>
-          fileName.startsWith("assets/index-") && fileName.endsWith(".css")
-      );
-      if (!javascript) return;
-
-      const dataDirectory = path.join(PROJECT_ROOT, "client/src/data");
-      const features = fs
-        .readdirSync(dataDirectory)
-        .filter(fileName => fileName.endsWith(".json"))
-        .flatMap(fileName => {
-          try {
-            return JSON.parse(
-              fs.readFileSync(path.join(dataDirectory, fileName), "utf8")
-            ) as Array<{
-              id: string;
-              title: string;
-              description: string;
-              overview: string;
-            }>;
-          } catch {
-            return [];
-          }
-        });
-
-      const htmlPage = (options: {
-        title: string;
-        description: string;
-        pathName: string;
-        heading: string;
-        body: string;
-        type?: "website" | "article";
-      }) => {
-        const url = `https://packinweb.pages.dev${options.pathName}`;
-        const body = escapeHtml(options.body);
-        return `<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index,follow" />
-    <meta name="description" content="${escapeHtml(options.description)}" />
-    <link rel="canonical" href="${url}" />
-    <meta property="og:type" content="${options.type ?? "website"}" />
-    <meta property="og:site_name" content="PackinWeb" />
-    <meta property="og:title" content="${escapeHtml(options.title)}" />
-    <meta property="og:description" content="${escapeHtml(options.description)}" />
-    <meta property="og:url" content="${url}" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="${escapeHtml(options.title)}" />
-    <meta name="twitter:description" content="${escapeHtml(options.description)}" />
-    ${stylesheet ? `<link rel="stylesheet" href="/${stylesheet}" />` : ""}
-    <title>${escapeHtml(options.title)}</title>
-  </head>
-  <body>
-    <div id="root"><main><p>PackinWeb · 패킨웹</p><h1>${escapeHtml(options.heading)}</h1><p>${body}</p><nav><a href="/">기능 라이브러리</a> <a href="/checklist">서비스 체크리스트</a> <a href="/about">소개</a></nav></main></div>
-    <script type="module" src="/${javascript}"></script>
-  </body>
-</html>`;
-      };
-
-      this.emitFile({
-        type: "asset",
-        fileName: "checklist/index.html",
-        source: htmlPage({
-          title: "서비스 기능 체크리스트 — 패킨웹",
-          description:
-            "SaaS, 커머스, 콘텐츠, 커뮤니티 서비스에 필요한 웹 기능을 유형별 체크리스트로 확인하세요.",
-          pathName: "/checklist",
-          heading: "서비스에 필요한 기능 체크리스트",
-          body: "서비스 유형에 맞춰 인증, 결제, 콘텐츠, 검색, 운영 기능을 빠짐없이 점검할 수 있습니다.",
-        }),
-      });
-      this.emitFile({
-        type: "asset",
-        fileName: "about/index.html",
-        source: htmlPage({
-          title: "패킨웹 소개 — 웹 기능을 이해하는 레퍼런스",
-          description:
-            "패킨웹은 기획자, 디자이너, 개발자가 웹 기능을 같은 언어로 이해하도록 돕는 한국어 레퍼런스입니다.",
-          pathName: "/about",
-          heading: "웹을 이루는 기능을 누구나 이해할 수 있게",
-          body: "패킨웹은 웹서비스의 기능을 목적, 흐름, 보안, 접근성, 구현 예시와 함께 정리합니다.",
-        }),
-      });
-
-      for (const feature of features) {
-        const title = `${feature.title} 가이드 — 패킨웹`;
-        this.emitFile({
-          type: "asset",
-          fileName: `features/${feature.id}/index.html`,
-          source: htmlPage({
-            title,
-            description: `${feature.description} 목적, 사용자 흐름, 보안·접근성 기준과 구현 코드 예시를 확인하세요.`,
-            pathName: `/features/${feature.id}`,
-            heading: `${feature.title} 기능 가이드`,
-            body: feature.overview,
-            type: "article",
-          }),
-        });
-      }
     },
   };
 }

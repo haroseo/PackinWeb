@@ -153,7 +153,7 @@ export default function Checklist() {
                 <span className="service-row-icon">
                   {Icon && <Icon size={20} strokeWidth={1.6} />}
                 </span>
-                <Link className="service-row-copy" href={`/features/${f.id}`}>
+                <Link className="service-row-copy" href={`/features/${f.id}/`}>
                   <h3>{f.title}</h3>
                   <p>{f.description}</p>
                 </Link>
@@ -172,7 +172,7 @@ export default function Checklist() {
                 <Link
                   className="icon-button"
                   aria-label={`${f.title} 가이드 읽기`}
-                  href={`/features/${f.id}`}
+                  href={`/features/${f.id}/`}
                 >
                   <ChevronRight size={18} />
                 </Link>

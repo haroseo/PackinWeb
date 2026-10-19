@@ -1,9 +1,14 @@
 import { Link } from "wouter";
+import { useEffect } from "react";
+import { applySeo } from "@/lib/seo";
 import { ArrowUpRight, ChevronDown, GitCompareArrows, X } from "lucide-react";
 import { features, categories } from "@/data/catalog";
 import { useLibrary } from "@/contexts/LibraryContext";
 import { featureIcons } from "@/components/webzip/Icons";
 export default function Compare() {
+  useEffect(() => {
+    applySeo({ title: "기능 비교 — 패킨웹", description: "선택한 웹 기능을 나란히 비교하세요.", path: "/compare/", noindex: true });
+  }, []);
   const { compare, setCompare } = useLibrary();
   const selected = compare
     .map(id => features.find(f => f.id === id))
@@ -119,7 +124,7 @@ export default function Compare() {
                       {Icon && <Icon size={24} strokeWidth={1.5} />}
                       <h2>{f.title}</h2>
                       <span>{f.english}</span>
-                      <Link href={`/features/${f.id}`}>
+                      <Link href={`/features/${f.id}/`}>
                         전체 가이드 <ArrowUpRight size={12} />
                       </Link>
                     </th>

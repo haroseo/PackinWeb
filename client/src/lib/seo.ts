@@ -1,5 +1,6 @@
-export const SITE_ORIGIN = "https://packinweb.pages.dev";
-export const SITE_NAME = "PackinWeb";
+import { SITE_NAME, canonicalUrl, pageSchema } from "@shared/seo";
+import { features } from "@/data/catalog";
+export { SITE_ORIGIN, SITE_NAME } from "@shared/seo";
 
 function upsertMeta(
   attribute: "name" | "property",
@@ -30,7 +31,7 @@ export function applySeo({
   type?: "website" | "article";
   noindex?: boolean;
 }) {
-  const url = new URL(path, SITE_ORIGIN).toString();
+  const url = canonicalUrl(path);
   document.title = title;
   upsertMeta("name", "description", description);
   upsertMeta("name", "robots", noindex ? "noindex,follow" : "index,follow");
@@ -53,4 +54,14 @@ export function applySeo({
     document.head.appendChild(canonical);
   }
   canonical.href = url;
+  let schema = document.head.querySelector<HTMLScriptElement>("#page-schema");
+  if (!schema) {
+    schema = document.createElement("script");
+    schema.id = "page-schema";
+    schema.type = "application/ld+json";
+    document.head.appendChild(schema);
+  }
+  schema.textContent = JSON.stringify(
+    noindex ? {} : pageSchema(path, title, description, features)
+  );
 }

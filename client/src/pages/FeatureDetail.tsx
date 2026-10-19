@@ -79,7 +79,7 @@ export default function FeatureDetail({ id }: { id: string }) {
       <div className="breadcrumbs">
         <Link href="/">모든 기능</Link>
         <ChevronRight size={12} />
-        <Link href={`/?category=${category?.id}`}>{category?.label}</Link>
+        <Link href={`/categories/${category?.id}/`}>{category?.label}</Link>
         <ChevronRight size={12} />
         <span>{feature.title}</span>
       </div>
@@ -254,8 +254,8 @@ export default function FeatureDetail({ id }: { id: string }) {
               })}
             </div>
             <span className="local-note">
-              체크 상태는 브라우저에 저장됩니다. Supabase가 연결된 배포에서는 임시
-              세션에도 동기화될 수 있습니다.
+              체크 상태는 브라우저에 저장됩니다. Supabase가 연결된 배포에서는
+              임시 세션에도 동기화될 수 있습니다.
             </span>
           </section>
           <section id="sources">
@@ -296,7 +296,7 @@ export default function FeatureDetail({ id }: { id: string }) {
                 <br />
                 전체 흐름을 그려보세요.
               </p>
-              <Link href="/checklist">
+              <Link href="/checklist/">
                 서비스 체크리스트 <ArrowUpRight size={13} />
               </Link>
             </div>
@@ -316,7 +316,7 @@ export default function FeatureDetail({ id }: { id: string }) {
           ))}
         </div>
       </section>
-      <Link className="back-library" href={`/?category=${feature.category}`}>
+      <Link className="back-library" href={`/categories/${feature.category}/`}>
         <ArrowLeft size={15} />
         {category?.label} 목록으로
       </Link>

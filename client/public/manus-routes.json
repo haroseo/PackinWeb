@@ -1,6 +1,7 @@
 {
   "routes": [
     { "path": "/", "title": "PackinWeb — 기능 라이브러리" },
+    { "path": "/categories/:id", "title": "카테고리별 기능 가이드" },
     { "path": "/saved", "title": "내 컬렉션" },
     { "path": "/features/:id", "title": "기능 상세 가이드" },
     { "path": "/compare", "title": "기능 비교" },
