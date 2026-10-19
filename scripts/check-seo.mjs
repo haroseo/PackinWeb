@@ -11,7 +11,8 @@ const features = fs
   .readdirSync(data)
   .filter(f => f.endsWith(".json"))
   .flatMap(f => JSON.parse(fs.readFileSync(path.join(data, f), "utf8")));
-assert.equal(urls.length, features.length + 9);
+const categoryIds = new Set(features.map(feature => feature.category));
+assert.equal(urls.length, features.length + categoryIds.size + 3);
 assert.equal(new Set(urls).size, urls.length);
 for (const url of urls) {
   const pathname = new URL(url).pathname;

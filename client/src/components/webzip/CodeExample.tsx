@@ -12,17 +12,11 @@ import {
   Activity,
 } from "lucide-react";
 import type { CodeExample } from "@/data/codeExamples";
-const icons = {
-  auth: UserRound,
-  commerce: ShoppingBag,
-  content: Upload,
-  search: Search,
-  communication: Bell,
-  operations: Activity,
-};
+import { categoryIcons } from "./Icons";
+import { categories } from "@/data/catalog";
 export default function CodeExample({ example }: { example: CodeExample }) {
   const [copied, setCopied] = useState(false);
-  const Icon = icons[example.preview];
+  const Icon = categoryIcons[example.preview];
   async function copy() {
     try {
       await navigator.clipboard.writeText(example.code);
@@ -75,19 +69,31 @@ export default function CodeExample({ example }: { example: CodeExample }) {
                 <Icon size={16} />
               </span>
               <b>
-                {example.preview === "auth"
-                  ? "계정 센터"
-                  : example.preview === "commerce"
-                    ? "주문 확인"
-                    : example.preview === "search"
-                      ? "기능 찾기"
-                      : example.preview === "content"
-                        ? "파일 보관함"
-                        : example.preview === "communication"
-                          ? "알림 센터"
-                          : "운영 현황"}
+                {example.steps
+                  ? categories.find(c => c.id === example.preview)?.label
+                  : example.preview === "auth"
+                    ? "계정 센터"
+                    : example.preview === "commerce"
+                      ? "주문 확인"
+                      : example.preview === "search"
+                        ? "기능 찾기"
+                        : example.preview === "content"
+                          ? "파일 보관함"
+                          : example.preview === "communication"
+                            ? "알림 센터"
+                            : "운영 현황"}
               </b>
             </div>
+            {example.steps && (
+              <div className="preview-flow">
+                <p>사용자 흐름 요약</p>
+                <ol>
+                  {example.steps.map((step, index) => (
+                    <li key={index}>{step}</li>
+                  ))}
+                </ol>
+              </div>
+            )}
             {example.preview === "auth" && (
               <>
                 <div className="preview-line wide" />

@@ -49,15 +49,36 @@ import {
   Database,
   Gauge,
   Webhook,
+  CalendarDays,
+  MapPin,
+  Bot,
+  ListChecks,
+  Table2,
+  FilePenLine,
+  GraduationCap,
+  Smartphone,
+  Building2,
+  Truck,
   type LucideIcon,
 } from "lucide-react";
-export const categoryIcons: Record<string, LucideIcon> = {
+import type { CategoryId } from "@shared/catalog";
+export const categoryIcons: Record<CategoryId, LucideIcon> = {
   auth: UserRound,
   commerce: CreditCard,
   content: FileText,
   search: Search,
   communication: MessagesSquare,
   operations: ShieldCheck,
+  booking: CalendarDays,
+  maps: MapPin,
+  ai: Bot,
+  forms: ListChecks,
+  data: Table2,
+  documents: FilePenLine,
+  learning: GraduationCap,
+  mobile: Smartphone,
+  organizations: Building2,
+  logistics: Truck,
 };
 export const featureIcons: Record<string, LucideIcon> = {
   login: LogIn,

@@ -1,0 +1,406 @@
+[
+  {
+    "id": "ai-streaming",
+    "title": "AI 응답 스트리밍",
+    "english": "AI response streaming",
+    "category": "ai",
+    "description": "생성 중인 응답을 조금씩 표시하고 중단·연결 실패·최종 완료를 구분하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "콘텐츠"],
+    "essential": false,
+    "overview": "첫 응답 지연을 줄이기 위해 텍스트를 순차 표시합니다. 네트워크 청크와 메시지 경계는 다르므로 디코딩·프로토콜 파싱을 구분하고 완료 신호를 확인합니다.",
+    "why": "중간까지 보인 응답을 완성된 답변으로 저장하면 연결 실패가 감춰질 수 있습니다.",
+    "flow": [
+      "질문과 중단 신호를 서버에 보낸다.",
+      "응답 헤더와 스트림 유무를 확인한다.",
+      "메시지 경계에 맞춰 내용을 누적한다.",
+      "완료·중단·오류 상태를 구분해 저장한다."
+    ],
+    "components": [
+      "서버 스트림 프록시",
+      "텍스트 디코더",
+      "중단 제어",
+      "최종 응답 상태"
+    ],
+    "exceptions": [
+      "청크 중간에 나뉜 UTF-8 문자를 보존한다.",
+      "연결이 끊기면 미완료 답변과 재시도 방법을 표시한다."
+    ],
+    "security": "수신한 Markdown·HTML을 무검증 innerHTML로 삽입하지 않습니다. 모델 출력과 외부 문서는 신뢰할 수 없는 입력으로 취급하고 실행 권한·비밀 키는 서버에 둡니다.",
+    "privacy": "모델에 보낼 개인정보와 기밀 문서를 줄이고 제공자의 보존·학습 사용·전송 지역 정책을 확인합니다.",
+    "accessibility": "응답 진행·완료·실패를 텍스트로 안내하고 긴 생성 중에도 중단·복사·키보드 탐색을 지원합니다.",
+    "legal": "생성물의 사용 권한, 개인정보 처리, 제공자 약관을 확인합니다. 자동 답변을 전문적 판단의 보증으로 안내하지 않습니다.",
+    "checklist": [
+      "중간 청크 분할",
+      "중단 요청 전파",
+      "완료 신호",
+      "실패 답변 표시",
+      "출력 렌더링 안전성"
+    ],
+    "options": [
+      {
+        "name": "텍스트 스트림",
+        "pros": "누적 표시를 간단히 구현합니다.",
+        "cons": "이벤트 종류를 따로 표현하기 어렵습니다.",
+        "bestFor": "단순한 텍스트 생성"
+      },
+      {
+        "name": "구조화 이벤트 스트림",
+        "pros": "진행·도구 호출·완료를 구분합니다.",
+        "cons": "이벤트 프레임 파서가 필요합니다.",
+        "bestFor": "도구를 사용하는 AI 도우미"
+      }
+    ],
+    "related": ["ai-document-answers", "ai-summaries", "rate-limiting"],
+    "sources": [
+      {
+        "title": "MDN Using readable streams",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams"
+      },
+      {
+        "title": "OWASP Prompt Injection",
+        "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+      }
+    ],
+    "codeExample": {
+      "title": "AI 응답 스트리밍 핵심 로직",
+      "language": "TypeScript",
+      "code": "export async function* readText(response: Response) {\n  if (!response.ok || !response.body) throw new Error('스트림 시작 실패');\n  const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();\n  try {\n    while (true) {\n      const { done, value } = await reader.read();\n      if (done) break;\n      yield value;\n    }\n  } finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }\n}\n// 이 예시는 text/plain 스트림용이며 SSE에는 별도 프레임 파서가 필요합니다."
+    }
+  },
+  {
+    "id": "ai-document-answers",
+    "title": "문서 기반 답변·출처",
+    "english": "Document grounded answers",
+    "category": "ai",
+    "description": "접근 가능한 문서를 검색하고 답변의 근거 위치와 인용을 연결하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "콘텐츠"],
+    "essential": false,
+    "overview": "질문과 관련된 문서 조각을 찾아 답변 입력으로 제공합니다. 검색할 때와 최종 인용을 열 때 모두 문서 접근 권한을 확인하고 근거가 부족하면 답변 범위를 줄입니다.",
+    "why": "벡터 검색 결과가 비슷하다는 사실만으로 답변이 정확하거나 문서 접근 권한이 생기는 것은 아닙니다.",
+    "flow": [
+      "사용자의 검색 가능한 문서 범위를 확인한다.",
+      "질문에 관련된 조각을 검색한다.",
+      "출처 식별자와 함께 답변을 생성한다.",
+      "인용 위치와 근거 부족 상태를 보여준다."
+    ],
+    "components": [
+      "문서 조각 인덱스",
+      "문서별 권한",
+      "검색·재정렬",
+      "출처 링크"
+    ],
+    "exceptions": [
+      "삭제·권한 변경된 문서는 검색 결과와 캐시에서 제외한다.",
+      "근거 문서끼리 충돌하면 차이와 범위를 알린다."
+    ],
+    "security": "문서 속 명령을 시스템 지시로 실행하지 않고 다른 조직의 조각을 검색 단계에서 제외합니다. 모델 출력과 외부 문서는 신뢰할 수 없는 입력으로 취급하고 실행 권한·비밀 키는 서버에 둡니다.",
+    "privacy": "모델에 보낼 개인정보와 기밀 문서를 줄이고 제공자의 보존·학습 사용·전송 지역 정책을 확인합니다.",
+    "accessibility": "응답 진행·완료·실패를 텍스트로 안내하고 긴 생성 중에도 중단·복사·키보드 탐색을 지원합니다.",
+    "legal": "생성물의 사용 권한, 개인정보 처리, 제공자 약관을 확인합니다. 자동 답변을 전문적 판단의 보증으로 안내하지 않습니다.",
+    "checklist": [
+      "조직별 검색 경계",
+      "인용 원문 열기",
+      "삭제 문서 제외",
+      "근거 없는 답변 처리",
+      "프롬프트 주입 검토"
+    ],
+    "options": [
+      {
+        "name": "키워드 검색과 근거 첨부",
+        "pros": "정확한 용어·식별자에 강합니다.",
+        "cons": "표현이 다른 질문을 놓칠 수 있습니다.",
+        "bestFor": "정책·규정 검색"
+      },
+      {
+        "name": "벡터·키워드 혼합 검색",
+        "pros": "의미와 용어를 함께 탐색합니다.",
+        "cons": "인덱스 갱신과 품질 평가가 필요합니다.",
+        "bestFor": "다양한 문서 지식 도우미"
+      }
+    ],
+    "related": ["ai-summaries", "ai-extraction", "rate-limiting"],
+    "sources": [
+      {
+        "title": "pgvector project documentation",
+        "url": "https://github.com/pgvector/pgvector"
+      },
+      {
+        "title": "OWASP Prompt Injection",
+        "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+      }
+    ],
+    "codeExample": {
+      "title": "문서 기반 답변·출처 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Snippet = { id: string; text: string; tenantId: string; url: string };\nexport function allowedContext(rows: Snippet[], tenantId: string) {\n  return rows.filter(row => row.tenantId === tenantId).slice(0, 6)\n    .map(row => ({ sourceId: row.id, text: row.text, url: row.url }));\n}\n// 실제 DB 검색에도 같은 권한 조건을 적용합니다. 모델이 권한을 판단하지 않습니다."
+    }
+  },
+  {
+    "id": "ai-summaries",
+    "title": "AI 요약",
+    "english": "AI summarization",
+    "category": "ai",
+    "description": "긴 문서의 핵심을 원문 위치와 함께 압축하고 누락·왜곡을 검토하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "콘텐츠"],
+    "essential": false,
+    "overview": "요약 목적과 길이를 정하고 입력 한도를 넘으면 문서 구조에 맞춰 나눕니다. 요약 결과에 원문 참조를 남겨 수치·날짜·조건을 되짚을 수 있게 합니다.",
+    "why": "짧은 결과만 제공하면 중요한 예외와 단서가 빠졌는지 사용자가 확인하기 어렵습니다.",
+    "flow": [
+      "문서와 요약 목적을 받는다.",
+      "길이·언어·민감 정보를 확인한다.",
+      "문서 구간별 요약과 전체 통합을 수행한다.",
+      "핵심 주장과 원문 위치를 함께 보여준다."
+    ],
+    "components": ["입력 길이 제한", "구간 분할", "요약 형식", "원문 참조"],
+    "exceptions": [
+      "내용이 너무 짧으면 무리한 축약을 피한다.",
+      "수치·기한이 원문과 다르면 재검토 상태로 표시한다."
+    ],
+    "security": "붙여 넣은 문서에 포함된 지시와 요약 요청을 구분합니다. 모델 출력과 외부 문서는 신뢰할 수 없는 입력으로 취급하고 실행 권한·비밀 키는 서버에 둡니다.",
+    "privacy": "모델에 보낼 개인정보와 기밀 문서를 줄이고 제공자의 보존·학습 사용·전송 지역 정책을 확인합니다.",
+    "accessibility": "응답 진행·완료·실패를 텍스트로 안내하고 긴 생성 중에도 중단·복사·키보드 탐색을 지원합니다.",
+    "legal": "생성물의 사용 권한, 개인정보 처리, 제공자 약관을 확인합니다. 자동 답변을 전문적 판단의 보증으로 안내하지 않습니다.",
+    "checklist": [
+      "입력 한도",
+      "수치·고유명사 확인",
+      "원문 링크",
+      "예외 조건 보존",
+      "요약 실패 재시도"
+    ],
+    "options": [
+      {
+        "name": "단일 요청 요약",
+        "pros": "문서 전체 맥락을 함께 전달합니다.",
+        "cons": "입력 한도와 비용의 영향을 받습니다.",
+        "bestFor": "짧은 글·회의 메모"
+      },
+      {
+        "name": "구간별 요약 후 통합",
+        "pros": "긴 문서를 나눠 처리합니다.",
+        "cons": "구간 사이의 관계를 놓칠 수 있습니다.",
+        "bestFor": "장문 자료·보고서"
+      }
+    ],
+    "related": ["ai-extraction", "ai-approval", "rate-limiting"],
+    "sources": [
+      {
+        "title": "OWASP Prompt Injection",
+        "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+      },
+      {
+        "title": "OWASP Unbounded Consumption",
+        "url": "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/"
+      }
+    ],
+    "codeExample": {
+      "title": "AI 요약 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function splitParagraphs(text: string, maxChars: number) {\n  if (maxChars < 1) throw new Error('양수 길이가 필요합니다.');\n  const chunks: string[] = [];\n  const paragraphs = text.replaceAll(String.fromCharCode(13), '')\n    .split(String.fromCharCode(10, 10));\n  for (const paragraph of paragraphs) {\n    for (let offset = 0; offset < paragraph.length; offset += maxChars)\n      chunks.push(paragraph.slice(offset, offset + maxChars));\n  }\n  return chunks;\n}\n// 문자 수는 토큰 수와 다르므로 제공자의 입력 한도도 별도로 확인합니다."
+    }
+  },
+  {
+    "id": "ai-extraction",
+    "title": "AI 구조화 데이터 추출",
+    "english": "Structured data extraction",
+    "category": "ai",
+    "description": "자유 형식 문서에서 필요한 필드를 추출하고 스키마와 원문 근거로 검증하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "콘텐츠"],
+    "essential": false,
+    "overview": "추출할 필드의 형식·필수 여부·알 수 없음의 표현을 정의합니다. JSON을 받는 것에서 끝내지 않고 자료형·범위·교차 조건을 검증한 뒤 저장합니다.",
+    "why": "그럴듯한 값이 비어 있는 값보다 위험한 업무에서는 추측 대신 미확인 상태가 필요합니다.",
+    "flow": [
+      "추출 스키마와 문서를 준비한다.",
+      "원문 근거를 포함해 필드를 추출한다.",
+      "형식·값 범위·필드 관계를 검증한다.",
+      "미확인 항목은 사용자가 보정한 뒤 저장한다."
+    ],
+    "components": ["필드 스키마", "근거 위치", "검증기", "검토 화면"],
+    "exceptions": [
+      "JSON 파싱이 실패하면 원본 결과를 운영 데이터로 저장하지 않는다.",
+      "없는 값을 0이나 오늘 날짜로 채우지 않는다."
+    ],
+    "security": "추출 결과를 SQL·명령어·템플릿 코드에 직접 연결하지 않습니다. 모델 출력과 외부 문서는 신뢰할 수 없는 입력으로 취급하고 실행 권한·비밀 키는 서버에 둡니다.",
+    "privacy": "모델에 보낼 개인정보와 기밀 문서를 줄이고 제공자의 보존·학습 사용·전송 지역 정책을 확인합니다.",
+    "accessibility": "응답 진행·완료·실패를 텍스트로 안내하고 긴 생성 중에도 중단·복사·키보드 탐색을 지원합니다.",
+    "legal": "생성물의 사용 권한, 개인정보 처리, 제공자 약관을 확인합니다. 자동 답변을 전문적 판단의 보증으로 안내하지 않습니다.",
+    "checklist": [
+      "필수 필드 검증",
+      "알 수 없음 표현",
+      "범위 검사",
+      "원문 근거",
+      "검토 전 자동 저장 금지"
+    ],
+    "options": [
+      {
+        "name": "규칙 기반 추출",
+        "pros": "고정 형식의 오류를 추적하기 쉽습니다.",
+        "cons": "다양한 표현과 문서 양식에 약합니다.",
+        "bestFor": "정형 서식"
+      },
+      {
+        "name": "모델과 스키마 검증",
+        "pros": "여러 문서 표현을 처리합니다.",
+        "cons": "정확도 평가와 사람 검토가 필요합니다.",
+        "bestFor": "비정형 문서 정리"
+      }
+    ],
+    "related": ["ai-approval", "ai-usage-limits", "rate-limiting"],
+    "sources": [
+      {
+        "title": "JSON Schema Reference",
+        "url": "https://json-schema.org/understanding-json-schema/reference"
+      },
+      {
+        "title": "OWASP Prompt Injection",
+        "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+      }
+    ],
+    "codeExample": {
+      "title": "AI 구조화 데이터 추출 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Extracted = { reference: string; quantity: number | null };\nexport function validateExtracted(value: unknown): Extracted {\n  if (!value || typeof value !== 'object') throw new Error('객체가 필요합니다.');\n  const item = value as Record<string, unknown>;\n  if (typeof item.reference !== 'string' ||\n      !(item.quantity === null || (typeof item.quantity === 'number'\n      && Number.isSafeInteger(item.quantity) && item.quantity >= 0)))\n    throw new Error('추출 스키마와 맞지 않습니다.');\n  return { reference: item.reference, quantity: item.quantity as number | null };\n}"
+    }
+  },
+  {
+    "id": "ai-approval",
+    "title": "승인 후 자동 실행",
+    "english": "Human approved automation",
+    "category": "ai",
+    "description": "AI가 제안한 작업의 내용·범위를 사람이 확인한 뒤 제한된 권한으로 실행하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "콘텐츠"],
+    "essential": false,
+    "overview": "제안, 승인, 실행을 다른 상태로 관리합니다. 승인된 작업의 버전과 인자를 묶어 승인 뒤 내용이 바뀌면 다시 확인하게 하고 실행 결과를 기록합니다.",
+    "why": "답변을 잘 만드는 능력이 실제 데이터 수정이나 외부 발송 권한을 의미하지는 않습니다.",
+    "flow": [
+      "허용된 작업 목록에서 실행 계획을 만든다.",
+      "대상·인자·영향 범위를 사용자에게 보여준다.",
+      "특정 버전의 계획에 대한 승인을 받는다.",
+      "권한을 재검사하고 실행·결과를 기록한다."
+    ],
+    "components": [
+      "허용 작업 목록",
+      "계획 버전",
+      "만료되는 승인",
+      "실행 감사 기록"
+    ],
+    "exceptions": [
+      "승인 뒤 인자가 바뀌면 실행을 거부한다.",
+      "부분 성공은 전체 성공으로 표시하지 않는다."
+    ],
+    "security": "승인은 구체적인 작업에 묶고 모델이 자신의 실행을 승인하지 못하게 합니다. 모델 출력과 외부 문서는 신뢰할 수 없는 입력으로 취급하고 실행 권한·비밀 키는 서버에 둡니다.",
+    "privacy": "모델에 보낼 개인정보와 기밀 문서를 줄이고 제공자의 보존·학습 사용·전송 지역 정책을 확인합니다.",
+    "accessibility": "응답 진행·완료·실패를 텍스트로 안내하고 긴 생성 중에도 중단·복사·키보드 탐색을 지원합니다.",
+    "legal": "생성물의 사용 권한, 개인정보 처리, 제공자 약관을 확인합니다. 자동 답변을 전문적 판단의 보증으로 안내하지 않습니다.",
+    "checklist": [
+      "계획 변경 시 재승인",
+      "승인 만료",
+      "최소 실행 권한",
+      "중복 실행 방지",
+      "부분 실패 기록"
+    ],
+    "options": [
+      {
+        "name": "모든 실행에 승인",
+        "pros": "사용자가 결과 영향을 미리 확인합니다.",
+        "cons": "반복 작업이 번거로워질 수 있습니다.",
+        "bestFor": "발송·삭제 등 영향이 큰 작업"
+      },
+      {
+        "name": "제한된 범위만 자동 실행",
+        "pros": "낮은 영향의 반복 업무를 줄입니다.",
+        "cons": "허용 범위를 명확히 정의해야 합니다.",
+        "bestFor": "되돌릴 수 있는 분류·정리"
+      }
+    ],
+    "related": ["ai-usage-limits", "ai-streaming", "rate-limiting"],
+    "sources": [
+      {
+        "title": "OWASP Excessive Agency",
+        "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/"
+      },
+      {
+        "title": "OWASP Authorization Cheat Sheet",
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+      }
+    ],
+    "codeExample": {
+      "title": "승인 후 자동 실행 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Approval = { planVersion: string; actorId: string; expiresAt: number };\nexport function approved(a: Approval, version: string, actorId: string, now: number) {\n  return a.planVersion === version && a.actorId === actorId && now < a.expiresAt;\n}\n// 실행 서버가 권한·작업 인자·중복 키를 재검증하고 일회성 승인을 소비합니다."
+    }
+  },
+  {
+    "id": "ai-usage-limits",
+    "title": "AI 사용량·비용 제한",
+    "english": "AI usage and budget limits",
+    "category": "ai",
+    "description": "생성 요청의 입력·출력·동시 실행을 제한하고 예상 사용량과 실제 사용량을 정산하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "콘텐츠"],
+    "essential": false,
+    "overview": "요청 전 예상 최대 사용량을 예약하고 완료 후 실제 수치로 정산합니다. 제공자 토큰 한도와 조직 예산을 구분하고 실패·중단에도 예약 잔액을 회수합니다.",
+    "why": "응답 후 사용량만 더하면 동시 요청이 같은 잔액을 보고 예산을 초과할 수 있습니다.",
+    "flow": [
+      "사용자·조직의 남은 한도를 확인한다.",
+      "예상 최대 사용량을 원자적으로 예약한다.",
+      "출력·시간·동시 요청 한도를 적용한다.",
+      "실제 사용량으로 정산하고 예약을 해제한다."
+    ],
+    "components": [
+      "사용량 원장",
+      "예약 잔액",
+      "출력·시간 제한",
+      "정산·만료 작업"
+    ],
+    "exceptions": [
+      "응답이 끊겨 사용량을 모르면 제공자 기록과 대조한다.",
+      "실패한 작업의 예약이 영구 점유되지 않게 한다."
+    ],
+    "security": "사용자별·조직별 한도를 함께 두고 클라이언트가 보낸 사용량을 신뢰하지 않습니다. 모델 출력과 외부 문서는 신뢰할 수 없는 입력으로 취급하고 실행 권한·비밀 키는 서버에 둡니다.",
+    "privacy": "모델에 보낼 개인정보와 기밀 문서를 줄이고 제공자의 보존·학습 사용·전송 지역 정책을 확인합니다.",
+    "accessibility": "응답 진행·완료·실패를 텍스트로 안내하고 긴 생성 중에도 중단·복사·키보드 탐색을 지원합니다.",
+    "legal": "생성물의 사용 권한, 개인정보 처리, 제공자 약관을 확인합니다. 자동 답변을 전문적 판단의 보증으로 안내하지 않습니다.",
+    "checklist": [
+      "동시 예약",
+      "출력 상한",
+      "중단 시 정산",
+      "일·월 경계",
+      "사용량 불명 복구"
+    ],
+    "options": [
+      {
+        "name": "요청 횟수 제한",
+        "pros": "규칙을 쉽게 이해할 수 있습니다.",
+        "cons": "길이가 다른 요청의 비용 차이를 반영하지 못합니다.",
+        "bestFor": "간단한 체험 기능"
+      },
+      {
+        "name": "사용량 예약과 정산",
+        "pros": "가변 비용과 동시 요청을 통제합니다.",
+        "cons": "원장·만료·대조 작업이 필요합니다.",
+        "bestFor": "조직별 유료 AI 기능"
+      }
+    ],
+    "related": ["ai-streaming", "ai-document-answers", "rate-limiting"],
+    "sources": [
+      {
+        "title": "OWASP Unbounded Consumption",
+        "url": "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/"
+      },
+      {
+        "title": "PostgreSQL Transaction Isolation",
+        "url": "https://www.postgresql.org/docs/current/transaction-iso.html"
+      }
+    ],
+    "codeExample": {
+      "title": "AI 사용량·비용 제한 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function budgetRemaining(limit: number, used: number, reserved: number) {\n  for (const n of [limit, used, reserved])\n    if (!Number.isSafeInteger(n) || n < 0) throw new Error('잘못된 사용량');\n  return Math.max(0, limit - used - reserved);\n}\n// 예약 차감은 이 계산과 별개로 DB의 원자적 갱신 안에서 수행합니다."
+    }
+  }
+]

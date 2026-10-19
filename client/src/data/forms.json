@@ -1,0 +1,391 @@
+[
+  {
+    "id": "multi-step-forms",
+    "title": "다단계 폼",
+    "english": "Multi step forms",
+    "category": "forms",
+    "description": "긴 신청 과정을 작은 단계로 나누고 입력 확인·이전 이동·최종 제출을 연결하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "SaaS"],
+    "essential": false,
+    "overview": "각 단계에서 필요한 정보를 묶고 진행 위치를 알립니다. 이전으로 돌아가도 입력을 유지하며 마지막 단계에서 전체 내용을 검토한 뒤 제출합니다.",
+    "why": "단계 수를 줄이는 것보다 사용자가 남은 일과 입력 손실 여부를 알 수 있는지가 중요합니다.",
+    "flow": [
+      "전체 단계와 필요한 준비물을 보여준다.",
+      "현재 단계의 항목을 입력한다.",
+      "오류가 없으면 다음으로 이동한다.",
+      "최종 검토 후 한 번만 제출한다."
+    ],
+    "components": ["단계 상태", "단계별 검증", "뒤로 이동", "최종 검토 화면"],
+    "exceptions": [
+      "브라우저 뒤로 가기에도 입력 상태를 보존한다.",
+      "단계 변경 후 제목으로 포커스를 이동한다."
+    ],
+    "security": "앞 단계 통과 여부를 클라이언트 상태만으로 판정하지 않습니다. 클라이언트 검증은 안내 용도로 사용하고 제출 데이터·권한·요청 크기를 서버에서 다시 검사합니다.",
+    "privacy": "질문마다 수집 목적을 정하고 숨긴 질문의 불필요한 응답을 지우며 임시 응답의 보존기간을 안내합니다.",
+    "accessibility": "입력에 레이블을 연결하고 오류 요약·현재 단계·필수 항목을 키보드와 보조기술로 확인할 수 있게 합니다.",
+    "legal": "설문 목적과 개인정보 처리 내용을 알리고 동의의 필수·선택 여부와 철회 경로를 구분합니다.",
+    "checklist": [
+      "이전 이동 유지",
+      "단계별 오류",
+      "현재 단계 안내",
+      "최종 검토",
+      "중복 제출 방지"
+    ],
+    "options": [
+      {
+        "name": "한 페이지 단계 전환",
+        "pros": "입력 상태를 공유하기 쉽습니다.",
+        "cons": "새로고침 복구를 별도 설계합니다.",
+        "bestFor": "짧은 신청 절차"
+      },
+      {
+        "name": "단계별 URL",
+        "pros": "뒤로 가기와 단계 공유가 명확합니다.",
+        "cons": "접근 조건과 상태 복구가 필요합니다.",
+        "bestFor": "긴 업무 신청"
+      }
+    ],
+    "related": ["conditional-fields", "form-validation", "consent"],
+    "sources": [
+      {
+        "title": "W3C WAI Forms Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/forms/"
+      },
+      {
+        "title": "MDN Constraint validation",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Constraint_validation"
+      }
+    ],
+    "codeExample": {
+      "title": "다단계 폼 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function nextStep(current: number, total: number, valid: boolean) {\n  if (!Number.isInteger(current) || current < 0 || current >= total)\n    throw new Error('단계가 유효하지 않습니다.');\n  if (!valid) return current;\n  return Math.min(current + 1, total - 1);\n}\n// 단계 이동 이후 제목에 포커스를 옮기고 남은 단계를 안내합니다."
+    }
+  },
+  {
+    "id": "conditional-fields",
+    "title": "조건부 질문",
+    "english": "Conditional form fields",
+    "category": "forms",
+    "description": "이전 응답에 따라 필요한 질문만 표시하고 숨긴 항목의 유효성을 관리하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "SaaS"],
+    "essential": false,
+    "overview": "질문 표시 조건과 필수 조건을 같은 규칙으로 정의합니다. 조건이 바뀌어 질문이 사라질 때 이전 응답을 유지할지 삭제할지 정책을 정합니다.",
+    "why": "숨겨진 필수 질문 때문에 제출할 수 없거나 불필요한 개인정보가 남는 문제를 예방합니다.",
+    "flow": [
+      "분기 기준 질문에 답한다.",
+      "관련 질문의 표시·필수 조건을 계산한다.",
+      "사라진 항목의 값을 정책대로 정리한다.",
+      "서버가 같은 규칙으로 제출을 검증한다."
+    ],
+    "components": ["표시 조건", "조건부 필수 규칙", "응답 정리", "서버 스키마"],
+    "exceptions": [
+      "분기 전환으로 숨긴 항목이 오류 목록에 남지 않게 한다.",
+      "조건끼리 순환하면 편집 단계에서 차단한다."
+    ],
+    "security": "표시하지 않은 입력이라도 공격자가 보낼 수 있으므로 서버에서 허용 필드를 계산합니다. 클라이언트 검증은 안내 용도로 사용하고 제출 데이터·권한·요청 크기를 서버에서 다시 검사합니다.",
+    "privacy": "질문마다 수집 목적을 정하고 숨긴 질문의 불필요한 응답을 지우며 임시 응답의 보존기간을 안내합니다.",
+    "accessibility": "입력에 레이블을 연결하고 오류 요약·현재 단계·필수 항목을 키보드와 보조기술로 확인할 수 있게 합니다.",
+    "legal": "설문 목적과 개인정보 처리 내용을 알리고 동의의 필수·선택 여부와 철회 경로를 구분합니다.",
+    "checklist": [
+      "양방향 분기 전환",
+      "숨긴 값 처리",
+      "조건부 필수 검사",
+      "순환 조건",
+      "서버 규칙 일치"
+    ],
+    "options": [
+      {
+        "name": "코드에 정의한 조건",
+        "pros": "규칙 변경을 코드 검토로 통제합니다.",
+        "cons": "질문 수정에 배포가 필요합니다.",
+        "bestFor": "고정된 신청 폼"
+      },
+      {
+        "name": "스키마 기반 조건",
+        "pros": "운영자가 설문을 구성할 수 있습니다.",
+        "cons": "규칙 편집 권한과 검증이 필요합니다.",
+        "bestFor": "폼 빌더"
+      }
+    ],
+    "related": ["form-validation", "form-drafts", "consent"],
+    "sources": [
+      {
+        "title": "JSON Schema Conditional validation",
+        "url": "https://json-schema.org/understanding-json-schema/reference/conditionals"
+      },
+      {
+        "title": "W3C WAI Forms Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/forms/"
+      }
+    ],
+    "codeExample": {
+      "title": "조건부 질문 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Answers = { kind: 'person' | 'company'; companyName?: string };\nexport function sanitizeAnswers(answers: Answers) {\n  if (answers.kind === 'person') return { kind: answers.kind };\n  const companyName = answers.companyName?.trim();\n  if (!companyName) throw new Error('회사명을 입력하세요.');\n  return { kind: answers.kind, companyName };\n}"
+    }
+  },
+  {
+    "id": "form-validation",
+    "title": "입력 검증·오류 안내",
+    "english": "Form validation and errors",
+    "category": "forms",
+    "description": "입력 형식과 업무 조건을 검사하고 고칠 항목과 이유를 명확하게 전달하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "SaaS"],
+    "essential": false,
+    "overview": "형식 검증과 계정 중복·신청 마감 같은 서버 조건을 구분합니다. 제출 후 오류 요약에서 해당 입력으로 이동할 수 있게 하고 이미 입력한 값은 유지합니다.",
+    "why": "붉은 테두리만 표시하면 어떤 값이 잘못됐는지 보조기술 사용자와 처음 쓰는 사용자가 알기 어렵습니다.",
+    "flow": [
+      "입력 형식과 필수 항목을 안내한다.",
+      "적절한 시점에 오류를 표시한다.",
+      "서버의 업무 검증 결과를 필드에 연결한다.",
+      "수정 뒤 오류 상태와 요약을 갱신한다."
+    ],
+    "components": [
+      "입력 스키마",
+      "필드 오류 ID",
+      "오류 요약",
+      "서버 오류 매핑"
+    ],
+    "exceptions": [
+      "요청 실패를 입력 오류로 표시하지 않는다.",
+      "서버에서 숨겨야 할 계정 존재 여부를 오류로 노출하지 않는다."
+    ],
+    "security": "허용 길이·형식을 제한하고 검증 성공을 출력 인코딩의 대체로 보지 않습니다. 클라이언트 검증은 안내 용도로 사용하고 제출 데이터·권한·요청 크기를 서버에서 다시 검사합니다.",
+    "privacy": "질문마다 수집 목적을 정하고 숨긴 질문의 불필요한 응답을 지우며 임시 응답의 보존기간을 안내합니다.",
+    "accessibility": "입력에 레이블을 연결하고 오류 요약·현재 단계·필수 항목을 키보드와 보조기술로 확인할 수 있게 합니다.",
+    "legal": "설문 목적과 개인정보 처리 내용을 알리고 동의의 필수·선택 여부와 철회 경로를 구분합니다.",
+    "checklist": [
+      "빈 값과 공백",
+      "길이 제한",
+      "오류 레이블 연결",
+      "네트워크 오류 구분",
+      "입력 보존"
+    ],
+    "options": [
+      {
+        "name": "브라우저 기본 검증",
+        "pros": "표준 입력 유형을 빠르게 적용합니다.",
+        "cons": "복잡한 업무 규칙은 표현하기 어렵습니다.",
+        "bestFor": "단순 문의 폼"
+      },
+      {
+        "name": "스키마·서버 검증",
+        "pros": "일관된 업무 규칙을 적용합니다.",
+        "cons": "필드·요약 연결을 직접 구현해야 합니다.",
+        "bestFor": "신청·계약 입력"
+      }
+    ],
+    "related": ["form-drafts", "survey-branching", "consent"],
+    "sources": [
+      {
+        "title": "MDN Constraint validation",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Constraint_validation"
+      },
+      {
+        "title": "W3C WAI Forms Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/forms/"
+      }
+    ],
+    "codeExample": {
+      "title": "입력 검증·오류 안내 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function validateDisplayName(value: string) {\n  const normalized = value.trim();\n  if (!normalized) return { valid: false, message: '이름을 입력하세요.' };\n  if ([...normalized].length > 40)\n    return { valid: false, message: '40자 이내로 입력하세요.' };\n  return { valid: true, value: normalized };\n}"
+    }
+  },
+  {
+    "id": "form-drafts",
+    "title": "작성 임시 저장·이어쓰기",
+    "english": "Form drafts and resume",
+    "category": "forms",
+    "description": "미완성 응답을 저장하고 기기·새로고침·설문 변경 뒤에 이어 쓰도록 돕는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "SaaS"],
+    "essential": false,
+    "overview": "완료된 제출과 임시 응답을 분리하고 마지막 저장 시각을 보여줍니다. 폼 버전이 바뀌면 이전 응답을 새 질문에 무조건 적용하지 않고 이동 규칙을 확인합니다.",
+    "why": "긴 폼에서 입력 손실을 줄이면서 공유 기기에 민감한 응답이 남는 위험도 다뤄야 합니다.",
+    "flow": [
+      "임시 저장 위치와 보존기간을 안내한다.",
+      "수정 내용을 지연 저장한다.",
+      "저장 시각·실패를 알린다.",
+      "버전·권한을 확인하고 복원하거나 삭제한다."
+    ],
+    "components": ["초안 저장소", "폼 버전", "저장 상태", "복원·삭제 화면"],
+    "exceptions": [
+      "오프라인이면 서버에 저장된 것처럼 표시하지 않는다.",
+      "다른 버전의 질문 ID를 조용히 덮어쓰지 않는다."
+    ],
+    "security": "브라우저 저장소에 비밀번호·신분증 원본을 넣지 않고 공유 기기에서 삭제 경로를 제공합니다. 클라이언트 검증은 안내 용도로 사용하고 제출 데이터·권한·요청 크기를 서버에서 다시 검사합니다.",
+    "privacy": "질문마다 수집 목적을 정하고 숨긴 질문의 불필요한 응답을 지우며 임시 응답의 보존기간을 안내합니다.",
+    "accessibility": "입력에 레이블을 연결하고 오류 요약·현재 단계·필수 항목을 키보드와 보조기술로 확인할 수 있게 합니다.",
+    "legal": "설문 목적과 개인정보 처리 내용을 알리고 동의의 필수·선택 여부와 철회 경로를 구분합니다.",
+    "checklist": [
+      "새로고침 복원",
+      "버전 변경",
+      "저장 실패",
+      "로그아웃 후 잔존",
+      "초안 만료"
+    ],
+    "options": [
+      {
+        "name": "기기 내 초안",
+        "pros": "계정 없이 이어 쓸 수 있습니다.",
+        "cons": "다른 기기와 동기화되지 않습니다.",
+        "bestFor": "민감하지 않은 짧은 설문"
+      },
+      {
+        "name": "서버 초안",
+        "pros": "기기 간 복구와 만료를 관리합니다.",
+        "cons": "인증·권한·충돌 처리가 필요합니다.",
+        "bestFor": "긴 업무 신청"
+      }
+    ],
+    "related": ["survey-branching", "survey-results", "consent"],
+    "sources": [
+      {
+        "title": "MDN IndexedDB API",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API"
+      },
+      {
+        "title": "W3C WAI Forms Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/forms/"
+      }
+    ],
+    "codeExample": {
+      "title": "작성 임시 저장·이어쓰기 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Draft = { formVersion: string; savedAt: number; answers: Record<string, string> };\nexport function resumable(draft: Draft, version: string, now: number) {\n  const maxAge = 7 * 24 * 60 * 60 * 1000;\n  return draft.formVersion === version && draft.savedAt <= now\n    && now - draft.savedAt < maxAge;\n}\n// 실제 보존기간은 수집 목적과 사용자 안내에 맞춰 정합니다."
+    }
+  },
+  {
+    "id": "survey-branching",
+    "title": "설문 분기·종료 조건",
+    "english": "Survey branching and termination",
+    "category": "forms",
+    "description": "응답에 따라 다음 질문이나 종료 지점을 정하고 설문 경로의 무결성을 관리하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "SaaS"],
+    "essential": false,
+    "overview": "질문 사이 이동을 그래프로 정의하고 모든 경로가 정상 종료에 도달하는지 검사합니다. 분기로 건너뛴 항목은 미응답과 구분해 결과를 해석합니다.",
+    "why": "응답자마다 다른 질문을 보았는데 전체 항목의 응답률을 같은 기준으로 계산하면 결과가 왜곡됩니다.",
+    "flow": [
+      "질문·응답 조건의 분기를 정의한다.",
+      "미리보기로 여러 경로를 검사한다.",
+      "응답에 맞는 다음 질문을 선택한다.",
+      "종료 이유와 실제 노출 질문을 기록한다."
+    ],
+    "components": ["질문 그래프", "분기 조건", "경로 검증", "노출 질문 이력"],
+    "exceptions": [
+      "없는 질문으로 가는 분기는 게시 전에 거부한다.",
+      "뒤로 이동해 응답이 바뀌면 이후 경로를 재계산한다."
+    ],
+    "security": "설문 편집자만 분기 규칙을 수정하게 하고 실행 가능한 코드 대신 제한된 조건식을 씁니다. 클라이언트 검증은 안내 용도로 사용하고 제출 데이터·권한·요청 크기를 서버에서 다시 검사합니다.",
+    "privacy": "질문마다 수집 목적을 정하고 숨긴 질문의 불필요한 응답을 지우며 임시 응답의 보존기간을 안내합니다.",
+    "accessibility": "입력에 레이블을 연결하고 오류 요약·현재 단계·필수 항목을 키보드와 보조기술로 확인할 수 있게 합니다.",
+    "legal": "설문 목적과 개인정보 처리 내용을 알리고 동의의 필수·선택 여부와 철회 경로를 구분합니다.",
+    "checklist": [
+      "고아 질문",
+      "순환 경로",
+      "종료 지점",
+      "뒤로 이동 재분기",
+      "노출 기준 응답률"
+    ],
+    "options": [
+      {
+        "name": "순서 기반 건너뛰기",
+        "pros": "단순한 경로를 쉽게 구성합니다.",
+        "cons": "다중 분기를 표현하기 어렵습니다.",
+        "bestFor": "짧은 만족도 설문"
+      },
+      {
+        "name": "질문 그래프",
+        "pros": "복잡한 자격·관심 분기를 표현합니다.",
+        "cons": "모든 경로 검증이 필요합니다.",
+        "bestFor": "리서치·사전 진단"
+      }
+    ],
+    "related": ["survey-results", "multi-step-forms", "consent"],
+    "sources": [
+      {
+        "title": "JSON Schema Conditional validation",
+        "url": "https://json-schema.org/understanding-json-schema/reference/conditionals"
+      },
+      {
+        "title": "W3C WAI Forms Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/forms/"
+      }
+    ],
+    "codeExample": {
+      "title": "설문 분기·종료 조건 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Branch = { value: string; next: string };\nexport function nextQuestion(answer: string, branches: Branch[], fallback: string) {\n  return branches.find(branch => branch.value === answer)?.next ?? fallback;\n}\n// 게시 전 next와 fallback이 실제 질문 또는 명시적 종료 ID인지 검사합니다."
+    }
+  },
+  {
+    "id": "survey-results",
+    "title": "설문 응답 집계",
+    "english": "Survey response aggregation",
+    "category": "forms",
+    "description": "응답을 질문 버전과 노출 조건에 맞춰 집계하고 익명성·중복·소수 응답을 관리하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "SaaS"],
+    "essential": false,
+    "overview": "응답 수, 응답자 수, 질문 노출 수를 구분합니다. 삭제·부분 응답·다중 선택의 집계 기준을 명시하고 필터로 소수가 드러나는 결과는 숨깁니다.",
+    "why": "응답 비율의 분모와 다중 선택 여부를 표시해야 숫자를 잘못 비교하지 않을 수 있습니다.",
+    "flow": [
+      "질문 버전과 응답 상태를 선택한다.",
+      "중복·삭제·부분 응답 정책을 적용한다.",
+      "노출 수를 기준으로 집계한다.",
+      "분모·필터·보호 기준과 함께 결과를 제공한다."
+    ],
+    "components": ["응답 버전", "집계 기준", "익명성 임계값", "결과 권한"],
+    "exceptions": [
+      "다중 선택 비율 합계가 100%를 넘을 수 있음을 알린다.",
+      "표본이 작은 필터 결과는 세부 항목을 숨긴다."
+    ],
+    "security": "익명 설문에서도 개별 응답 다운로드와 재식별 가능한 필터 조합을 제한합니다. 클라이언트 검증은 안내 용도로 사용하고 제출 데이터·권한·요청 크기를 서버에서 다시 검사합니다.",
+    "privacy": "질문마다 수집 목적을 정하고 숨긴 질문의 불필요한 응답을 지우며 임시 응답의 보존기간을 안내합니다.",
+    "accessibility": "입력에 레이블을 연결하고 오류 요약·현재 단계·필수 항목을 키보드와 보조기술로 확인할 수 있게 합니다.",
+    "legal": "설문 목적과 개인정보 처리 내용을 알리고 동의의 필수·선택 여부와 철회 경로를 구분합니다.",
+    "checklist": [
+      "분모 표시",
+      "다중 선택 해석",
+      "중복 응답 정책",
+      "소수 집계 숨김",
+      "삭제 응답 반영"
+    ],
+    "options": [
+      {
+        "name": "즉시 쿼리 집계",
+        "pros": "최신 응답을 바로 반영합니다.",
+        "cons": "복잡한 필터의 비용이 커질 수 있습니다.",
+        "bestFor": "작은 설문"
+      },
+      {
+        "name": "사전 집계",
+        "pros": "많은 응답을 빠르게 조회합니다.",
+        "cons": "삭제 반영과 갱신 시각을 관리해야 합니다.",
+        "bestFor": "대규모 반복 설문"
+      }
+    ],
+    "related": ["multi-step-forms", "conditional-fields", "consent"],
+    "sources": [
+      {
+        "title": "W3C WAI Tables Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/tables/"
+      },
+      {
+        "title": "W3C WAI Forms Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/forms/"
+      }
+    ],
+    "codeExample": {
+      "title": "설문 응답 집계 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function percent(selected: number, exposed: number) {\n  if (!Number.isInteger(selected) || !Number.isInteger(exposed)\n    || selected < 0 || exposed < selected) throw new Error('집계 값 오류');\n  return exposed === 0 ? null : Math.round(selected / exposed * 1000) / 10;\n}\n// 질문별 응답자 비율이며 소수 표본 보호는 별도로 적용합니다."
+    }
+  }
+]

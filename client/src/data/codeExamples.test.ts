@@ -16,6 +16,7 @@ describe("구현 코드 예시", () => {
     for (const feature of features) {
       const code = getCodeExample(feature).code;
       if (
+        !feature.codeExample &&
         ![
           "login",
           "payments",

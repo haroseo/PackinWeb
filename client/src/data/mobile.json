@@ -1,0 +1,401 @@
+[
+  {
+    "id": "pwa-installation",
+    "title": "PWA 설치",
+    "english": "Progressive web app installation",
+    "category": "mobile",
+    "description": "웹앱의 설치 가능 상태를 안내하고 설치 후에도 기본 웹 경로를 유지하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "커머스"],
+    "essential": false,
+    "overview": "웹 앱 매니페스트와 아이콘·시작 경로·표시 방식을 준비합니다. 설치 버튼 API는 모든 브라우저에서 같지 않으므로 지원 여부를 확인하고 수동 설치 안내를 제공합니다.",
+    "why": "설치할 수 없는 환경에 동작하지 않는 설치 버튼을 표시하면 서비스가 고장 난 것처럼 보일 수 있습니다.",
+    "flow": [
+      "매니페스트와 설치 조건을 준비한다.",
+      "현재 브라우저의 지원 상태를 확인한다.",
+      "사용자 행동 뒤 설치 안내를 제공한다.",
+      "설치 후 시작 경로와 업데이트를 확인한다."
+    ],
+    "components": [
+      "앱 매니페스트",
+      "아이콘",
+      "시작 경로",
+      "브라우저별 설치 안내"
+    ],
+    "exceptions": [
+      "이미 설치된 상태에서 반복 권유하지 않는다.",
+      "설치 API가 없어도 일반 웹앱을 계속 사용할 수 있게 한다."
+    ],
+    "security": "설치된 앱이라는 이유로 인증·데이터 권한을 완화하지 않습니다. 기기 API는 필요한 시점에만 호출하고 HTTPS·서버 권한 검사를 유지합니다. 오프라인 캐시에 민감한 계정 응답을 저장하지 않습니다.",
+    "privacy": "기기 권한으로 접근한 음성·영상·로컬 데이터를 어디에 보내고 저장하는지 안내하고 종료 시 수집을 중단합니다.",
+    "accessibility": "권한 거부·기기 미지원 상태에도 입력·파일 선택·온라인 대안을 제공하고 터치와 키보드 조작을 함께 지원합니다.",
+    "legal": "브라우저와 OS별 지원 차이, 기기 데이터 처리 목적·보존·제3자 전송 조건을 확인합니다.",
+    "checklist": [
+      "매니페스트 경로",
+      "아이콘 크기",
+      "설치 후 시작",
+      "지원 브라우저",
+      "업데이트 확인"
+    ],
+    "options": [
+      {
+        "name": "브라우저 설치 UI 안내",
+        "pros": "브라우저 기본 흐름을 이용합니다.",
+        "cons": "기기별 안내가 다를 수 있습니다.",
+        "bestFor": "폭넓은 브라우저 지원"
+      },
+      {
+        "name": "지원 환경의 설치 버튼",
+        "pros": "사용자가 설치 시점을 고릅니다.",
+        "cons": "이벤트 API의 지원 차이를 처리합니다.",
+        "bestFor": "설치형 사용이 많은 웹앱"
+      }
+    ],
+    "related": ["offline-support", "offline-sync", "accessibility"],
+    "sources": [
+      {
+        "title": "MDN Progressive web apps",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps"
+      },
+      {
+        "title": "MDN Service Worker API",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+      }
+    ],
+    "codeExample": {
+      "title": "PWA 설치 핵심 로직",
+      "language": "TypeScript",
+      "code": "export const manifest = {\n  name: 'Field Notes', short_name: 'Notes', start_url: '/', scope: '/',\n  display: 'standalone', lang: 'ko',\n  icons: [\n    { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },\n    { src: '/icon-512.png', sizes: '512x512', type: 'image/png' }\n  ]\n};\n// 실제 아이콘 파일과 manifest 링크를 배포하고 브라우저별 설치 조건을 확인합니다."
+    }
+  },
+  {
+    "id": "offline-support",
+    "title": "오프라인 이용",
+    "english": "Offline support",
+    "category": "mobile",
+    "description": "연결이 없어도 필요한 공개 자료를 열고 온라인 전용 작업을 구분하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "커머스"],
+    "essential": false,
+    "overview": "캐시할 자료를 명시적으로 고르고 실패 시 오프라인 안내를 제공합니다. 오래된 콘텐츠임을 표시하고 로그인 응답·결제 결과 같은 민감한 요청은 캐시 대상에서 제외합니다.",
+    "why": "오프라인 상태에서 서버 작업까지 성공한 것으로 보이게 하면 데이터 손실이나 중복 실행을 만들 수 있습니다.",
+    "flow": [
+      "오프라인에서 필요한 자료를 선정한다.",
+      "정적 자산과 공개 자료를 캐시한다.",
+      "네트워크 실패 시 캐시와 갱신 시각을 보여준다.",
+      "연결 복구 후 갱신 또는 작업 재시도를 안내한다."
+    ],
+    "components": [
+      "서비스 워커",
+      "캐시 허용 목록",
+      "오프라인 화면",
+      "캐시 버전 정리"
+    ],
+    "exceptions": [
+      "캐시 용량 부족·삭제 상태에서도 기본 안내를 제공한다.",
+      "이전 버전 캐시와 새 앱 데이터 형식의 충돌을 처리한다."
+    ],
+    "security": "모든 GET 요청을 캐시하지 않고 계정·API·비공개 문서를 명시적으로 제외합니다. 기기 API는 필요한 시점에만 호출하고 HTTPS·서버 권한 검사를 유지합니다. 오프라인 캐시에 민감한 계정 응답을 저장하지 않습니다.",
+    "privacy": "기기 권한으로 접근한 음성·영상·로컬 데이터를 어디에 보내고 저장하는지 안내하고 종료 시 수집을 중단합니다.",
+    "accessibility": "권한 거부·기기 미지원 상태에도 입력·파일 선택·온라인 대안을 제공하고 터치와 키보드 조작을 함께 지원합니다.",
+    "legal": "브라우저와 OS별 지원 차이, 기기 데이터 처리 목적·보존·제3자 전송 조건을 확인합니다.",
+    "checklist": [
+      "첫 방문 오프라인",
+      "캐시 없음",
+      "계정 응답 제외",
+      "오래된 버전",
+      "연결 복구"
+    ],
+    "options": [
+      {
+        "name": "정적 앱 셸 캐시",
+        "pros": "화면과 안내를 빠르게 엽니다.",
+        "cons": "최신 서버 데이터는 별도로 필요합니다.",
+        "bestFor": "기본 PWA"
+      },
+      {
+        "name": "선택 자료 다운로드",
+        "pros": "사용자가 필요한 자료만 보관합니다.",
+        "cons": "용량·만료·삭제 UI가 필요합니다.",
+        "bestFor": "현장 매뉴얼·학습 자료"
+      }
+    ],
+    "related": ["offline-sync", "camera-qr", "accessibility"],
+    "sources": [
+      {
+        "title": "MDN Service Worker API",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+      },
+      {
+        "title": "MDN Progressive web apps",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps"
+      }
+    ],
+    "codeExample": {
+      "title": "오프라인 이용 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function mayCache(request: Request, origin: string) {\n  const url = new URL(request.url);\n  return request.method === 'GET' && url.origin === origin\n    && (url.pathname.startsWith('/assets/') || url.pathname === '/offline.html');\n}\n// 캐시 허용 목록 예시입니다. 인증 API와 비공개 응답은 포함하지 않습니다."
+    }
+  },
+  {
+    "id": "offline-sync",
+    "title": "재연결 데이터 동기화",
+    "english": "Offline synchronization",
+    "category": "mobile",
+    "description": "연결이 끊긴 동안 작성한 변경을 서버 버전과 비교해 중복·충돌 없이 반영하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "커머스"],
+    "essential": false,
+    "overview": "로컬 변경에 고유 작업 ID와 기준 버전을 붙입니다. 연결 복구 뒤 서버 권한을 재검사하고 충돌하면 덮어쓰기 대신 두 버전을 비교할 경로를 제공합니다.",
+    "why": "브라우저가 온라인으로 보인다는 이유만으로 모든 대기 작업이 처리됐다고 판단할 수 없습니다.",
+    "flow": [
+      "변경을 로컬 작업 큐에 기록한다.",
+      "서버 연결과 인증을 확인한다.",
+      "작업 ID·기준 버전으로 변경을 전송한다.",
+      "충돌·성공 상태를 표시하고 완료 작업을 정리한다."
+    ],
+    "components": [
+      "로컬 변경 큐",
+      "작업 멱등 키",
+      "서버 버전",
+      "충돌 해결 화면"
+    ],
+    "exceptions": [
+      "다른 기기의 수정과 충돌하면 선택을 요청한다.",
+      "로그아웃한 사용자의 작업을 새 계정으로 보내지 않는다."
+    ],
+    "security": "큐 항목에 계정·조직 범위를 묶고 동기화 시 서버에서 권한을 다시 확인합니다. 기기 API는 필요한 시점에만 호출하고 HTTPS·서버 권한 검사를 유지합니다. 오프라인 캐시에 민감한 계정 응답을 저장하지 않습니다.",
+    "privacy": "기기 권한으로 접근한 음성·영상·로컬 데이터를 어디에 보내고 저장하는지 안내하고 종료 시 수집을 중단합니다.",
+    "accessibility": "권한 거부·기기 미지원 상태에도 입력·파일 선택·온라인 대안을 제공하고 터치와 키보드 조작을 함께 지원합니다.",
+    "legal": "브라우저와 OS별 지원 차이, 기기 데이터 처리 목적·보존·제3자 전송 조건을 확인합니다.",
+    "checklist": [
+      "동일 작업 재전송",
+      "기기 간 충돌",
+      "계정 전환",
+      "인증 만료",
+      "부분 성공 복구"
+    ],
+    "options": [
+      {
+        "name": "명시적 다시 보내기",
+        "pros": "전송 시점을 사용자가 확인합니다.",
+        "cons": "사용자 조작이 필요합니다.",
+        "bestFor": "간단한 현장 입력"
+      },
+      {
+        "name": "백그라운드 큐",
+        "pros": "재연결 뒤 반복 작업을 줄입니다.",
+        "cons": "브라우저 지원과 재시도·충돌 정책이 필요합니다.",
+        "bestFor": "반복적인 오프라인 작성"
+      }
+    ],
+    "related": ["camera-qr", "speech-input", "accessibility"],
+    "sources": [
+      {
+        "title": "MDN IndexedDB API",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API"
+      },
+      {
+        "title": "MDN Service Worker API",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API"
+      }
+    ],
+    "codeExample": {
+      "title": "재연결 데이터 동기화 핵심 로직",
+      "language": "TypeScript",
+      "code": "type QueuedChange = { id: string; ownerId: string; baseVersion: number };\nexport function readyToSync(change: QueuedChange, ownerId: string, serverVersion: number) {\n  if (change.ownerId !== ownerId) return 'wrong-account';\n  if (change.baseVersion !== serverVersion) return 'conflict';\n  return 'ready';\n}\n// 전송 후 응답을 확인하기 전에는 로컬 큐에서 제거하지 않습니다."
+    }
+  },
+  {
+    "id": "camera-qr",
+    "title": "카메라·QR 스캔",
+    "english": "Camera and QR scanning",
+    "category": "mobile",
+    "description": "사용자 요청으로 카메라를 열어 코드를 읽고 인식한 값의 안전성을 확인하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "커머스"],
+    "essential": false,
+    "overview": "카메라 미리보기와 실제 인식 결과를 구분합니다. QR 내용을 자동 실행하지 않고 목적지·형식을 확인하며 페이지를 닫거나 중단하면 카메라 트랙을 종료합니다.",
+    "why": "QR에 들어 있는 URL은 신뢰할 수 있는 명령이 아니며 기기 카메라가 없을 수도 있습니다.",
+    "flow": [
+      "권한 목적과 파일 업로드 대안을 알린다.",
+      "사용자 행동 뒤 카메라를 연다.",
+      "코드를 읽고 형식·대상을 확인한다.",
+      "승인된 동작을 실행하고 카메라를 종료한다."
+    ],
+    "components": ["카메라 권한", "미리보기", "코드 인식기", "결과 검증"],
+    "exceptions": [
+      "후면 카메라가 없으면 다른 카메라를 사용한다.",
+      "권한 거부·인식 실패 시 수동 코드 입력을 제공한다."
+    ],
+    "security": "읽은 URL의 프로토콜·호스트를 제한하고 스캔 즉시 로그인·결제·발송을 실행하지 않습니다. 기기 API는 필요한 시점에만 호출하고 HTTPS·서버 권한 검사를 유지합니다. 오프라인 캐시에 민감한 계정 응답을 저장하지 않습니다.",
+    "privacy": "기기 권한으로 접근한 음성·영상·로컬 데이터를 어디에 보내고 저장하는지 안내하고 종료 시 수집을 중단합니다.",
+    "accessibility": "권한 거부·기기 미지원 상태에도 입력·파일 선택·온라인 대안을 제공하고 터치와 키보드 조작을 함께 지원합니다.",
+    "legal": "브라우저와 OS별 지원 차이, 기기 데이터 처리 목적·보존·제3자 전송 조건을 확인합니다.",
+    "checklist": [
+      "권한 거부",
+      "카메라 종료",
+      "URL 검증",
+      "수동 입력",
+      "반복 인식 중복 방지"
+    ],
+    "options": [
+      {
+        "name": "브라우저 카메라 인식",
+        "pros": "촬영 중 즉시 코드를 읽습니다.",
+        "cons": "권한과 기기 지원을 처리해야 합니다.",
+        "bestFor": "체크인·현장 입력"
+      },
+      {
+        "name": "이미지 업로드 인식",
+        "pros": "카메라 권한 없이 사용할 수 있습니다.",
+        "cons": "파일 검증과 업로드 처리가 필요합니다.",
+        "bestFor": "저장된 QR 이미지"
+      }
+    ],
+    "related": ["speech-input", "device-permissions", "accessibility"],
+    "sources": [
+      {
+        "title": "MDN MediaDevices.getUserMedia",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia"
+      },
+      {
+        "title": "MDN Permissions API",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API"
+      }
+    ],
+    "codeExample": {
+      "title": "카메라·QR 스캔 핵심 로직",
+      "language": "TypeScript",
+      "code": "export async function openCamera() {\n  const stream = await navigator.mediaDevices.getUserMedia({\n    video: { facingMode: { ideal: 'environment' } }, audio: false\n  });\n  return { stream, stop: () => stream.getTracks().forEach(track => track.stop()) };\n}\n// 사용자 행동 뒤 호출하고 화면 종료·중단 시 stop을 실행합니다."
+    }
+  },
+  {
+    "id": "speech-input",
+    "title": "음성 입력",
+    "english": "Speech input",
+    "category": "mobile",
+    "description": "음성을 텍스트로 변환하고 중간 결과·최종 결과·수정·전송을 구분하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "커머스"],
+    "essential": false,
+    "overview": "브라우저 음성 인식은 지원과 처리 방식이 환경마다 다릅니다. 녹음·전송 여부를 설명하고 텍스트를 사용자가 확인한 뒤 업무 데이터로 제출하게 합니다.",
+    "why": "인식된 문장이 사용자의 실제 의도와 다를 수 있으므로 자동 전송보다 확인·수정 경로가 필요합니다.",
+    "flow": [
+      "지원 상태와 음성 처리 방식을 안내한다.",
+      "사용자가 음성 입력을 시작한다.",
+      "임시·최종 인식 결과를 구분한다.",
+      "수정·확인 후 입력을 제출한다."
+    ],
+    "components": ["지원 기능 검사", "수집 상태", "인식 결과", "텍스트 편집"],
+    "exceptions": [
+      "잡음·미지원 언어·권한 거부를 별도로 안내한다.",
+      "인식 중 네트워크가 끊기면 입력 내용을 유지한다."
+    ],
+    "security": "보안 입력이나 결제 확정을 음성 인식 결과만으로 수행하지 않습니다. 기기 API는 필요한 시점에만 호출하고 HTTPS·서버 권한 검사를 유지합니다. 오프라인 캐시에 민감한 계정 응답을 저장하지 않습니다.",
+    "privacy": "기기 권한으로 접근한 음성·영상·로컬 데이터를 어디에 보내고 저장하는지 안내하고 종료 시 수집을 중단합니다.",
+    "accessibility": "권한 거부·기기 미지원 상태에도 입력·파일 선택·온라인 대안을 제공하고 터치와 키보드 조작을 함께 지원합니다.",
+    "legal": "브라우저와 OS별 지원 차이, 기기 데이터 처리 목적·보존·제3자 전송 조건을 확인합니다.",
+    "checklist": [
+      "지원 브라우저",
+      "음성 전송 안내",
+      "임시·최종 구분",
+      "수정 후 제출",
+      "중단 버튼"
+    ],
+    "options": [
+      {
+        "name": "브라우저 음성 API",
+        "pros": "별도 수집 파이프라인을 줄입니다.",
+        "cons": "지원·언어·외부 처리 방식이 다릅니다.",
+        "bestFor": "간단한 음성 메모"
+      },
+      {
+        "name": "서버 음성 변환",
+        "pros": "언어·모델·작업 상태를 제어합니다.",
+        "cons": "음성 전송·보존·비용을 관리합니다.",
+        "bestFor": "업무용 전사"
+      }
+    ],
+    "related": ["device-permissions", "pwa-installation", "accessibility"],
+    "sources": [
+      {
+        "title": "MDN Web Speech API",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API"
+      },
+      {
+        "title": "MDN MediaDevices.getUserMedia",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia"
+      }
+    ],
+    "codeExample": {
+      "title": "음성 입력 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Transcript = { text: string; final: boolean };\nexport function finalizedText(results: Transcript[]) {\n  return results.filter(item => item.final)\n    .map(item => item.text.trim()).filter(Boolean).join(' ');\n}\n// 최종 인식도 사용자가 확인·수정한 뒤 제출하고 원음을 기본 보관하지 않습니다."
+    }
+  },
+  {
+    "id": "device-permissions",
+    "title": "기기 권한 안내",
+    "english": "Device permission UX",
+    "category": "mobile",
+    "description": "위치·카메라·마이크 권한의 목적을 설명하고 거부·철회·미지원 상태의 대안을 제공하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["공통", "커머스"],
+    "essential": false,
+    "overview": "권한 상태 조회와 실제 권한 요청은 다릅니다. 지원되지 않는 조회를 허용으로 해석하지 않고 해당 기능을 누른 시점에 최소한의 권한만 요청합니다.",
+    "why": "서비스 첫 화면에서 여러 권한을 한꺼번에 요구하면 사용자가 이유를 이해하기 어렵습니다.",
+    "flow": [
+      "권한이 필요한 기능을 사용자가 선택한다.",
+      "수집 목적과 대안을 설명한다.",
+      "지원되는 API로 권한을 요청한다.",
+      "거부·철회 시 수동 경로와 설정 방법을 안내한다."
+    ],
+    "components": ["권한 설명", "기능 지원 검사", "실제 요청", "거부 대안"],
+    "exceptions": [
+      "권한 조회 API가 없으면 미지원 상태로 처리한다.",
+      "브라우저 설정에서 철회된 권한을 이전 허용으로 간주하지 않는다."
+    ],
+    "security": "권한 요청을 반복 강요하거나 다른 기능 이용과 불필요하게 묶지 않습니다. 기기 API는 필요한 시점에만 호출하고 HTTPS·서버 권한 검사를 유지합니다. 오프라인 캐시에 민감한 계정 응답을 저장하지 않습니다.",
+    "privacy": "기기 권한으로 접근한 음성·영상·로컬 데이터를 어디에 보내고 저장하는지 안내하고 종료 시 수집을 중단합니다.",
+    "accessibility": "권한 거부·기기 미지원 상태에도 입력·파일 선택·온라인 대안을 제공하고 터치와 키보드 조작을 함께 지원합니다.",
+    "legal": "브라우저와 OS별 지원 차이, 기기 데이터 처리 목적·보존·제3자 전송 조건을 확인합니다.",
+    "checklist": [
+      "사용 직전 요청",
+      "목적 안내",
+      "거부 대안",
+      "철회 처리",
+      "조회 미지원"
+    ],
+    "options": [
+      {
+        "name": "기능별 요청",
+        "pros": "필요한 이유를 바로 설명합니다.",
+        "cons": "기능별 상태 처리가 필요합니다.",
+        "bestFor": "대부분의 모바일 웹"
+      },
+      {
+        "name": "사전 준비 화면",
+        "pros": "필요한 기기를 한눈에 점검합니다.",
+        "cons": "실제 프롬프트는 사용자 행동과 연결해야 합니다.",
+        "bestFor": "화상 수업·현장 스캔"
+      }
+    ],
+    "related": ["pwa-installation", "offline-support", "accessibility"],
+    "sources": [
+      {
+        "title": "MDN Permissions API",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API"
+      },
+      {
+        "title": "MDN MediaDevices.getUserMedia",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia"
+      }
+    ],
+    "codeExample": {
+      "title": "기기 권한 안내 핵심 로직",
+      "language": "TypeScript",
+      "code": "export async function cameraPermission() {\n  if (!navigator.permissions) return 'unknown';\n  try {\n    const status = await navigator.permissions.query({ name: 'camera' as PermissionName });\n    return status.state;\n  } catch { return 'unknown'; }\n}\n// unknown은 허용이 아닙니다. 카메라 사용 요청 시 실제 API 결과로 처리합니다."
+    }
+  }
+]

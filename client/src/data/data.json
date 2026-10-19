@@ -1,0 +1,396 @@
+[
+  {
+    "id": "data-tables",
+    "title": "데이터 테이블",
+    "english": "Data tables",
+    "category": "data",
+    "description": "많은 레코드를 열·정렬·선택·페이지 단위로 읽고 비교할 수 있게 만드는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "각 열의 의미와 빈 값·단위를 정의합니다. 정렬과 페이지 이동 뒤에도 선택 범위를 설명하고 데이터의 고유 ID로 행 상태를 유지합니다.",
+    "why": "화면상의 행 번호를 식별자로 사용하면 정렬 뒤 다른 항목이 선택·수정될 수 있습니다.",
+    "flow": [
+      "열과 기본 정렬을 정한다.",
+      "권한 범위의 데이터를 조회한다.",
+      "정렬·페이지·선택 상태를 변경한다.",
+      "현재 범위와 작업 대상을 확인한다."
+    ],
+    "components": ["열 정의", "고유 행 ID", "정렬 상태", "페이지·선택 모델"],
+    "exceptions": [
+      "동일 정렬 값은 고유 ID로 순서를 고정한다.",
+      "현재 페이지 선택과 전체 검색 결과 선택을 구분한다."
+    ],
+    "security": "보이지 않는 열도 API 응답에서 민감 정보를 제외합니다. 조회·집계·내보내기에 동일한 행·열 접근 권한을 적용하고 대량 요청의 크기와 실행 시간을 제한합니다.",
+    "privacy": "개인별 식별 정보는 필요한 역할에만 노출하고 내보낸 파일의 공유·만료·삭제 경로를 안내합니다.",
+    "accessibility": "표의 제목과 머리글을 연결하고 차트에는 수치 표·설명을 제공합니다. 색상·마우스 조작만으로 의미를 전달하지 않습니다.",
+    "legal": "데이터 이용 목적과 원본의 사용 권한, 통계 공개 시 재식별 가능성을 확인합니다.",
+    "checklist": [
+      "안정된 행 ID",
+      "빈 값·단위",
+      "정렬 후 선택",
+      "페이지 범위",
+      "키보드 탐색"
+    ],
+    "options": [
+      {
+        "name": "HTML 표와 페이지 이동",
+        "pros": "표 의미와 행 범위가 명확합니다.",
+        "cons": "대량 데이터를 한 번에 보여주기 어렵습니다.",
+        "bestFor": "일반 관리자 목록"
+      },
+      {
+        "name": "그리드 컴포넌트",
+        "pros": "열 조정·셀 편집을 지원합니다.",
+        "cons": "복잡한 키보드 동작과 접근성 검토가 필요합니다.",
+        "bestFor": "업무용 데이터 편집"
+      }
+    ],
+    "related": ["data-charts", "data-drilldown", "analytics"],
+    "sources": [
+      {
+        "title": "W3C WAI Tables Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/tables/"
+      },
+      {
+        "title": "TanStack Virtual documentation",
+        "url": "https://tanstack.com/virtual/latest/docs/introduction"
+      }
+    ],
+    "codeExample": {
+      "title": "데이터 테이블 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Row = { id: string; amount: number };\nexport function stableRows(rows: Row[]) {\n  return [...rows].sort((a, b) => a.amount - b.amount || a.id.localeCompare(b.id));\n}\nexport function visibleSelection(rows: Row[], selected: Set<string>) {\n  return rows.filter(row => selected.has(row.id));\n}"
+    }
+  },
+  {
+    "id": "data-charts",
+    "title": "차트·대시보드",
+    "english": "Charts and dashboards",
+    "category": "data",
+    "description": "지표의 단위·기간·집계 기준을 명시하고 변화와 비교를 시각적으로 전달하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "차트 유형을 비교 목적에 맞춰 고르고 축·누락 데이터·기준 시각을 표시합니다. 그래프 외에도 핵심 수치와 원본 표를 제공해 해석을 확인할 수 있게 합니다.",
+    "why": "축의 범위나 합산 기준을 숨기면 같은 데이터가 과장되거나 상반된 의미로 보일 수 있습니다.",
+    "flow": [
+      "지표 정의와 비교 목적을 정한다.",
+      "기간·시간대·집계 조건을 적용한다.",
+      "단위와 누락 상태를 포함해 시각화한다.",
+      "수치 표와 세부 조회를 제공한다."
+    ],
+    "components": ["지표 정의", "시간대·기간", "시각화 축", "대체 데이터 표"],
+    "exceptions": [
+      "0과 수집되지 않은 값을 같은 점으로 표시하지 않는다.",
+      "부분 집계 기간을 완전한 기간과 구분한다."
+    ],
+    "security": "클라이언트 차트에서 숨긴 계열도 서버 응답에 포함하면 노출된다는 점을 고려합니다. 조회·집계·내보내기에 동일한 행·열 접근 권한을 적용하고 대량 요청의 크기와 실행 시간을 제한합니다.",
+    "privacy": "개인별 식별 정보는 필요한 역할에만 노출하고 내보낸 파일의 공유·만료·삭제 경로를 안내합니다.",
+    "accessibility": "표의 제목과 머리글을 연결하고 차트에는 수치 표·설명을 제공합니다. 색상·마우스 조작만으로 의미를 전달하지 않습니다.",
+    "legal": "데이터 이용 목적과 원본의 사용 권한, 통계 공개 시 재식별 가능성을 확인합니다.",
+    "checklist": [
+      "단위·분모 표시",
+      "0과 누락 구분",
+      "축 범위",
+      "집계 갱신 시각",
+      "색상 외 구분"
+    ],
+    "options": [
+      {
+        "name": "서버 집계·브라우저 차트",
+        "pros": "조회 비용과 전송량을 줄입니다.",
+        "cons": "원본까지 내려가는 경로를 따로 만듭니다.",
+        "bestFor": "서비스 대시보드"
+      },
+      {
+        "name": "원본 기반 탐색 차트",
+        "pros": "다양한 조건을 즉시 바꿉니다.",
+        "cons": "브라우저 성능과 데이터 노출을 검토해야 합니다.",
+        "bestFor": "소규모 분석 도구"
+      }
+    ],
+    "related": ["data-drilldown", "csv-import", "analytics"],
+    "sources": [
+      {
+        "title": "W3C WAI Complex Images",
+        "url": "https://www.w3.org/WAI/tutorials/images/complex/"
+      },
+      {
+        "title": "W3C WAI Tables Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/tables/"
+      }
+    ],
+    "codeExample": {
+      "title": "차트·대시보드 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function chartPoint(value: number | null) {\n  if (value === null) return { value: null, label: '데이터 없음' };\n  if (!Number.isFinite(value)) throw new Error('유효하지 않은 지표');\n  return { value, label: new Intl.NumberFormat('ko-KR').format(value) };\n}\n// 결측 값을 0으로 바꾸지 않고 차트에서도 끊어진 구간으로 표현합니다."
+    }
+  },
+  {
+    "id": "data-drilldown",
+    "title": "데이터 드릴다운",
+    "english": "Data drilldown",
+    "category": "data",
+    "description": "요약 지표에서 기간·범주·원본 레코드로 내려가며 맥락을 유지하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "선택한 지표의 필터를 상세 화면에 전달합니다. 요약과 상세가 같은 기준 시각·권한·집계 정의를 사용하도록 하고 이전 단계로 돌아가는 경로를 남깁니다.",
+    "why": "요약 숫자와 상세 목록의 필터가 다르면 사용자가 원인을 확인할 수 없습니다.",
+    "flow": [
+      "지표의 비교 조건을 확인한다.",
+      "세부 구간을 선택한다.",
+      "필터와 집계 시각을 상세 요청에 전달한다.",
+      "원본을 확인하고 이전 맥락으로 돌아간다."
+    ],
+    "components": ["필터 모델", "탐색 경로", "집계 스냅샷", "상세 조회 권한"],
+    "exceptions": [
+      "상세 조회 도중 데이터가 바뀌면 기준 시각 차이를 알린다.",
+      "하위 항목에 권한이 없으면 합계와 상세의 공개 범위를 설명한다."
+    ],
+    "security": "상세 화면의 필터를 바꿔 다른 조직의 원본을 조회할 수 없게 합니다. 조회·집계·내보내기에 동일한 행·열 접근 권한을 적용하고 대량 요청의 크기와 실행 시간을 제한합니다.",
+    "privacy": "개인별 식별 정보는 필요한 역할에만 노출하고 내보낸 파일의 공유·만료·삭제 경로를 안내합니다.",
+    "accessibility": "표의 제목과 머리글을 연결하고 차트에는 수치 표·설명을 제공합니다. 색상·마우스 조작만으로 의미를 전달하지 않습니다.",
+    "legal": "데이터 이용 목적과 원본의 사용 권한, 통계 공개 시 재식별 가능성을 확인합니다.",
+    "checklist": [
+      "필터 전달",
+      "뒤로 이동",
+      "같은 시간대",
+      "권한 차이",
+      "집계·상세 대조"
+    ],
+    "options": [
+      {
+        "name": "페이지 이동",
+        "pros": "상세 주소 공유와 뒤로 이동이 명확합니다.",
+        "cons": "화면 전환 비용이 있습니다.",
+        "bestFor": "여러 단계 원인 분석"
+      },
+      {
+        "name": "패널 펼치기",
+        "pros": "대시보드 맥락을 유지합니다.",
+        "cons": "포커스와 닫기 동작을 관리해야 합니다.",
+        "bestFor": "간단한 상세 확인"
+      }
+    ],
+    "related": ["csv-import", "spreadsheet-export", "analytics"],
+    "sources": [
+      {
+        "title": "W3C WAI Tables Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/tables/"
+      },
+      {
+        "title": "OWASP Authorization Cheat Sheet",
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+      }
+    ],
+    "codeExample": {
+      "title": "데이터 드릴다운 핵심 로직",
+      "language": "TypeScript",
+      "code": "type DrillFilter = { from: string; to: string; group: string };\nexport function drillLink(filter: DrillFilter) {\n  const params = new URLSearchParams({\n    from: filter.from, to: filter.to, group: filter.group\n  });\n  return '/records?' + params.toString();\n}\n// tenantId와 권한은 URL 입력값이 아니라 서버 세션에서 결정합니다."
+    }
+  },
+  {
+    "id": "csv-import",
+    "title": "CSV 데이터 가져오기",
+    "english": "CSV import",
+    "category": "data",
+    "description": "파일의 열·자료형·중복·오류 행을 확인한 뒤 업무 데이터로 반영하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "CSV 파싱과 업무 검증을 나눕니다. 먼저 열 매핑·오류 행·변경 수를 미리 보여주고 사용자가 승인한 뒤 트랜잭션 또는 재시도 가능한 작업으로 반영합니다.",
+    "why": "파일을 읽자마자 저장하면 인코딩·열 순서·빈 값 때문에 많은 레코드가 잘못 바뀔 수 있습니다.",
+    "flow": [
+      "파일 크기·인코딩·열 이름을 확인한다.",
+      "검증된 파서로 행을 읽는다.",
+      "열 매핑과 오류·중복을 미리 보여준다.",
+      "확인한 변경을 반영하고 결과를 내려받는다."
+    ],
+    "components": ["CSV 파서", "열 매핑", "행별 검증", "가져오기 결과"],
+    "exceptions": [
+      "따옴표 안의 쉼표·줄바꿈을 단순 분할로 처리하지 않는다.",
+      "부분 실패 시 성공·실패 행을 구분한다."
+    ],
+    "security": "파일 크기·행 수·열 수를 제한하고 외부 경로·수식 내용을 실행하지 않습니다. 조회·집계·내보내기에 동일한 행·열 접근 권한을 적용하고 대량 요청의 크기와 실행 시간을 제한합니다.",
+    "privacy": "개인별 식별 정보는 필요한 역할에만 노출하고 내보낸 파일의 공유·만료·삭제 경로를 안내합니다.",
+    "accessibility": "표의 제목과 머리글을 연결하고 차트에는 수치 표·설명을 제공합니다. 색상·마우스 조작만으로 의미를 전달하지 않습니다.",
+    "legal": "데이터 이용 목적과 원본의 사용 권한, 통계 공개 시 재식별 가능성을 확인합니다.",
+    "checklist": [
+      "따옴표·줄바꿈",
+      "인코딩",
+      "열 매핑",
+      "중복 정책",
+      "부분 실패 복구"
+    ],
+    "options": [
+      {
+        "name": "전체 검증 후 반영",
+        "pros": "실패 시 상태를 설명하기 쉽습니다.",
+        "cons": "큰 파일은 메모리·시간을 고려해야 합니다.",
+        "bestFor": "작은 관리자 가져오기"
+      },
+      {
+        "name": "청크별 백그라운드 처리",
+        "pros": "큰 파일의 진행 상황을 추적합니다.",
+        "cons": "중복 키와 부분 롤백 정책이 필요합니다.",
+        "bestFor": "대량 데이터 이관"
+      }
+    ],
+    "related": ["spreadsheet-export", "virtualized-lists", "analytics"],
+    "sources": [
+      {
+        "title": "RFC 4180 CSV format",
+        "url": "https://www.rfc-editor.org/rfc/rfc4180"
+      },
+      {
+        "title": "OWASP CSV Injection",
+        "url": "https://owasp.org/www-community/attacks/CSV_Injection"
+      }
+    ],
+    "codeExample": {
+      "title": "CSV 데이터 가져오기 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function validateQuantityRows(rows: string[][]) {\n  return rows.map((cells, index) => {\n    const quantity = cells[1]?.trim();\n    return { row: index + 1, valid: /^\\d+$/.test(quantity || '')\n      && Number.isSafeInteger(Number(quantity)), cells };\n  });\n}\n// rows는 따옴표·줄바꿈을 처리하는 CSV 파서의 결과입니다."
+    }
+  },
+  {
+    "id": "spreadsheet-export",
+    "title": "Excel·CSV 내보내기",
+    "english": "Spreadsheet export",
+    "category": "data",
+    "description": "필터와 권한을 유지해 데이터를 파일로 만들고 수식·형식·다운로드 수명을 관리하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "현재 화면과 전체 필터 결과의 범위를 구분합니다. 날짜·긴 번호·앞자리 0을 보존할 형식을 고르고 수식으로 해석될 수 있는 사용자 입력을 처리합니다.",
+    "why": "화면에서 안전한 문자열도 스프레드시트에서 열면 수식이나 잘못된 날짜로 해석될 수 있습니다.",
+    "flow": [
+      "내보낼 행·열과 형식을 선택한다.",
+      "서버에서 동일한 권한·필터를 적용한다.",
+      "문자열·수식 위험과 파일 형식을 처리한다.",
+      "만료되는 다운로드와 완료 상태를 제공한다."
+    ],
+    "components": [
+      "내보내기 범위",
+      "열 자료형",
+      "파일 생성 작업",
+      "만료 다운로드"
+    ],
+    "exceptions": [
+      "긴 식별자가 지수 표기로 바뀌지 않게 한다.",
+      "파일 생성 실패와 다운로드 실패를 나눠 안내한다."
+    ],
+    "security": "사용자 입력을 수식으로 실행하지 않도록 문자열 형식과 대상 프로그램의 동작을 검증합니다. 조회·집계·내보내기에 동일한 행·열 접근 권한을 적용하고 대량 요청의 크기와 실행 시간을 제한합니다.",
+    "privacy": "개인별 식별 정보는 필요한 역할에만 노출하고 내보낸 파일의 공유·만료·삭제 경로를 안내합니다.",
+    "accessibility": "표의 제목과 머리글을 연결하고 차트에는 수치 표·설명을 제공합니다. 색상·마우스 조작만으로 의미를 전달하지 않습니다.",
+    "legal": "데이터 이용 목적과 원본의 사용 권한, 통계 공개 시 재식별 가능성을 확인합니다.",
+    "checklist": [
+      "전체·현재 범위",
+      "권한 일치",
+      "수식 입력",
+      "앞자리 0",
+      "다운로드 만료"
+    ],
+    "options": [
+      {
+        "name": "CSV",
+        "pros": "여러 도구와 교환하기 쉽습니다.",
+        "cons": "자료형·서식 보존과 수식 위험에 주의합니다.",
+        "bestFor": "단순 데이터 교환"
+      },
+      {
+        "name": "XLSX 문자열 셀",
+        "pros": "자료형과 여러 시트를 지정할 수 있습니다.",
+        "cons": "파일 생성 라이브러리와 메모리 사용을 관리합니다.",
+        "bestFor": "업무용 보고서"
+      }
+    ],
+    "related": ["virtualized-lists", "data-tables", "analytics"],
+    "sources": [
+      {
+        "title": "RFC 4180 CSV format",
+        "url": "https://www.rfc-editor.org/rfc/rfc4180"
+      },
+      {
+        "title": "OWASP CSV Injection",
+        "url": "https://owasp.org/www-community/attacks/CSV_Injection"
+      }
+    ],
+    "codeExample": {
+      "title": "Excel·CSV 내보내기 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function quoteCsvText(value: string) {\n  const protectedValue = /^[\\s]*[=+@-]/.test(value) ? \"'\" + value : value;\n  return '\"' + protectedValue.replaceAll('\"', '\"\"') + '\"';\n}\n// 문자열 셀용 기본 완화 예시입니다. 대상 앱에서 저장·재열기까지 검증하고\n// 민감한 내보내기는 XLSX의 명시적인 문자열 셀도 검토합니다."
+    }
+  },
+  {
+    "id": "virtualized-lists",
+    "title": "대용량 목록 가상 스크롤",
+    "english": "Virtualized lists",
+    "category": "data",
+    "description": "화면에 보이는 행과 여유 범위만 렌더링해 긴 목록의 부담을 줄이는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "전체 데이터 수와 실제 DOM에 있는 행 수를 구분합니다. 고유 키·행 높이·포커스를 유지하고 검색엔진이나 보조기술을 위해 페이지 기반 대안도 검토합니다.",
+    "why": "가상 스크롤은 렌더링 수를 줄이지만 모든 데이터를 미리 내려받는 비용까지 해결하지는 않습니다.",
+    "flow": [
+      "스크롤 위치와 화면 높이를 읽는다.",
+      "표시 구간과 여유 행 수를 계산한다.",
+      "범위의 데이터와 행만 렌더링한다.",
+      "포커스·선택·위치 복원을 유지한다."
+    ],
+    "components": [
+      "가상 범위 계산",
+      "안정된 행 키",
+      "높이 측정",
+      "범위 데이터 조회"
+    ],
+    "exceptions": [
+      "행 높이가 바뀌면 스크롤 위치 점프를 보정한다.",
+      "포커스된 행을 제거해 키보드 위치를 잃지 않게 한다."
+    ],
+    "security": "무한 스크롤 요청에도 페이지 크기와 서버 조회 범위를 제한합니다. 조회·집계·내보내기에 동일한 행·열 접근 권한을 적용하고 대량 요청의 크기와 실행 시간을 제한합니다.",
+    "privacy": "개인별 식별 정보는 필요한 역할에만 노출하고 내보낸 파일의 공유·만료·삭제 경로를 안내합니다.",
+    "accessibility": "표의 제목과 머리글을 연결하고 차트에는 수치 표·설명을 제공합니다. 색상·마우스 조작만으로 의미를 전달하지 않습니다.",
+    "legal": "데이터 이용 목적과 원본의 사용 권한, 통계 공개 시 재식별 가능성을 확인합니다.",
+    "checklist": [
+      "가변 행 높이",
+      "키보드 포커스",
+      "선택 상태",
+      "마지막 행",
+      "페이지 대안"
+    ],
+    "options": [
+      {
+        "name": "고정 높이 가상 목록",
+        "pros": "범위를 단순하게 계산합니다.",
+        "cons": "줄바꿈·확장 행 표현에 한계가 있습니다.",
+        "bestFor": "규격화된 업무 목록"
+      },
+      {
+        "name": "측정 기반 가상 목록",
+        "pros": "서로 다른 높이를 지원합니다.",
+        "cons": "측정과 스크롤 보정이 복잡합니다.",
+        "bestFor": "설명·미디어가 섞인 피드"
+      }
+    ],
+    "related": ["data-tables", "data-charts", "analytics"],
+    "sources": [
+      {
+        "title": "TanStack Virtual documentation",
+        "url": "https://tanstack.com/virtual/latest/docs/introduction"
+      },
+      {
+        "title": "W3C WAI Tables Tutorial",
+        "url": "https://www.w3.org/WAI/tutorials/tables/"
+      }
+    ],
+    "codeExample": {
+      "title": "대용량 목록 가상 스크롤 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function visibleRange(scrollTop: number, viewport: number, rowHeight: number, count: number) {\n  if (rowHeight <= 0 || count < 0) throw new Error('범위 설정 오류');\n  const start = Math.max(0, Math.min(count, Math.floor(scrollTop / rowHeight) - 3));\n  const end = Math.min(count, Math.ceil((scrollTop + viewport) / rowHeight) + 3);\n  return { start, end, offset: start * rowHeight };\n}"
+    }
+  }
+]

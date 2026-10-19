@@ -3,8 +3,7 @@ import { categories, type Feature } from "./catalog";
 export const SITE_ORIGIN = "https://packinweb.pages.dev";
 export const SITE_NAME = "PackinWeb";
 export const HOME_TITLE = "패킨웹(패킨앱) — 웹사이트 기능 모음과 구현 가이드";
-export const HOME_DESCRIPTION =
-  "패킨웹(PackinWeb·패킨앱)은 로그인, 결제, 콘텐츠, 검색 등 웹사이트 기능 모음을 제공하는 한국어 라이브러리입니다. 사용자 흐름, 구현 체크리스트와 코드 예시로 서비스 기획을 시작하세요.";
+export const HOME_DESCRIPTION = `패킨웹(PackinWeb·패킨앱)은 로그인·결제부터 예약·지도·AI·자동화까지 ${categories.length}개 분야의 웹사이트 기능 모음을 제공하는 한국어 라이브러리입니다. 사용자 흐름, 구현 체크리스트와 코드 예시를 확인하세요.`;
 
 export function canonicalUrl(path = "/") {
   const pathname = new URL(path, SITE_ORIGIN).pathname;

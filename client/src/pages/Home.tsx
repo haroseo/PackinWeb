@@ -131,7 +131,7 @@ export default function Home({
               웹사이트 기능 모음을 한곳에
             </h1>
             <p>
-              패킨웹에서 로그인부터 결제까지, 웹을 이루는 기능들을 한눈에.
+              로그인·결제부터 예약·지도·AI까지, 웹의 기능들을 한눈에.
               <br />
               무엇이 필요한지 이해하고, 어떻게 만들지 알아보세요.
             </p>
@@ -154,6 +154,23 @@ export default function Home({
           <span>구현 체크리스트 제공</span>
         </div>
       </section>
+      {!savedOnly && !activeCategory && (
+        <details className="category-directory">
+          <summary>
+            {categories.length}개 분야에서 기능 찾기 <span>전체 카테고리</span>
+          </summary>
+          <nav aria-label="전체 기능 카테고리">
+            {categories.map(c => (
+              <Link key={c.id} href={`/categories/${c.id}/`}>
+                <span>{c.label}</span>
+                <small>
+                  {features.filter(f => f.category === c.id).length}개 가이드
+                </small>
+              </Link>
+            ))}
+          </nav>
+        </details>
+      )}
       {!savedOnly && !activeCategory && (
         <Link href="/checklist/" className="guide-banner">
           <span className="guide-banner-icon">

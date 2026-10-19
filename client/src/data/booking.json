@@ -1,0 +1,406 @@
+[
+  {
+    "id": "booking-slots",
+    "title": "예약 가능 시간",
+    "english": "Availability slots",
+    "category": "booking",
+    "description": "영업시간·휴무·기존 예약을 반영해 실제 선택 가능한 시간대를 보여주는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "날짜별 영업 구간에서 예약된 시간과 준비 시간을 제외합니다. 화면의 빈 시간은 조회 결과일 뿐이므로 확정 직전에 서버에서 다시 검사합니다.",
+    "why": "선택 단계와 확정 단계 사이의 수용 인원 변화를 처리해야 허위 예약 가능 표시를 줄일 수 있습니다.",
+    "flow": [
+      "날짜와 자원을 선택한다.",
+      "영업·휴무·준비 시간을 합쳐 후보를 만든다.",
+      "사용 가능한 시간과 소요 시간을 표시한다.",
+      "확정 직전에 가용성을 재검사한다."
+    ],
+    "components": [
+      "영업시간 규칙",
+      "휴무 예외",
+      "예약 구간 저장소",
+      "준비 시간 정책"
+    ],
+    "exceptions": [
+      "조회 뒤 자리가 없어지면 대체 시간을 제시한다.",
+      "자정을 넘는 영업은 다음 날짜 구간까지 계산한다."
+    ],
+    "security": "클라이언트가 보낸 가격·잔여 좌석을 신뢰하지 않습니다. 예약 변경 권한을 서버에서 확인하고 확정 요청의 중복 처리를 막습니다.",
+    "privacy": "일정 제목과 참석자 연락처는 예약 이행에 필요한 범위로만 공유하고 보존기간을 정합니다.",
+    "accessibility": "달력 외에 키보드로 고를 수 있는 날짜·시간 목록을 제공하고 확정·실패 결과를 텍스트로 알립니다.",
+    "legal": "취소·환불·노쇼 조건을 예약 전에 안내하고 실제 서비스와 관할 지역의 소비자 보호 기준을 확인합니다.",
+    "checklist": [
+      "휴무일 제외",
+      "준비 시간 반영",
+      "자정 경계 검사",
+      "확정 직전 재검사",
+      "빈 결과 안내"
+    ],
+    "options": [
+      {
+        "name": "고정 시간 슬롯",
+        "pros": "재고와 잔여 수량을 계산하기 쉽습니다.",
+        "cons": "가변 길이 상담을 표현하기 어렵습니다.",
+        "bestFor": "정해진 회차 수업"
+      },
+      {
+        "name": "시간 구간 계산",
+        "pros": "다양한 소요 시간을 지원합니다.",
+        "cons": "겹침·준비 시간 계산이 복잡합니다.",
+        "bestFor": "상담·공간 대여"
+      }
+    ],
+    "related": ["booking-conflicts", "booking-waitlist", "notifications"],
+    "sources": [
+      {
+        "title": "MDN Intl.DateTimeFormat",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"
+      },
+      {
+        "title": "PostgreSQL Constraints",
+        "url": "https://www.postgresql.org/docs/current/ddl-constraints.html"
+      }
+    ],
+    "codeExample": {
+      "title": "예약 가능 시간 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Interval = { start: number; end: number };\nexport function available(slot: Interval, busy: Interval[], bufferMs = 0) {\n  if (slot.start >= slot.end || bufferMs < 0) return false;\n  return busy.every(item =>\n    slot.end + bufferMs <= item.start || slot.start >= item.end + bufferMs\n  );\n}\n// 확정 시에는 DB 트랜잭션 안에서 다시 검사합니다."
+    }
+  },
+  {
+    "id": "booking-conflicts",
+    "title": "중복 예약 방지",
+    "english": "Booking conflict prevention",
+    "category": "booking",
+    "description": "같은 시간과 자원에 대한 동시 요청을 데이터베이스에서 조정하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "확인 후 삽입을 별도 요청으로 처리하면 두 사용자가 같은 자리를 확정할 수 있습니다. 구간 제약 또는 잠금을 사용해 검사와 기록을 하나의 작업으로 묶습니다.",
+    "why": "버튼 비활성화만으로는 여러 기기·탭에서 들어오는 동시 요청을 막을 수 없습니다.",
+    "flow": [
+      "예약 의도와 요청 키를 받는다.",
+      "자원의 예약 구간을 트랜잭션에서 검사한다.",
+      "제약을 만족하면 확정 기록을 만든다.",
+      "충돌 시 대체 시간과 재시도 경로를 안내한다."
+    ],
+    "components": ["예약 자원 ID", "구간 제약", "트랜잭션", "중복 요청 키"],
+    "exceptions": [
+      "동시에 들어온 한 요청이 실패해도 다른 예약을 지우지 않는다.",
+      "같은 요청 키의 재전송은 기존 결과를 돌려준다."
+    ],
+    "security": "자원 ID의 소유 조직을 확인하고 DB 제약 오류를 계정 정보 없이 변환합니다. 예약 변경 권한을 서버에서 확인하고 확정 요청의 중복 처리를 막습니다.",
+    "privacy": "일정 제목과 참석자 연락처는 예약 이행에 필요한 범위로만 공유하고 보존기간을 정합니다.",
+    "accessibility": "달력 외에 키보드로 고를 수 있는 날짜·시간 목록을 제공하고 확정·실패 결과를 텍스트로 알립니다.",
+    "legal": "취소·환불·노쇼 조건을 예약 전에 안내하고 실제 서비스와 관할 지역의 소비자 보호 기준을 확인합니다.",
+    "checklist": [
+      "동시 요청 테스트",
+      "중복 키 재전송",
+      "취소 후 재예약",
+      "반개방 구간 경계",
+      "충돌 메시지"
+    ],
+    "options": [
+      {
+        "name": "슬롯 고유 제약",
+        "pros": "단순하고 DB가 중복을 막습니다.",
+        "cons": "임의 길이 예약에 한계가 있습니다.",
+        "bestFor": "고정 회차 예약"
+      },
+      {
+        "name": "구간 배제 제약",
+        "pros": "가변 길이 겹침을 DB에서 막습니다.",
+        "cons": "DB 기능과 인덱스 설계가 필요합니다.",
+        "bestFor": "시간 단위 자원 예약"
+      }
+    ],
+    "related": ["booking-waitlist", "booking-changes", "notifications"],
+    "sources": [
+      {
+        "title": "PostgreSQL Constraints",
+        "url": "https://www.postgresql.org/docs/current/ddl-constraints.html"
+      },
+      {
+        "title": "PostgreSQL Transaction Isolation",
+        "url": "https://www.postgresql.org/docs/current/transaction-iso.html"
+      }
+    ],
+    "codeExample": {
+      "title": "중복 예약 방지 핵심 로직",
+      "language": "SQL",
+      "code": "CREATE EXTENSION IF NOT EXISTS btree_gist;\nCREATE TABLE bookings (\n  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,\n  resource_id bigint NOT NULL,\n  during tstzrange NOT NULL CHECK (NOT isempty(during)),\n  EXCLUDE USING gist (resource_id WITH =, during WITH &&)\n);\n-- 구간은 [시작, 종료)로 저장하고 권한 검사를 별도로 적용합니다."
+    }
+  },
+  {
+    "id": "booking-waitlist",
+    "title": "예약 대기 명단",
+    "english": "Reservation waitlist",
+    "category": "booking",
+    "description": "자리가 생기면 대기자에게 일정 시간 동안 예약 기회를 제공하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "순번과 배정 기준을 기록하고 빈자리에 대해 만료 시각이 있는 제안을 만듭니다. 알림을 보낸 것과 실제 좌석을 확정한 상태를 구분합니다.",
+    "why": "취소 자리를 여러 사람에게 동시에 확정시키거나 대기 순서를 임의로 바꾸는 일을 예방합니다.",
+    "flow": [
+      "대기 신청과 연락 방법을 받는다.",
+      "자리가 생기면 배정 기준으로 대상자를 고른다.",
+      "만료 시간이 있는 예약 제안을 보낸다.",
+      "수락·만료에 따라 확정하거나 다음 대기자로 넘긴다."
+    ],
+    "components": [
+      "대기 순번",
+      "임시 좌석 보류",
+      "제안 만료 작업",
+      "수락 링크"
+    ],
+    "exceptions": [
+      "제안이 만료되면 링크로 예약을 확정하지 않는다.",
+      "알림 발송 실패는 대기 상태와 구분해 재시도한다."
+    ],
+    "security": "수락 토큰은 대상자·자원·만료 시각에 묶고 한 번만 사용합니다. 예약 변경 권한을 서버에서 확인하고 확정 요청의 중복 처리를 막습니다.",
+    "privacy": "일정 제목과 참석자 연락처는 예약 이행에 필요한 범위로만 공유하고 보존기간을 정합니다.",
+    "accessibility": "달력 외에 키보드로 고를 수 있는 날짜·시간 목록을 제공하고 확정·실패 결과를 텍스트로 알립니다.",
+    "legal": "취소·환불·노쇼 조건을 예약 전에 안내하고 실제 서비스와 관할 지역의 소비자 보호 기준을 확인합니다.",
+    "checklist": [
+      "순번 일관성",
+      "만료 후 거부",
+      "중복 수락 차단",
+      "대기 취소",
+      "알림 실패 복구"
+    ],
+    "options": [
+      {
+        "name": "한 명씩 제안",
+        "pros": "대기 순서를 설명하기 쉽습니다.",
+        "cons": "공석 채우기가 늦을 수 있습니다.",
+        "bestFor": "공정한 순번이 중요한 예약"
+      },
+      {
+        "name": "일괄 알림 후 선착순",
+        "pros": "빈자리를 빠르게 채울 수 있습니다.",
+        "cons": "알림 수신이 예약 보장을 뜻하지 않습니다.",
+        "bestFor": "공연·행사 추가 좌석"
+      }
+    ],
+    "related": ["booking-changes", "calendar-sync", "notifications"],
+    "sources": [
+      {
+        "title": "PostgreSQL Transaction Isolation",
+        "url": "https://www.postgresql.org/docs/current/transaction-iso.html"
+      },
+      {
+        "title": "PostgreSQL Constraints",
+        "url": "https://www.postgresql.org/docs/current/ddl-constraints.html"
+      }
+    ],
+    "codeExample": {
+      "title": "예약 대기 명단 핵심 로직",
+      "language": "TypeScript",
+      "code": "type Offer = { userId: string; expiresAt: number; acceptedAt: number | null };\nexport function mayAccept(offer: Offer, userId: string, now: number) {\n  return offer.userId === userId && offer.acceptedAt === null\n    && now < offer.expiresAt;\n}\n// 이 판정과 좌석 확정은 같은 서버 트랜잭션에서 수행합니다."
+    }
+  },
+  {
+    "id": "booking-changes",
+    "title": "예약 변경·취소",
+    "english": "Rescheduling and cancellation",
+    "category": "booking",
+    "description": "예약의 일시와 상태를 정책에 따라 바꾸고 결제·알림과 연결하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "변경 가능 시각과 수수료 정책의 버전을 예약에 남깁니다. 새 자리 확보에 실패하면 원래 예약을 유지하고, 결제 환불은 별도의 처리 상태로 추적합니다.",
+    "why": "예약 취소와 환불 완료를 한 상태로 취급하면 장애 때 사용자에게 잘못된 결과를 안내할 수 있습니다.",
+    "flow": [
+      "예약과 적용 정책을 확인한다.",
+      "변경·취소 비용과 마감 시각을 안내한다.",
+      "새 자리 확보 또는 취소 전이를 원자적으로 기록한다.",
+      "환불·알림 결과를 후속 작업으로 전달한다."
+    ],
+    "components": [
+      "예약 상태 전이",
+      "정책 버전",
+      "변경 이력",
+      "환불 작업 상태"
+    ],
+    "exceptions": [
+      "새 시간이 이미 찼으면 기존 예약을 유지한다.",
+      "환불 실패는 취소 기록을 되돌리지 않고 별도 처리한다."
+    ],
+    "security": "다른 사람의 예약 ID로 취소할 수 없도록 매 요청의 소유권을 검사합니다. 예약 변경 권한을 서버에서 확인하고 확정 요청의 중복 처리를 막습니다.",
+    "privacy": "일정 제목과 참석자 연락처는 예약 이행에 필요한 범위로만 공유하고 보존기간을 정합니다.",
+    "accessibility": "달력 외에 키보드로 고를 수 있는 날짜·시간 목록을 제공하고 확정·실패 결과를 텍스트로 알립니다.",
+    "legal": "취소·환불·노쇼 조건을 예약 전에 안내하고 실제 서비스와 관할 지역의 소비자 보호 기준을 확인합니다.",
+    "checklist": [
+      "마감 시각 경계",
+      "정책 버전 보존",
+      "실패 시 기존 예약 유지",
+      "중복 취소",
+      "환불 상태 구분"
+    ],
+    "options": [
+      {
+        "name": "직접 변경",
+        "pros": "사용자 대기 시간을 줄입니다.",
+        "cons": "복잡한 예외 정책을 코드로 표현해야 합니다.",
+        "bestFor": "규칙이 명확한 예약"
+      },
+      {
+        "name": "승인 후 변경",
+        "pros": "특수 조건을 담당자가 검토합니다.",
+        "cons": "응답 기한과 대기 상태 안내가 필요합니다.",
+        "bestFor": "단체·맞춤 예약"
+      }
+    ],
+    "related": ["calendar-sync", "timezone-handling", "notifications"],
+    "sources": [
+      {
+        "title": "PostgreSQL Transaction Isolation",
+        "url": "https://www.postgresql.org/docs/current/transaction-iso.html"
+      },
+      {
+        "title": "MDN Intl.DateTimeFormat",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"
+      }
+    ],
+    "codeExample": {
+      "title": "예약 변경·취소 핵심 로직",
+      "language": "TypeScript",
+      "code": "type BookingState = 'confirmed' | 'cancelled';\nexport function cancel(state: BookingState, now: number, cutoff: number) {\n  if (state === 'cancelled') return state;\n  if (now >= cutoff) throw new Error('취소 가능 시간이 지났습니다.');\n  return 'cancelled' as const;\n}\n// 정책 시간은 서버에서 읽고 환불 결과는 별도 필드에 기록합니다."
+    }
+  },
+  {
+    "id": "calendar-sync",
+    "title": "캘린더 연동",
+    "english": "Calendar synchronization",
+    "category": "booking",
+    "description": "서비스 일정과 외부 캘린더의 변경을 식별자·권한·동기화 상태로 연결하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "외부 이벤트 ID와 동기화 커서를 저장해 같은 일정을 반복 생성하지 않습니다. 단방향 내보내기와 양방향 수정의 충돌 규칙을 먼저 결정합니다.",
+    "why": "외부 캘린더를 연결했다는 사실만으로 모든 일정에 무제한 접근할 필요는 없습니다.",
+    "flow": [
+      "필요한 캘린더 권한을 설명한다.",
+      "예약과 외부 이벤트 ID를 연결한다.",
+      "변경 내역을 가져와 버전으로 비교한다.",
+      "연결 해제·충돌·재동기화 상태를 안내한다."
+    ],
+    "components": [
+      "OAuth 권한 범위",
+      "외부 이벤트 매핑",
+      "동기화 커서",
+      "충돌 정책"
+    ],
+    "exceptions": [
+      "커서가 만료되면 전체 동기화 경로를 제공한다.",
+      "연결 해제 후에는 외부 수정 작업을 중단한다."
+    ],
+    "security": "갱신 토큰은 서버에서 암호화하고 최소 권한 범위만 요청합니다. 예약 변경 권한을 서버에서 확인하고 확정 요청의 중복 처리를 막습니다.",
+    "privacy": "일정 제목과 참석자 연락처는 예약 이행에 필요한 범위로만 공유하고 보존기간을 정합니다.",
+    "accessibility": "달력 외에 키보드로 고를 수 있는 날짜·시간 목록을 제공하고 확정·실패 결과를 텍스트로 알립니다.",
+    "legal": "취소·환불·노쇼 조건을 예약 전에 안내하고 실제 서비스와 관할 지역의 소비자 보호 기준을 확인합니다.",
+    "checklist": [
+      "중복 이벤트 방지",
+      "시간대 보존",
+      "토큰 만료 처리",
+      "연결 해제",
+      "양방향 충돌 기준"
+    ],
+    "options": [
+      {
+        "name": "일정 파일 내보내기",
+        "pros": "계정 연결 없이 사용할 수 있습니다.",
+        "cons": "변경 사항이 자동 반영되지 않습니다.",
+        "bestFor": "간단한 예약 추가"
+      },
+      {
+        "name": "API 동기화",
+        "pros": "변경을 지속적으로 반영할 수 있습니다.",
+        "cons": "권한·토큰·동기화 실패를 관리해야 합니다.",
+        "bestFor": "업무 일정 통합"
+      }
+    ],
+    "related": ["timezone-handling", "booking-slots", "notifications"],
+    "sources": [
+      {
+        "title": "Google Calendar API overview",
+        "url": "https://developers.google.com/workspace/calendar/api/guides/overview"
+      },
+      {
+        "title": "MDN Intl.DateTimeFormat",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"
+      }
+    ],
+    "codeExample": {
+      "title": "캘린더 연동 핵심 로직",
+      "language": "TypeScript",
+      "code": "type EventLink = { bookingId: string; externalId: string; version: number };\nexport function needsSync(link: EventLink, bookingVersion: number) {\n  return bookingVersion > link.version;\n}\nexport function mappingKey(provider: string, calendarId: string, eventId: string) {\n  return JSON.stringify([provider, calendarId, eventId]);\n}"
+    }
+  },
+  {
+    "id": "timezone-handling",
+    "title": "시간대·반복 일정",
+    "english": "Time zones and recurring events",
+    "category": "booking",
+    "description": "일정의 절대 시각과 지역 시간 규칙을 구분해 반복 일정을 표시하는 기능입니다.",
+    "difficulty": "중급",
+    "purposes": ["SaaS", "커머스"],
+    "essential": false,
+    "overview": "일회 일정의 순간은 UTC로 저장하되 반복 일정은 현지 시각과 IANA 시간대도 보존합니다. 일광절약시간 전환으로 존재하지 않거나 겹치는 시각을 별도로 처리합니다.",
+    "why": "매주 오전 9시라는 약속은 UTC에 고정된 간격을 더하는 것과 다를 수 있습니다.",
+    "flow": [
+      "기준 시간대와 현지 시각을 받는다.",
+      "반복 규칙의 적용 범위를 정한다.",
+      "시각의 중복·누락을 확인한다.",
+      "사용자 시간대로 변환해 기준 지역도 함께 표시한다."
+    ],
+    "components": ["IANA 시간대", "반복 규칙", "예외 날짜", "표시 시간대 설정"],
+    "exceptions": [
+      "존재하지 않는 현지 시각은 임의로 보정하지 않고 정책을 알린다.",
+      "반복 일정 한 건 수정과 전체 수정 범위를 구분한다."
+    ],
+    "security": "유효하지 않은 시간대 문자열과 과도한 반복 횟수를 제한합니다. 예약 변경 권한을 서버에서 확인하고 확정 요청의 중복 처리를 막습니다.",
+    "privacy": "일정 제목과 참석자 연락처는 예약 이행에 필요한 범위로만 공유하고 보존기간을 정합니다.",
+    "accessibility": "달력 외에 키보드로 고를 수 있는 날짜·시간 목록을 제공하고 확정·실패 결과를 텍스트로 알립니다.",
+    "legal": "취소·환불·노쇼 조건을 예약 전에 안내하고 실제 서비스와 관할 지역의 소비자 보호 기준을 확인합니다.",
+    "checklist": [
+      "서머타임 시작·종료",
+      "현지 날짜 경계",
+      "기준 시간대 표시",
+      "반복 예외",
+      "잘못된 시간대 처리"
+    ],
+    "options": [
+      {
+        "name": "고정 UTC 일정",
+        "pros": "한 시점을 일관되게 공유합니다.",
+        "cons": "지역 기준 반복 약속이 밀릴 수 있습니다.",
+        "bestFor": "일회 행사"
+      },
+      {
+        "name": "현지 시각과 시간대 보존",
+        "pros": "반복 약속의 지역 의미를 유지합니다.",
+        "cons": "중복·누락 시각 정책이 필요합니다.",
+        "bestFor": "정기 수업·회의"
+      }
+    ],
+    "related": ["booking-slots", "booking-conflicts", "notifications"],
+    "sources": [
+      {
+        "title": "MDN Intl.DateTimeFormat",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"
+      },
+      {
+        "title": "Google Calendar API overview",
+        "url": "https://developers.google.com/workspace/calendar/api/guides/overview"
+      }
+    ],
+    "codeExample": {
+      "title": "시간대·반복 일정 핵심 로직",
+      "language": "TypeScript",
+      "code": "export function formatInZone(iso: string, timeZone: string) {\n  const date = new Date(iso);\n  if (!Number.isFinite(date.getTime())) throw new Error('잘못된 시각');\n  return new Intl.DateTimeFormat('ko-KR', {\n    dateStyle: 'medium', timeStyle: 'short', timeZone\n  }).format(date);\n}"
+    }
+  }
+]

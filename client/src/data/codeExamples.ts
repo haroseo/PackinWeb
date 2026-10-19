@@ -3,13 +3,8 @@ export interface CodeExample {
   title: string;
   language: string;
   code: string;
-  preview:
-    | "auth"
-    | "commerce"
-    | "content"
-    | "search"
-    | "communication"
-    | "operations";
+  preview: Feature["category"];
+  steps?: string[];
 }
 const examples: Record<string, Partial<CodeExample>> = {
   login: {
@@ -79,6 +74,13 @@ return res.status(202).end();`,
   },
 };
 export function getCodeExample(feature: Feature): CodeExample {
+  if (feature.codeExample) {
+    return {
+      ...feature.codeExample,
+      preview: feature.category,
+      steps: feature.flow,
+    };
+  }
   const item = examples[feature.id];
   const name = feature.id.replace(/-/g, "_");
   const code =
