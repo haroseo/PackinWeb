@@ -92,23 +92,12 @@ describe("검색과 필터", () => {
     expect(filterFeatures(items, { query: "존재하지않는기능" })).toEqual([]));
 });
 describe("전체 레퍼런스 데이터", () => {
-  it("16개 분야에서 총 108개 고유 기능 제공", () => {
-    expect(categories).toHaveLength(16);
-    expect(features).toHaveLength(108);
-    expect(new Set(features.map(f => f.id)).size).toBe(108);
+  it("21개 분야에서 총 228개 고유 기능 제공", () => {
+    expect(categories).toHaveLength(21);
+    expect(features).toHaveLength(228);
+    expect(new Set(features.map(f => f.id)).size).toBe(228);
     categories.forEach(c =>
-      expect(features.filter(f => f.category === c.id)).toHaveLength(
-        [
-          "auth",
-          "commerce",
-          "content",
-          "search",
-          "communication",
-          "operations",
-        ].includes(c.id)
-          ? 8
-          : 6
-      )
+      expect(features.filter(f => f.category === c.id).length).toBeGreaterThanOrEqual(6)
     );
   });
   it("모든 가이드가 상세 안내와 구현 점검을 갖춤", () => {

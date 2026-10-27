@@ -1,0 +1,1262 @@
+[
+  {
+    "id": "passkeys",
+    "title": "패스키 로그인",
+    "english": "Passkeys",
+    "category": "auth",
+    "topic": "공개 키 기반 인증으로 비밀번호 없이 계정 접근을 허용합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/webauthn-3/",
+    "pitfall": "기기 분실과 복구 경로가 없으면 계정에 다시 접근하기 어렵습니다."
+  },
+  {
+    "id": "account-linking",
+    "title": "계정 연결",
+    "english": "Account linking",
+    "category": "auth",
+    "topic": "여러 로그인 제공자의 계정을 한 사용자 프로필에 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://openid.net/specs/openid-connect-core-1_0.html",
+    "pitfall": "이메일 일치만으로 자동 연결하면 계정 탈취 위험이 있습니다."
+  },
+  {
+    "id": "session-device-list",
+    "title": "로그인 기기 관리",
+    "english": "Session device management",
+    "category": "auth",
+    "topic": "활성 세션과 기기 정보를 확인하고 원격 로그아웃을 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+    "pitfall": "기기 지문을 과도하게 수집하거나 신뢰 판단에 단독 사용하지 않습니다."
+  },
+  {
+    "id": "account-deletion",
+    "title": "계정 삭제",
+    "english": "Account deletion",
+    "category": "auth",
+    "topic": "사용자가 계정을 종료하고 관련 데이터 처리 상태를 확인합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html",
+    "pitfall": "보존 의무와 삭제 범위를 구분해 완료 시점을 안내해야 합니다."
+  },
+  {
+    "id": "gift-cards",
+    "title": "기프트 카드",
+    "english": "Gift cards",
+    "category": "commerce",
+    "topic": "잔액·코드·사용 이력을 안전하게 관리하는 선불 수단입니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/Consortium/Legal/2015/04/terms",
+    "pitfall": "지역별 유효기간·환불 규정을 확인해야 합니다."
+  },
+  {
+    "id": "tax-calculation",
+    "title": "세금 계산",
+    "english": "Tax calculation",
+    "category": "commerce",
+    "topic": "주소·상품·거래 시점에 맞춰 세금과 영수증 정보를 계산합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.oecd.org/tax/consumption/",
+    "pitfall": "지역 규칙과 면세 조건의 갱신 책임이 필요합니다."
+  },
+  {
+    "id": "order-cancellation",
+    "title": "주문 취소",
+    "english": "Order cancellation",
+    "category": "commerce",
+    "topic": "처리 단계에 따라 취소 가능 범위와 환불 상태를 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html",
+    "pitfall": "이미 출고되거나 정산된 주문의 상태 경합을 처리합니다."
+  },
+  {
+    "id": "inventory-pricing",
+    "title": "가격 이력",
+    "english": "Price history",
+    "category": "commerce",
+    "topic": "가격 변경과 할인 전 기준가를 투명하게 보여줍니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://eur-lex.europa.eu/eli/dir/2019/2161/oj",
+    "pitfall": "표시 가격과 실제 결제 금액이 달라지지 않게 합니다."
+  },
+  {
+    "id": "content-scheduling",
+    "title": "예약 발행",
+    "english": "Scheduled publishing",
+    "category": "content",
+    "topic": "작성자가 날짜·시간을 지정해 게시물을 자동 공개합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/WCAG22/",
+    "pitfall": "시간대와 취소·수정 경합을 명확히 처리해야 합니다."
+  },
+  {
+    "id": "content-embeds",
+    "title": "외부 콘텐츠 임베드",
+    "english": "Content embeds",
+    "category": "content",
+    "topic": "외부 영상·문서의 출처와 안전한 미리보기를 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe",
+    "pitfall": "제3자 추적과 iframe 권한을 제한해야 합니다."
+  },
+  {
+    "id": "content-comments-moderation",
+    "title": "댓글 관리",
+    "english": "Comment moderation",
+    "category": "content",
+    "topic": "댓글 작성·수정·신고와 표시 정책을 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://owasp.org/www-community/attacks/xss/",
+    "pitfall": "출력 인코딩과 사용자 신고 처리를 갖춰야 합니다."
+  },
+  {
+    "id": "content-feed",
+    "title": "콘텐츠 피드",
+    "english": "Content feed",
+    "category": "content",
+    "topic": "새 콘텐츠를 시간순·조건별 피드로 이어 보여줍니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html",
+    "pitfall": "무한 로딩에만 의존하지 않고 페이지 이동과 새 항목 알림을 둡니다."
+  },
+  {
+    "id": "search-autocomplete",
+    "title": "검색어 자동완성",
+    "english": "Search autocomplete",
+    "category": "search",
+    "topic": "입력 중 관련 질의와 결과 제안을 키보드로 탐색하게 합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/",
+    "pitfall": "키보드 포커스와 스크린리더 활성 항목을 일치시켜야 합니다."
+  },
+  {
+    "id": "search-synonyms",
+    "title": "검색 동의어",
+    "english": "Search synonyms",
+    "category": "search",
+    "topic": "같은 의미의 표현을 검색 결과에 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-synonym-tokenfilter.html",
+    "pitfall": "동의어 확장이 무관한 결과를 대량 노출하지 않게 관리합니다."
+  },
+  {
+    "id": "search-zero-results",
+    "title": "검색 결과 없음 안내",
+    "english": "Zero-results guidance",
+    "category": "search",
+    "topic": "결과가 없을 때 검색어 수정과 대체 경로를 안내합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html",
+    "pitfall": "검색어를 잃지 않고 오류 이유를 설명합니다."
+  },
+  {
+    "id": "search-facets",
+    "title": "검색 패싯",
+    "english": "Faceted search",
+    "category": "search",
+    "topic": "검색 결과의 속성별 필터와 현재 선택을 요약합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/",
+    "pitfall": "필터 적용 뒤 결과 수와 초기화 동작을 명확히 합니다."
+  },
+  {
+    "id": "notification-preferences",
+    "title": "알림 설정",
+    "english": "Notification preferences",
+    "category": "communication",
+    "topic": "종류·채널·빈도별 알림 수신을 사용자가 제어합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/consent.html",
+    "pitfall": "필수 보안 알림과 선택 마케팅 알림을 분리합니다."
+  },
+  {
+    "id": "email-verification",
+    "title": "이메일 확인",
+    "english": "Email verification",
+    "category": "communication",
+    "topic": "주소 소유 확인 링크를 발급하고 만료·재전송을 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Email_Validation_and_Verification_Cheat_Sheet.html",
+    "pitfall": "토큰은 일회용·만료 처리하고 로그에 남기지 않습니다."
+  },
+  {
+    "id": "message-threads",
+    "title": "메시지 스레드",
+    "english": "Message threads",
+    "category": "communication",
+    "topic": "관련 대화를 묶어 읽음 상태와 답장을 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/ARIA/apg/patterns/feed/",
+    "pitfall": "삭제된 메시지와 권한 변경 이후 접근을 검증합니다."
+  },
+  {
+    "id": "notification-digest",
+    "title": "알림 요약",
+    "english": "Notification digest",
+    "category": "communication",
+    "topic": "여러 알림을 묶어 사용자가 정한 시간에 전달합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html",
+    "pitfall": "긴급 알림 지연과 현지 시간대 혼동을 방지합니다."
+  },
+  {
+    "id": "incident-status",
+    "title": "장애 상태 공지",
+    "english": "Incident status page",
+    "category": "operations",
+    "topic": "현재 장애·영향 범위·복구 진행을 사용자에게 알립니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc9457",
+    "pitfall": "내부 민감정보 없이 시각과 영향 범위를 사실대로 씁니다."
+  },
+  {
+    "id": "feature-flags",
+    "title": "기능 플래그",
+    "english": "Feature flags",
+    "category": "operations",
+    "topic": "기능 노출과 단계적 출시를 설정으로 제어합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://martinfowler.com/articles/feature-toggles.html",
+    "pitfall": "오래된 플래그가 권한 우회나 복잡성으로 남지 않도록 정리합니다."
+  },
+  {
+    "id": "data-retention",
+    "title": "데이터 보존 정책",
+    "english": "Data retention",
+    "category": "operations",
+    "topic": "데이터 종류별 보유 기간과 자동 삭제를 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://gdpr.eu/article-5-how-to-process-personal-data/",
+    "pitfall": "백업·로그 사본까지 삭제 범위와 예외를 정의해야 합니다."
+  },
+  {
+    "id": "audit-alerts",
+    "title": "보안 이벤트 알림",
+    "english": "Security event alerts",
+    "category": "operations",
+    "topic": "위험한 계정·권한 변경을 감지해 운영자에게 알립니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
+    "pitfall": "민감정보를 알림 본문에 그대로 포함하지 않습니다."
+  },
+  {
+    "id": "recurring-bookings",
+    "title": "반복 예약",
+    "english": "Recurring bookings",
+    "category": "booking",
+    "topic": "반복 규칙과 예외 날짜를 포함해 여러 예약을 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc5545",
+    "pitfall": "서머타임과 시리즈 일부 변경을 고려해야 합니다."
+  },
+  {
+    "id": "booking-reminders",
+    "title": "예약 알림",
+    "english": "Booking reminders",
+    "category": "booking",
+    "topic": "예약 전 알림과 확인·변경 링크를 전달합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc5545",
+    "pitfall": "취소된 일정에 이전 알림이 발송되지 않도록 합니다."
+  },
+  {
+    "id": "resource-capacity",
+    "title": "자원 정원 관리",
+    "english": "Resource capacity",
+    "category": "booking",
+    "topic": "동시 예약에서 공간·좌석·수량의 한도를 지킵니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.postgresql.org/docs/current/transaction-iso.html",
+    "pitfall": "동시 요청의 초과 배정을 트랜잭션으로 막아야 합니다."
+  },
+  {
+    "id": "booking-waitlist-notify",
+    "title": "대기자 알림",
+    "english": "Waitlist notifications",
+    "category": "booking",
+    "topic": "취소 자리 발생 시 대기 순서에 따라 예약 기회를 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc5545",
+    "pitfall": "응답 기한과 동시 제안으로 인한 중복 예약을 방지합니다."
+  },
+  {
+    "id": "map-geolocation-consent",
+    "title": "위치 권한 동의",
+    "english": "Geolocation consent",
+    "category": "maps",
+    "topic": "사용자 선택에 따라 현재 위치를 요청하고 대체 입력도 지원합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/geolocation/",
+    "pitfall": "목적과 보관 여부를 설명하고 거부해도 기능을 사용할 수 있어야 합니다."
+  },
+  {
+    "id": "map-accessible-list",
+    "title": "지도 대체 목록",
+    "english": "Accessible map list",
+    "category": "maps",
+    "topic": "지도 표식을 주소·거리 목록과 동기화해 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/",
+    "pitfall": "지도만으로 위치 정보를 전달하면 키보드·스크린리더 사용자가 배제됩니다."
+  },
+  {
+    "id": "map-geofencing",
+    "title": "위치 경계 알림",
+    "english": "Geofencing",
+    "category": "maps",
+    "topic": "정의된 구역 진입·이탈 신호를 제품 흐름에 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/geolocation/",
+    "pitfall": "백그라운드 추적 동의와 배터리·위치 오차를 고려합니다."
+  },
+  {
+    "id": "map-route-avoidance",
+    "title": "경로 회피 조건",
+    "english": "Route avoidance",
+    "category": "maps",
+    "topic": "통행료·계단·교통수단 등 제약에 맞춰 경로를 조정합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://developers.google.com/maps/documentation/routes",
+    "pitfall": "제약이 불가능할 때 가장 가까운 대안을 설명해야 합니다."
+  },
+  {
+    "id": "ai-citations",
+    "title": "AI 답변 출처 표시",
+    "english": "AI citations",
+    "category": "ai",
+    "topic": "생성 답변의 근거 문서와 인용 위치를 함께 제시합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://platform.openai.com/docs/guides/retrieval",
+    "pitfall": "인용이 실제 주장을 지지하는지 평가해야 합니다."
+  },
+  {
+    "id": "ai-feedback",
+    "title": "AI 결과 피드백",
+    "english": "AI feedback",
+    "category": "ai",
+    "topic": "사용자가 생성 결과를 평가하고 오류를 신고하도록 합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://platform.openai.com/docs/guides/evals",
+    "pitfall": "피드백과 민감 입력은 최소 수집하고 보관 목적을 공개합니다."
+  },
+  {
+    "id": "ai-cost-limits",
+    "title": "AI 사용량 한도",
+    "english": "AI usage limits",
+    "category": "ai",
+    "topic": "요청·토큰·비용 한도를 정하고 초과 상태를 안내합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://platform.openai.com/docs/guides/production-best-practices",
+    "pitfall": "제한 초과 때 무한 재시도나 사용자 데이터 유실을 피해야 합니다."
+  },
+  {
+    "id": "ai-human-review",
+    "title": "AI 결과 사람 검토",
+    "english": "Human review for AI",
+    "category": "ai",
+    "topic": "영향이 큰 결과를 담당자가 확인·수정한 뒤 확정합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://platform.openai.com/docs/guides/safety-best-practices",
+    "pitfall": "검토 책임과 자동화 범위를 사용자에게 명확히 알립니다."
+  },
+  {
+    "id": "form-accessible-errors",
+    "title": "폼 오류 요약",
+    "english": "Accessible form errors",
+    "category": "forms",
+    "topic": "입력 오류를 요약하고 해당 필드와 해결 방법으로 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/tutorials/forms/notifications/",
+    "pitfall": "색상만 표시하지 말고 오류 상태가 보조기술에 전달되게 합니다."
+  },
+  {
+    "id": "form-file-upload",
+    "title": "폼 파일 첨부",
+    "english": "Form file upload",
+    "category": "forms",
+    "topic": "허용 형식·크기·검사 상태를 안내하고 안전하게 첨부합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html",
+    "pitfall": "확장자만 믿지 않고 콘텐츠 검사와 저장 권한을 확인합니다."
+  },
+  {
+    "id": "form-autosave",
+    "title": "폼 자동 저장",
+    "english": "Form autosave",
+    "category": "forms",
+    "topic": "작성 중 응답을 저장하고 복원·삭제 선택을 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/API/Storage_API",
+    "pitfall": "공용 기기에서 민감 응답이 남지 않도록 안내와 만료를 둡니다."
+  },
+  {
+    "id": "form-review-confirmation",
+    "title": "제출 전 검토",
+    "english": "Form review and confirmation",
+    "category": "forms",
+    "topic": "중요 응답을 제출 전에 확인하고 수정할 기회를 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html",
+    "pitfall": "확정·뒤로 이동 상태에서 중복 제출을 막습니다."
+  },
+  {
+    "id": "data-anomaly-detection",
+    "title": "이상치 감지",
+    "english": "Anomaly detection",
+    "category": "data",
+    "topic": "정상 분포에서 벗어난 값을 표시해 검토를 돕습니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://scikit-learn.org/stable/modules/outlier_detection.html",
+    "pitfall": "이상치가 오류라는 뜻은 아니므로 자동 삭제하지 않습니다."
+  },
+  {
+    "id": "data-quality-checks",
+    "title": "데이터 품질 검사",
+    "english": "Data quality checks",
+    "category": "data",
+    "topic": "완전성·유효성·중복·신선도를 기준으로 데이터 상태를 점검합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/vocab-dcat-3/",
+    "pitfall": "품질 기준과 오류 허용치를 업무 맥락에 맞게 정의합니다."
+  },
+  {
+    "id": "data-export-scheduling",
+    "title": "정기 데이터 내보내기",
+    "english": "Scheduled data export",
+    "category": "data",
+    "topic": "필터와 일정에 따라 보고 파일을 생성해 전달합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc5545",
+    "pitfall": "수신자 권한과 다운로드 만료를 관리해야 합니다."
+  },
+  {
+    "id": "data-lineage",
+    "title": "데이터 계보",
+    "english": "Data lineage",
+    "category": "data",
+    "topic": "데이터가 어디서 와서 어떤 변환을 거쳤는지 추적합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/prov-o/",
+    "pitfall": "개인정보가 변환 과정에서 복제되는 위치를 파악해야 합니다."
+  },
+  {
+    "id": "document-signature-status",
+    "title": "전자서명 상태",
+    "english": "E-signature status",
+    "category": "documents",
+    "topic": "서명 요청·열람·완료·거절 상태를 추적합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/WebCryptoAPI/",
+    "pitfall": "법적 효력과 본인 확인 요건은 관할별 확인이 필요합니다."
+  },
+  {
+    "id": "document-redaction",
+    "title": "문서 민감정보 가림",
+    "english": "Document redaction",
+    "category": "documents",
+    "topic": "공유 전 문서의 개인정보를 제거하고 가림 결과를 검토합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/WCAG22/",
+    "pitfall": "화면상 검은 상자로 덮는 것은 원문 제거가 아닐 수 있습니다."
+  },
+  {
+    "id": "document-expiration",
+    "title": "문서 링크 만료",
+    "english": "Document link expiration",
+    "category": "documents",
+    "topic": "공유 문서 링크의 유효기간·권한·철회를 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+    "pitfall": "예측 가능한 URL이나 공개 캐시로 보호 문서가 노출되지 않아야 합니다."
+  },
+  {
+    "id": "document-version-compare",
+    "title": "문서 버전 비교",
+    "english": "Document version comparison",
+    "category": "documents",
+    "topic": "변경 전후 차이를 보여 승인·검토를 돕습니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/TR/diff/",
+    "pitfall": "민감 변경과 서명 완료본의 불변성을 보호해야 합니다."
+  },
+  {
+    "id": "learning-spaced-review",
+    "title": "간격 반복 복습",
+    "english": "Spaced repetition",
+    "category": "learning",
+    "topic": "복습 간격을 조정해 학습자가 핵심 내용을 반복하도록 합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/",
+    "pitfall": "정답률 하나로 학습 능력을 단정하지 말아야 합니다."
+  },
+  {
+    "id": "learning-rubrics",
+    "title": "평가 루브릭",
+    "english": "Assessment rubric",
+    "category": "learning",
+    "topic": "평가 기준과 단계별 설명을 제출 전후에 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html",
+    "pitfall": "기준을 사전에 공개하고 편향·이의 제기 절차를 둡니다."
+  },
+  {
+    "id": "learning-accommodations",
+    "title": "학습 편의 설정",
+    "english": "Learning accommodations",
+    "category": "learning",
+    "topic": "시간 연장·표시 조정 등 학습 환경 설정을 지원합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/",
+    "pitfall": "민감한 장애 정보 수집을 최소화하고 비공개를 보장합니다."
+  },
+  {
+    "id": "learning-prerequisites",
+    "title": "선수 학습 경로",
+    "english": "Learning prerequisites",
+    "category": "learning",
+    "topic": "선수 주제와 다음 학습 단계를 안내합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html",
+    "pitfall": "선형 경로만 강제하지 않고 대체 학습 경로를 제공합니다."
+  },
+  {
+    "id": "mobile-install-prompt",
+    "title": "앱 설치 안내",
+    "english": "Install prompt",
+    "category": "mobile",
+    "topic": "설치 조건을 확인해 사용자가 원할 때 앱 설치를 시작하게 합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Installing",
+    "pitfall": "반복 팝업이나 첫 방문 강제 안내를 피합니다."
+  },
+  {
+    "id": "mobile-share-sheet",
+    "title": "기기 공유 시트",
+    "english": "Native share sheet",
+    "category": "mobile",
+    "topic": "기본 공유 메뉴와 링크 복사 대체 경로를 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share",
+    "pitfall": "공유 데이터와 호출 실패 상황을 처리합니다."
+  },
+  {
+    "id": "mobile-network-status",
+    "title": "네트워크 상태 안내",
+    "english": "Network status",
+    "category": "mobile",
+    "topic": "오프라인·느린 연결에서 저장·동기화 상태를 표시합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/API/Navigator/onLine",
+    "pitfall": "온라인 여부 신호가 서버 접근 가능성을 보장하지 않음을 고려합니다."
+  },
+  {
+    "id": "mobile-permission-revoke",
+    "title": "기기 권한 관리",
+    "english": "Device permission management",
+    "category": "mobile",
+    "topic": "카메라·알림·위치 권한의 목적과 재설정 방법을 안내합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API",
+    "pitfall": "거부 시 앱의 핵심 경로를 막지 않는 대체 수단을 제공합니다."
+  },
+  {
+    "id": "org-invitations",
+    "title": "조직 초대",
+    "english": "Organization invitations",
+    "category": "organizations",
+    "topic": "초대 토큰·역할·만료·수락 상태를 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+    "pitfall": "초대 링크는 재사용·권한 상승을 막아야 합니다."
+  },
+  {
+    "id": "org-audit-export",
+    "title": "조직 감사 내보내기",
+    "english": "Organization audit export",
+    "category": "organizations",
+    "topic": "조직 관리자가 권한 있는 감사 기록을 내보냅니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
+    "pitfall": "내보내기 권한·민감 필드·감사 흔적을 검증합니다."
+  },
+  {
+    "id": "org-domain-claim",
+    "title": "조직 도메인 확인",
+    "english": "Organization domain verification",
+    "category": "organizations",
+    "topic": "도메인 소유를 검증해 조직 계정을 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://openid.net/specs/openid-connect-core-1_0.html",
+    "pitfall": "도메인 확인만으로 사용자를 자동 가입시키지 않습니다."
+  },
+  {
+    "id": "org-usage-limits",
+    "title": "조직 사용량 한도",
+    "english": "Organization usage limits",
+    "category": "organizations",
+    "topic": "멤버·저장공간·요청량의 조직 단위 한도를 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc6585",
+    "pitfall": "한도 초과 시 데이터 손실 없이 복구 가능한 안내를 제공합니다."
+  },
+  {
+    "id": "shipment-labels",
+    "title": "배송 라벨 생성",
+    "english": "Shipping labels",
+    "category": "logistics",
+    "topic": "주소·운송장 정보를 검증해 출력 라벨을 만듭니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.gs1.org/standards/barcodes",
+    "pitfall": "개인 주소를 권한 없이 미리보기·로그에 노출하지 않습니다."
+  },
+  {
+    "id": "warehouse-picking",
+    "title": "피킹 작업 목록",
+    "english": "Warehouse picking list",
+    "category": "logistics",
+    "topic": "주문·위치·수량을 묶어 창고 피킹 순서를 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.gs1.org/standards/epcis",
+    "pitfall": "재고 변경과 스캔 중복을 반영해 수량 오류를 막습니다."
+  },
+  {
+    "id": "delivery-exceptions",
+    "title": "배송 예외 처리",
+    "english": "Delivery exceptions",
+    "category": "logistics",
+    "topic": "주소 오류·지연·수취 실패 상태와 후속 조치를 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.gs1.org/standards/epcis",
+    "pitfall": "운송사 코드와 사용자용 설명을 구분합니다."
+  },
+  {
+    "id": "return-shipping",
+    "title": "반품 배송",
+    "english": "Return shipping",
+    "category": "logistics",
+    "topic": "반품 접수·라벨·입고 확인까지 역물류 흐름을 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.gs1.org/standards/epcis",
+    "pitfall": "반품품 검수 전 재판매 가능한 재고로 계산하지 않습니다."
+  },
+  {
+    "id": "dev-oauth-apps",
+    "title": "OAuth 앱 등록",
+    "english": "OAuth application registry",
+    "category": "developer-tools",
+    "topic": "제3자 연동 앱의 리디렉션·범위·키를 개발자가 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc9700",
+    "pitfall": "리디렉션 주소 검증과 최소 권한 동의가 중요합니다."
+  },
+  {
+    "id": "dev-api-versioning",
+    "title": "API 버전 관리",
+    "english": "API versioning",
+    "category": "developer-tools",
+    "topic": "호환성 변경을 버전과 종료 일정으로 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc9110",
+    "pitfall": "클라이언트별 전환 기간과 보안 패치 경로를 둡니다."
+  },
+  {
+    "id": "dev-request-logs",
+    "title": "API 요청 로그",
+    "english": "API request logs",
+    "category": "developer-tools",
+    "topic": "개발자가 요청 ID·응답 코드·지연을 조회합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
+    "pitfall": "Authorization 헤더와 개인정보를 로그에서 제거합니다."
+  },
+  {
+    "id": "dev-sdk-quickstart",
+    "title": "SDK 빠른 시작",
+    "english": "SDK quickstart",
+    "category": "developer-tools",
+    "topic": "첫 API 호출까지 필요한 설치·인증·오류 예시를 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc9110",
+    "pitfall": "복사 가능한 예제가 폐기된 API나 실제 비밀키를 포함하지 않게 합니다."
+  },
+  {
+    "id": "dev-idempotency-keys",
+    "title": "멱등 키",
+    "english": "Idempotency keys",
+    "category": "developer-tools",
+    "topic": "재시도 요청이 같은 부작용을 두 번 만들지 않게 합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://stripe.com/docs/api/idempotent_requests",
+    "pitfall": "키 범위·보유 시간·요청 본문 일치를 정의해야 합니다."
+  },
+  {
+    "id": "trust-account-recovery",
+    "title": "계정 복구 보호",
+    "english": "Account recovery safeguards",
+    "category": "trust-safety",
+    "topic": "분실 계정 복구에서 본인 확인과 위험 검토를 지원합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
+    "pitfall": "복구 절차가 로그인보다 약한 우회로가 되지 않게 합니다."
+  },
+  {
+    "id": "trust-blocking",
+    "title": "사용자 차단",
+    "english": "User blocking",
+    "category": "trust-safety",
+    "topic": "특정 계정의 연락·노출·상호작용을 사용자 선택으로 제한합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/",
+    "pitfall": "차단을 피해 다른 경로로 접촉하지 못하도록 적용 범위를 정의합니다."
+  },
+  {
+    "id": "trust-appeals",
+    "title": "제재 이의 제기",
+    "english": "Moderation appeals",
+    "category": "trust-safety",
+    "topic": "사용자가 제재 사유를 확인하고 재검토를 요청합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.oversightboard.com/appeals-process/",
+    "pitfall": "사람 검토·기한·결과 통지를 제공하고 신고자 정보를 보호합니다."
+  },
+  {
+    "id": "trust-risk-scoring",
+    "title": "거래 위험 검토",
+    "english": "Transaction risk review",
+    "category": "trust-safety",
+    "topic": "위험 신호를 검토 큐와 추가 확인 단계에 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://owasp.org/www-project-automated-threats-to-web-applications/",
+    "pitfall": "점수만으로 차별적 자동 차단이 일어나지 않도록 이의 절차를 둡니다."
+  },
+  {
+    "id": "trust-admin-approval",
+    "title": "관리자 중요 변경 승인",
+    "english": "Privileged change approval",
+    "category": "trust-safety",
+    "topic": "중요 권한·결제 변경에 독립된 승인 단계를 둡니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+    "pitfall": "요청자 본인이 단독 승인할 수 없게 역할을 분리합니다."
+  },
+  {
+    "id": "perf-image-optimization",
+    "title": "이미지 최적화",
+    "english": "Image optimization",
+    "category": "performance",
+    "topic": "기기와 화면 크기에 맞는 이미지 형식·크기를 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://web.dev/learn/images/",
+    "pitfall": "대체 텍스트와 시각 품질을 유지하면서 전송량을 줄입니다."
+  },
+  {
+    "id": "perf-lazy-loading",
+    "title": "지연 로딩",
+    "english": "Lazy loading",
+    "category": "performance",
+    "topic": "화면에 가까워질 때 비핵심 리소스를 불러옵니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading",
+    "pitfall": "첫 화면 핵심 이미지까지 지연시켜 표시를 늦추지 않습니다."
+  },
+  {
+    "id": "perf-db-connection-pool",
+    "title": "데이터베이스 연결 풀",
+    "english": "Database connection pooling",
+    "category": "performance",
+    "topic": "동시 요청에 데이터베이스 연결을 재사용하고 상한을 둡니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.postgresql.org/docs/current/runtime-config-connection.html",
+    "pitfall": "풀 대기·타임아웃과 전체 연결 한계를 함께 측정합니다."
+  },
+  {
+    "id": "perf-request-timeouts",
+    "title": "요청 타임아웃",
+    "english": "Request timeouts",
+    "category": "performance",
+    "topic": "의존 요청의 최대 대기 시간을 정해 자원 고갈을 막습니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.rfc-editor.org/rfc/rfc9110",
+    "pitfall": "재시도 폭주와 취소 후 백그라운드 작업 잔존을 방지합니다."
+  },
+  {
+    "id": "perf-observability-traces",
+    "title": "분산 추적",
+    "english": "Distributed tracing",
+    "category": "performance",
+    "topic": "요청이 여러 서비스 사이를 이동하는 지연과 오류를 연결합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://opentelemetry.io/docs/concepts/signals/traces/",
+    "pitfall": "추적 속성에 토큰·개인정보를 포함하지 않습니다."
+  },
+  {
+    "id": "a11y-keyboard-shortcuts",
+    "title": "키보드 단축키",
+    "english": "Keyboard shortcuts",
+    "category": "accessibility",
+    "topic": "반복 작업을 빠르게 하는 단축키와 끄기·재매핑을 제공합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/character-key-shortcuts.html",
+    "pitfall": "한 글자 키 단축키는 충돌과 음성 입력 오작동을 고려합니다."
+  },
+  {
+    "id": "a11y-focus-management",
+    "title": "초점 이동 관리",
+    "english": "Focus management",
+    "category": "accessibility",
+    "topic": "모달·화면 전환에서 키보드 초점의 진입·복귀를 관리합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html",
+    "pitfall": "포커스가 사라지거나 배경 요소로 빠져나가지 않게 합니다."
+  },
+  {
+    "id": "a11y-motion-preferences",
+    "title": "동작 줄이기 설정",
+    "english": "Reduced motion preferences",
+    "category": "accessibility",
+    "topic": "시스템 동작 감소 설정에 맞춰 애니메이션을 줄입니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html",
+    "pitfall": "필수 상태 피드백까지 제거하지 않도록 합니다."
+  },
+  {
+    "id": "a11y-text-resizing",
+    "title": "텍스트 확대 지원",
+    "english": "Text resizing support",
+    "category": "accessibility",
+    "topic": "확대·텍스트 간격 변경에서도 내용과 동작을 유지합니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+    "pitfall": "고정 높이 컨테이너와 잘리는 버튼을 점검합니다."
+  },
+  {
+    "id": "a11y-status-announcements",
+    "title": "상태 메시지 알림",
+    "english": "Status message announcements",
+    "category": "accessibility",
+    "topic": "검색 결과·저장·오류 상태를 초점 이동 없이 보조기술에 알립니다.",
+    "purposes": [
+      "공통"
+    ],
+    "difficulty": "중급",
+    "source": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html",
+    "pitfall": "과도한 반복 알림으로 읽기 흐름을 방해하지 않게 합니다."
+  },
+  {
+    "id": "algo-dijkstra",
+    "title": "다익스트라 최단 경로",
+    "english": "Dijkstra shortest path",
+    "category": "algorithms",
+    "topic": "가중치가 음수가 아닌 그래프에서 한 출발점의 최단 거리를 계산합니다.",
+    "source": "https://networkx.org/documentation/stable/reference/algorithms/shortest_paths.html",
+    "pitfall": "음수 간선이 있으면 다른 알고리즘을 선택해야 합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-a-star",
+    "title": "A* 탐색",
+    "english": "A-star search",
+    "category": "algorithms",
+    "topic": "목표까지의 추정 비용을 사용해 경로 탐색 범위를 줄입니다.",
+    "source": "https://www.redblobgames.com/pathfinding/a-star/introduction.html",
+    "pitfall": "휴리스틱이 실제 비용을 과대 추정하면 최적 경로 보장이 깨질 수 있습니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-binary-search",
+    "title": "이진 탐색",
+    "english": "Binary search",
+    "category": "algorithms",
+    "topic": "정렬된 데이터의 탐색 범위를 매 단계 절반으로 줄입니다.",
+    "source": "https://cp-algorithms.com/num_methods/binary_search.html",
+    "pitfall": "정렬 조건과 경계값의 불변식을 정확히 정의해야 합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-hash-index",
+    "title": "해시 인덱싱",
+    "english": "Hash indexing",
+    "category": "algorithms",
+    "topic": "키를 해시해 빠른 조회를 돕는 자료구조 선택입니다.",
+    "source": "https://docs.python.org/3/library/stdtypes.html#mapping-types-dict",
+    "pitfall": "충돌·메모리와 키의 안정성을 고려해야 합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-lru-cache",
+    "title": "LRU 캐시",
+    "english": "Least recently used cache",
+    "category": "algorithms",
+    "topic": "최근 사용 시각을 기준으로 제한된 캐시 항목을 교체합니다.",
+    "source": "https://developer.mozilla.org/en-US/docs/Web/API/Cache",
+    "pitfall": "캐시 만료와 민감 응답 분리 정책도 별도로 필요합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-bloom-filter",
+    "title": "블룸 필터",
+    "english": "Bloom filter",
+    "category": "algorithms",
+    "topic": "집합에 값이 없음을 메모리 효율적으로 판별하는 확률 구조입니다.",
+    "source": "https://redis.io/docs/latest/develop/data-types/probabilistic/bloom-filter/",
+    "pitfall": "있음 응답은 오탐일 수 있으므로 최종 저장소 확인이 필요합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-k-nearest-neighbors",
+    "title": "최근접 이웃",
+    "english": "K-nearest neighbors",
+    "category": "algorithms",
+    "topic": "특성 공간에서 가까운 항목을 찾아 분류나 후보 추천에 씁니다.",
+    "source": "https://scikit-learn.org/stable/modules/neighbors.html",
+    "pitfall": "특성 스케일과 거리 척도가 결과를 좌우합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-k-means",
+    "title": "K-평균 군집화",
+    "english": "K-means clustering",
+    "category": "algorithms",
+    "topic": "유사한 수치 벡터를 지정한 수의 군집으로 묶습니다.",
+    "source": "https://scikit-learn.org/stable/modules/clustering.html#k-means",
+    "pitfall": "군집 수와 초기값·특이값에 민감합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-exponential-backoff",
+    "title": "지수 백오프 재시도",
+    "english": "Exponential backoff",
+    "category": "algorithms",
+    "topic": "실패 재시도 간격을 점차 늘려 혼잡과 부하 증폭을 줄입니다.",
+    "source": "https://cloud.google.com/storage/docs/retry-strategy",
+    "pitfall": "멱등 요청과 최대 재시도 횟수 없이는 중복 작업이 생깁니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-consistent-hashing",
+    "title": "일관된 해싱",
+    "english": "Consistent hashing",
+    "category": "algorithms",
+    "topic": "노드가 변해도 키 재배치를 일부로 제한해 분산합니다.",
+    "source": "https://www.cs.princeton.edu/courses/archive/fall09/cos518/papers/chash.pdf",
+    "pitfall": "가상 노드와 불균형 부하를 계측해야 합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-topological-sort",
+    "title": "위상 정렬",
+    "english": "Topological sorting",
+    "category": "algorithms",
+    "topic": "선행 관계가 있는 작업을 방향 비순환 그래프 순서로 나열합니다.",
+    "source": "https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.dag.topological_sort.html",
+    "pitfall": "순환 의존이 존재하면 유효한 순서를 만들 수 없습니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  },
+  {
+    "id": "algo-fair-queue",
+    "title": "공정 큐 스케줄링",
+    "english": "Fair queue scheduling",
+    "category": "algorithms",
+    "topic": "테넌트·작업 종류별 자원 배분을 조절해 특정 큐 독점을 줄입니다.",
+    "source": "https://www.rfc-editor.org/rfc/rfc8290",
+    "pitfall": "공정성 가중치와 처리량·지연 목표를 함께 평가해야 합니다.",
+    "purposes": [
+      "공통",
+      "SaaS"
+    ],
+    "difficulty": "중급"
+  }
+]

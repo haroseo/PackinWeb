@@ -20,6 +20,7 @@ import { featureIcons, categoryIcons } from "@/components/webzip/Icons";
 import FeatureCard from "@/components/webzip/FeatureCard";
 import CodeExample from "@/components/webzip/CodeExample";
 import { getCodeExample } from "@/data/codeExamples";
+import { recordFeatureVisit } from "@/data/recommendations";
 import { applySeo } from "@/lib/seo";
 import NotFound from "./NotFound";
 const sections = [
@@ -39,6 +40,7 @@ export default function FeatureDetail({ id }: { id: string }) {
     useLibrary();
   useEffect(() => {
     if (feature) {
+      recordFeatureVisit(feature.id);
       applySeo({
         title: `${feature.title} 가이드 — 패킨웹`,
         description: `${feature.description} 목적, 사용자 흐름, 보안·접근성 기준과 구현 코드 예시를 확인하세요.`,

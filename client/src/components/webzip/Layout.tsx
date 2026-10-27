@@ -280,10 +280,47 @@ export default function Layout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <footer className="main-footer">
-          <span>필요한 기능을 찾고, 더 나은 웹을 만드세요</span>
-          <Link href="/about/">
-            패킨웹 소개 <ArrowUpRight size={12} />
-          </Link>
+          <div className="footer-main">
+            <div className="footer-brand-block">
+              <Link className="footer-brand" href="/" aria-label="PackinWeb 홈">
+                <BrandMark />
+                <span>PackinWeb</span>
+              </Link>
+              <p>작은 기능이 모여, 더 나은 웹이 됩니다.</p>
+              <span className="footer-brand-note">
+                웹사이트 기능을 이해하고 구현하는 한국어 래퍼런스
+              </span>
+            </div>
+
+            <nav className="footer-group" aria-label="사이트 바로가기">
+              <h2>바로가기</h2>
+              <Link href="/">전체 기능</Link>
+              <Link href="/saved/">내 컬렉션</Link>
+              <Link href="/compare/">기능 비교</Link>
+              <Link href="/checklist/">서비스 체크리스트</Link>
+              <Link href="/about/">패킨웹 소개</Link>
+            </nav>
+
+            <nav className="footer-group" aria-label="프로젝트">
+              <h2>프로젝트</h2>
+              <a
+                href="https://github.com/haroseo/PackinWeb/blob/main/LICENSE"
+                target="_blank"
+                rel="noreferrer"
+              >
+                오픈소스 라이선스 <ArrowUpRight size={13} />
+              </a>
+              <a href="/sitemap.xml">사이트맵</a>
+            </nav>
+          </div>
+
+          <div className="footer-bottom">
+            <p>
+              패킨웹은 학습과 기획을 위한 래퍼런스입니다. 실제 구현 전 서비스
+              요구사항과 공식 문서를 확인하세요.
+            </p>
+            <span>© 2026 PackinWeb</span>
+          </div>
         </footer>
       </div>
       {compare.length > 0 && location !== "/compare" && (

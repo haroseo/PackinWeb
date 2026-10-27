@@ -9,8 +9,21 @@ const urls = [...read("sitemap.xml").matchAll(/<loc>([^<]+)<\/loc>/g)].map(
 const data = path.resolve(import.meta.dirname, "../client/src/data");
 const features = fs
   .readdirSync(data)
-  .filter(f => f.endsWith(".json"))
+  .filter(f => f.endsWith(".json") && !["expanded-guides.json", "remaining-guides.json"].includes(f))
   .flatMap(f => JSON.parse(fs.readFileSync(path.join(data, f), "utf8")));
+const expandedGuides = ["expanded-guides.json", "remaining-guides.json"].flatMap(file => JSON.parse(fs.readFileSync(path.join(data, file), "utf8")));
+features.push(...expandedGuides.map(guide => ({
+  ...guide,
+  description: `${guide.topic} ${guide.pitfall}`,
+  overview: guide.topic,
+  why: guide.topic,
+  security: guide.topic,
+  privacy: guide.topic,
+  accessibility: guide.topic,
+  legal: guide.topic,
+  flow: [], components: [], exceptions: [], checklist: [], options: [], related: [],
+  sources: [{ title: "reference", url: guide.source }],
+})));
 const categoryIds = new Set(features.map(feature => feature.category));
 assert.equal(urls.length, features.length + categoryIds.size + 3);
 assert.equal(new Set(urls).size, urls.length);

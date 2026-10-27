@@ -59,6 +59,11 @@ import {
   Smartphone,
   Building2,
   Truck,
+  Binary,
+  Code2,
+  ShieldAlert,
+  GaugeCircle,
+  Accessibility as AccessibilityCategoryIcon,
   type LucideIcon,
 } from "lucide-react";
 import type { CategoryId } from "@shared/catalog";
@@ -79,6 +84,11 @@ export const categoryIcons: Record<CategoryId, LucideIcon> = {
   mobile: Smartphone,
   organizations: Building2,
   logistics: Truck,
+  algorithms: Binary,
+  "developer-tools": Code2,
+  "trust-safety": ShieldAlert,
+  performance: GaugeCircle,
+  accessibility: AccessibilityCategoryIcon,
 };
 export const featureIcons: Record<string, LucideIcon> = {
   login: LogIn,

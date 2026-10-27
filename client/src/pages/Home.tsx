@@ -18,6 +18,7 @@ import FeatureCard from "@/components/webzip/FeatureCard";
 import { applySeo } from "@/lib/seo";
 import { HOME_TITLE, HOME_DESCRIPTION } from "@shared/seo";
 import NotFound from "./NotFound";
+import { getRecommendations } from "@/data/recommendations";
 export default function Home({
   savedOnly = false,
   categoryId,
@@ -36,6 +37,10 @@ export default function Home({
     [limit, setLimit] = useState(12),
     [filtersOpen, setFiltersOpen] = useState(false);
   const { saved } = useLibrary();
+  const recommendations = useMemo(
+    () => getRecommendations(features, saved, 6),
+    [saved]
+  );
   const activeCategory = categories.find(c => c.id === category);
   const items = useMemo(
     () =>
@@ -186,6 +191,19 @@ export default function Home({
             체크리스트 보기 <ArrowRight size={15} />
           </span>
         </Link>
+      )}
+      {!savedOnly && !activeCategory && (
+        <section className="recommendation-section" aria-labelledby="recommendation-title">
+          <div className="section-title">
+            <div>
+              <h2 id="recommendation-title">{recommendations.personalized ? "지금 살펴보면 좋은 기능" : "많이 찾는 기능부터 보기"}<span>{recommendations.items.length}</span></h2>
+              <p>{recommendations.reason} 브라우저 안에서만 계산하고 저장합니다.</p>
+            </div>
+          </div>
+          <div className="feature-grid">
+            {recommendations.items.map(feature => <FeatureCard key={`recommended-${feature.id}`} feature={feature} />)}
+          </div>
+        </section>
       )}
       <section className="catalog-section" aria-label="기능 목록">
         <div className="section-title">

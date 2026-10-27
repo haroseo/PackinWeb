@@ -15,7 +15,12 @@ export type CategoryId =
   | "learning"
   | "mobile"
   | "organizations"
-  | "logistics";
+  | "logistics"
+  | "algorithms"
+  | "developer-tools"
+  | "trust-safety"
+  | "performance"
+  | "accessibility";
 export interface Feature {
   id: string;
   title: string;
@@ -142,4 +147,14 @@ export const categories: {
     label: "재고 · 물류",
     description: "재고 수량과 입출고, 배송·반품 상태를 일관되게 연결하세요.",
   },
+  {
+    id: "algorithms",
+    name: "알고리즘",
+    label: "알고리즘",
+    description: "추천·검색·경로·배정 등 제품에서 자주 쓰는 알고리즘을 이해하고 선택하세요.",
+  },
+  { id: "developer-tools", name: "개발자 도구", label: "개발자 도구", description: "API 키·웹훅·SDK와 테스트 환경처럼 개발자 경험을 구성하세요." },
+  { id: "trust-safety", name: "보안·신뢰", label: "보안 · 신뢰", description: "신고·검토·감사·사기 방지로 사용자와 서비스를 보호하세요." },
+  { id: "performance", name: "성능·인프라", label: "성능 · 인프라", description: "응답 속도와 안정성, 비용을 함께 관리하는 기반 기능을 설계하세요." },
+  { id: "accessibility", name: "접근성·포용", label: "접근성 · 포용", description: "다양한 입력 방식과 인지·감각 조건을 고려한 경험을 만드세요." },
 ];

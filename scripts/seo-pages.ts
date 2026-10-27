@@ -63,20 +63,43 @@ export function vitePluginSeoPages(): Plugin {
         throw new Error("Built index.html is required for SEO pages");
       const template = String(index.source);
       const dataDirectory = path.join(root, "src/data");
-      const features = fs
+      const featureFiles = fs
         .readdirSync(dataDirectory)
-        .filter(f => f.endsWith(".json"))
-        .flatMap(
-          f =>
-            JSON.parse(
-              fs.readFileSync(path.join(dataDirectory, f), "utf8")
-            ) as Feature[]
-        );
+        .filter(f => f.endsWith(".json") && !["expanded-guides.json", "remaining-guides.json"].includes(f));
+      const baseFeatures = featureFiles.flatMap(
+        f => JSON.parse(fs.readFileSync(path.join(dataDirectory, f), "utf8")) as Feature[]
+      );
+      const expandedGuides = ["expanded-guides.json", "remaining-guides.json"].flatMap(file => JSON.parse(fs.readFileSync(path.join(dataDirectory, file), "utf8")) as Array<Record<string, unknown>>);
+      baseFeatures.push(...expandedGuides.map(guide => {
+        const title = guide.title as string;
+        const topic = guide.topic as string;
+        const source = guide.source as string;
+        return {
+          id: guide.id as string, title, english: guide.english as string,
+          category: guide.category as Feature["category"],
+          description: `${topic} ${guide.pitfall as string}`,
+          difficulty: guide.difficulty as Feature["difficulty"],
+          purposes: guide.purposes as string[], essential: false,
+          overview: `${topic} 입력 데이터의 범위와 갱신 시점을 먼저 정의하고, 후보 생성과 최종 선택 단계를 분리합니다. 결과는 설명 가능한 기준으로 표시하고 변경 시 재계산합니다.`,
+          why: `${title}은 선택지를 좁히고 반복 작업을 줄이는 데 유용합니다. 입력 데이터의 누락·편향·지연은 결과 품질을 낮추므로 운영 지표와 되돌리기 경로를 함께 설계해야 합니다.`,
+          flow: ["필요한 데이터와 제약 조건을 확인한다.", "작은 후보 집합에서 알고리즘을 실행한다.", "결과와 선택 근거를 화면에 전달한다.", "실패·편향·성능을 측정해 규칙을 조정한다."],
+          components: ["검증된 입력 데이터", "후보 생성 단계", "점수 또는 제약 처리", "결과 설명과 품질 지표"],
+          exceptions: [guide.pitfall as string, "데이터가 없거나 계산이 시간 제한을 넘으면 안전한 기본 결과와 재시도 경로를 제공한다."],
+          security: "입력·결과에 접근 권한을 적용하고 사용자 입력을 신뢰하지 않습니다. 계산량과 요청 빈도를 제한합니다.",
+          privacy: "개인화에 쓰는 데이터 항목과 보유 기간을 공개하고 최소 정보만 사용합니다. 개인화 기록의 확인·삭제와 비개인화 결과 선택을 지원합니다.",
+          accessibility: "결과 순서와 이유를 텍스트로 제공하고 색상만으로 점수 차이를 나타내지 않습니다. 키보드 순서와 상태 알림을 지원합니다.",
+          legal: "지역별 개인정보·자동화 의사결정·차별 방지 요구사항을 확인해야 하며, 법률 자문이 아닙니다.",
+          checklist: ["입력 데이터의 출처와 갱신 시점을 기록한다.", "빈 입력과 경계값을 처리한다.", "결과 이유와 기본 대안을 표시한다.", "권한·개인정보·계산량 제한을 검토한다.", "정확도·지연·편향 지표를 추적한다."],
+          options: [{ name: "규칙 기반", pros: "빠르고 설명하기 쉽습니다.", cons: "규칙이 늘면 유지 비용이 커집니다.", bestFor: "초기 서비스와 명확한 제약" }, { name: "데이터 기반", pros: "많은 신호와 패턴을 반영할 수 있습니다.", cons: "데이터 품질·편향 관리가 필요합니다.", bestFor: "충분한 데이터와 평가 체계가 있는 서비스" }],
+          related: ["recommendations", "login", "search"], sources: [{ title: "공식 문서 및 설계 참고 자료", url: source }],
+        } satisfies Feature;
+      }));
       if (
-        !features.length ||
-        new Set(features.map(f => f.id)).size !== features.length
+        !baseFeatures.length ||
+        new Set(baseFeatures.map(f => f.id)).size !== baseFeatures.length
       )
         throw new Error("Missing or duplicate feature IDs");
+      const features = baseFeatures;
       const urls: string[] = [];
       const emitPage = (
         pathname: string,
