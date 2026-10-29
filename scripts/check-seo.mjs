@@ -57,10 +57,17 @@ for (const feature of features) {
     "사용자 흐름",
     "예외 상황",
     "구현 체크리스트",
-    "공식 참고 자료",
-    "코드로 바로 시작하기",
+    "참고 문서",
   ])
     assert.ok(html.includes(heading), feature.id);
+  assert.ok(
+    html.includes(
+      feature.codeExample
+        ? "핵심 로직 코드 예시"
+        : "복사 가능한 코드 예시는 아직 없습니다"
+    ),
+    feature.id
+  );
   assert.ok(
     html.includes(feature.sources[0].url.replaceAll("&", "&amp;")),
     feature.id

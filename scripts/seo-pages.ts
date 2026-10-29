@@ -30,6 +30,9 @@ const guideList = (features: Feature[]) =>
 export function featureBody(feature: Feature, features: Feature[]) {
   const category = categories.find(c => c.id === feature.category)!;
   const example = getCodeExample(feature);
+  const exampleSection = example
+    ? `<section id="example"><h2>핵심 로직 코드 예시</h2><p>이 코드는 PackinWeb이 참고 문서를 바탕으로 작성한 예시이며, 공식 문서의 코드 조각을 그대로 복사한 것이 아닙니다. 프로젝트에 붙이기 전에 입력 검증, 인증·권한, 오류 처리와 저장소 조건을 연결하세요.</p>${example.prerequisites?.length ? `<div><h3>실행 전 준비</h3><ul>${example.prerequisites.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>` : ""}<h3>${escapeHtml(example.title)}</h3><pre><code>${escapeHtml(example.code)}</code></pre></section>`
+    : `<section id="example"><h2>복사 가능한 코드 예시는 아직 없습니다</h2><p>서비스와 프레임워크에 따라 API, 데이터 구조와 보안 경계가 달라집니다. 검증되지 않은 공통 코드는 제공하지 않습니다. 위 참고 문서에서 현재 API 계약과 적용 조건을 확인한 뒤 구현하세요.</p></section>`;
   return (
     `<nav aria-label="현재 위치">${link("/", "모든 기능")} / ${link(`/categories/${category.id}/`, category.label)}</nav><h1>${escapeHtml(feature.title)} 기능 가이드</h1><p>${escapeHtml(feature.description)}</p>` +
     paragraph("기능 이해하기", feature.overview) +
@@ -43,8 +46,8 @@ export function featureBody(feature: Feature, features: Feature[]) {
     paragraph("법률 확인 사항", feature.legal) +
     `<section><h2>구현 방식 비교</h2>${feature.options.map(o => `<h3>${escapeHtml(o.name)}</h3><dl><dt>장점</dt><dd>${escapeHtml(o.pros)}</dd><dt>고려할 점</dt><dd>${escapeHtml(o.cons)}</dd><dt>적합한 경우</dt><dd>${escapeHtml(o.bestFor)}</dd></dl>`).join("")}</section>` +
     list("구현 체크리스트", feature.checklist) +
-    `<section><h2>공식 참고 자료</h2><ul>${feature.sources.map(s => `<li>${link(s.url, s.title)}</li>`).join("")}</ul></section>` +
-    `<section><h2>코드로 바로 시작하기</h2><p>아래 예시는 기능의 핵심 흐름을 단순화한 출발점입니다. 운영 환경에서는 인증, 오류 처리, 로깅과 개인정보 보호를 함께 적용하세요.</p><h3>${escapeHtml(example.title)}</h3><pre><code>${escapeHtml(example.code)}</code></pre></section>` +
+    `<section id="sources"><h2>참고 문서</h2><ul>${feature.sources.map(s => `<li>${link(s.url, s.title)}</li>`).join("")}</ul></section>` +
+    exampleSection +
     `<section><h2>함께 살펴볼 기능</h2>${guideList(features.filter(f => feature.related.includes(f.id)))}</section>`
   );
 }
@@ -165,7 +168,7 @@ export function vitePluginSeoPages(): Plugin {
         emitPage(
           `/features/${feature.id}/`,
           `${feature.title} 가이드 — 패킨웹`,
-          `${feature.description} 목적, 사용자 흐름, 보안·접근성 기준과 구현 코드 예시를 확인하세요.`,
+          `${feature.description} 목적, 사용자 흐름, 보안·접근성 기준과 참고 문서를 확인하세요.`,
           featureBody(feature, features)
         );
       emitPage(

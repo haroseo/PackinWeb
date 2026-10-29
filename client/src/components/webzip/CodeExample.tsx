@@ -14,24 +14,50 @@ import {
 import type { CodeExample } from "@/data/codeExamples";
 import { categoryIcons } from "./Icons";
 import { categories } from "@/data/catalog";
-export default function CodeExample({ example }: { example: CodeExample }) {
+export default function CodeExample({ example }: { example?: CodeExample }) {
   const [copied, setCopied] = useState(false);
+  if (!example) {
+    return (
+      <section id="example" className="code-example-section">
+        <div className="guide-section-label">09 / 구현 자료</div>
+        <h2>복사 가능한 코드 예시는 아직 없습니다</h2>
+        <p className="code-intro">
+          서비스와 프레임워크에 따라 API, 데이터 구조와 보안 경계가 달라집니다.
+          검증되지 않은 공통 코드는 제공하지 않습니다. 위 참고 문서에서 현재
+          API 계약과 적용 조건을 확인한 뒤 구현하세요.
+        </p>
+      </section>
+    );
+  }
   const Icon = categoryIcons[example.preview];
+  const code = example.code;
   async function copy() {
     try {
-      await navigator.clipboard.writeText(example.code);
+      await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 1600);
     } catch {}
   }
   return (
     <section id="example" className="code-example-section">
-      <div className="guide-section-label">09 / 실제 구현 예시</div>
-      <h2>코드로 바로 시작하기</h2>
+      <div className="guide-section-label">09 / 참고 구현</div>
+      <h2>핵심 로직 코드 예시</h2>
       <p className="code-intro">
-        아래 예시는 기능의 핵심 흐름을 단순화한 출발점입니다. 운영 환경에서는
-        인증, 오류 처리, 로깅과 개인정보 보호를 함께 적용하세요.
+        이 코드는 PackinWeb이 참고 문서를 바탕으로 작성한 예시이며, 공식 문서의
+        코드 조각을 그대로 복사한 것이 아닙니다. 프로젝트에 붙이기 전에 아래
+        흐름과 참고 문서에 맞춰 입력 검증, 인증·권한, 오류 처리와 저장소 조건을
+        연결하세요.
       </p>
+      {example.prerequisites && example.prerequisites.length > 0 && (
+        <div className="code-prerequisites">
+          <strong>실행 전 준비</strong>
+          <ul>
+            {example.prerequisites.map(item => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="code-example-grid">
         <div className="code-panel">
           <div className="code-panel-head">

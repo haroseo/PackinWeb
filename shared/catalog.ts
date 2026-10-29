@@ -43,7 +43,12 @@ export interface Feature {
   options: { name: string; pros: string; cons: string; bestFor: string }[];
   related: string[];
   sources: { title: string; url: string }[];
-  codeExample?: { title: string; language: string; code: string };
+  codeExample?: {
+    title: string;
+    language: string;
+    code: string;
+    prerequisites?: string[];
+  };
 }
 export const categories: {
   id: CategoryId;

@@ -3,33 +3,30 @@ import { features } from "./catalog";
 import { getCodeExample } from "./codeExamples";
 
 describe("구현 코드 예시", () => {
-  it("모든 기능이 비어 있지 않은 코드와 미리보기를 갖는다", () => {
+  it("가이드에 직접 작성된 예시만 복사 가능한 코드로 노출한다", () => {
+    const curated = features.filter(feature => feature.codeExample);
+    expect(curated.length).toBeGreaterThan(0);
+
     for (const feature of features) {
       const example = getCodeExample(feature);
-      expect(example.code.length, feature.id).toBeGreaterThan(80);
-      expect(example.title, feature.id).toBeTruthy();
-      expect(example.preview, feature.id).toBe(feature.category);
+      expect(Boolean(example), feature.id).toBe(Boolean(feature.codeExample));
+      if (!feature.codeExample) continue;
+
+      expect(example?.code, feature.id).toBe(feature.codeExample.code);
+      expect(example?.code.trim().length, feature.id).toBeGreaterThan(40);
+      expect(example?.title, feature.id).toBeTruthy();
+      expect(example?.preview, feature.id).toBe(feature.category);
+      expect(feature.sources.length, feature.id).toBeGreaterThan(0);
+      for (const source of feature.sources) {
+        expect(source.url, `${feature.id}: ${source.url}`).toMatch(/^https:\/\//);
+      }
     }
   });
 
-  it("fallback 코드가 선언되지 않은 response를 호출하지 않는다", () => {
-    for (const feature of features) {
-      const code = getCodeExample(feature).code;
-      if (
-        !feature.codeExample &&
-        ![
-          "login",
-          "payments",
-          "search",
-          "uploads",
-          "notifications",
-          "api",
-        ].includes(feature.id)
-      ) {
-        expect(code).not.toContain("return response.json(");
-        expect(code).toContain("return created;");
-        expect(code).toContain("session: { userId: string }");
-      }
-    }
+  it("가이드별 API 계약이 없는 기능에 공통 템플릿을 만들지 않는다", () => {
+    const examples = features
+      .filter(feature => !feature.codeExample)
+      .map(feature => getCodeExample(feature));
+    expect(examples.every(example => example === undefined)).toBe(true);
   });
 });

@@ -129,6 +129,11 @@
     "codeExample": {
       "title": "중복 예약 방지 핵심 로직",
       "language": "SQL",
+      "prerequisites": [
+        "PostgreSQL에서 실행합니다. btree_gist 확장 설치 권한이 필요할 수 있습니다.",
+        "시작 포함·종료 제외([시작, 종료)) 구간으로 저장합니다. 충돌은 SQLSTATE 23P01로 처리하고 다른 DB 오류와 구분하세요.",
+        "조직 권한과 중복 요청 키는 이 제약과 별도로 서버 트랜잭션에서 검증해야 합니다."
+      ],
       "code": "CREATE EXTENSION IF NOT EXISTS btree_gist;\nCREATE TABLE bookings (\n  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,\n  resource_id bigint NOT NULL,\n  during tstzrange NOT NULL CHECK (NOT isempty(during)),\n  EXCLUDE USING gist (resource_id WITH =, during WITH &&)\n);\n-- 구간은 [시작, 종료)로 저장하고 권한 검사를 별도로 적용합니다."
     }
   },

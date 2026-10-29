@@ -31,8 +31,8 @@ const sections = [
   ["considerations", "도입 전 고려사항"],
   ["options", "구현 방식 비교"],
   ["checklist", "구현 체크리스트"],
-  ["sources", "공식 참고 자료"],
-  ["example", "실제 구현 예시"],
+  ["sources", "참고 문서"],
+  ["example", "구현 자료"],
 ];
 export default function FeatureDetail({ id }: { id: string }) {
   const feature = features.find(f => f.id === id);
@@ -43,7 +43,7 @@ export default function FeatureDetail({ id }: { id: string }) {
       recordFeatureVisit(feature.id);
       applySeo({
         title: `${feature.title} 가이드 — 패킨웹`,
-        description: `${feature.description} 목적, 사용자 흐름, 보안·접근성 기준과 구현 코드 예시를 확인하세요.`,
+        description: `${feature.description} 목적, 사용자 흐름, 보안·접근성 기준과 참고 문서를 확인하세요.`,
         path: `/features/${id}`,
         type: "article",
       });
@@ -262,7 +262,7 @@ export default function FeatureDetail({ id }: { id: string }) {
           </section>
           <section id="sources">
             <div className="guide-section-label">08 / 참고 자료</div>
-            <h2>공식 참고 자료</h2>
+            <h2>참고 문서</h2>
             <div className="source-links">
               {feature.sources.map(source => (
                 <a

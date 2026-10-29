@@ -61,12 +61,7 @@
         "title": "MDN Printing",
         "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Printing"
       }
-    ],
-    "codeExample": {
-      "title": "PDF 생성 핵심 로직",
-      "language": "TypeScript",
-      "code": "import { PDFDocument, StandardFonts } from 'pdf-lib';\nexport async function createPdf() {\n  const pdf = await PDFDocument.create();\n  const font = await pdf.embedFont(StandardFonts.Helvetica);\n  const page = pdf.addPage([595.28, 841.89]);\n  page.drawText('PackinWeb guide', { x: 48, y: 780, size: 18, font });\n  return pdf.save();\n}\n// 한글은 사용 권한이 있는 한글 폰트를 별도로 임베딩해야 합니다."
-    }
+    ]
   },
   {
     "id": "document-templates",
