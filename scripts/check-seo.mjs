@@ -64,7 +64,7 @@ for (const feature of features) {
     html.includes(
       feature.codeExample
         ? "핵심 로직 코드 예시"
-        : "복사 가능한 코드 예시는 아직 없습니다"
+        : "카테고리 핵심 로직 패턴"
     ),
     feature.id
   );

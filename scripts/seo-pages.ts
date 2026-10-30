@@ -31,8 +31,8 @@ export function featureBody(feature: Feature, features: Feature[]) {
   const category = categories.find(c => c.id === feature.category)!;
   const example = getCodeExample(feature);
   const exampleSection = example
-    ? `<section id="example"><h2>핵심 로직 코드 예시</h2><p>이 코드는 PackinWeb이 참고 문서를 바탕으로 작성한 예시이며, 공식 문서의 코드 조각을 그대로 복사한 것이 아닙니다. 프로젝트에 붙이기 전에 입력 검증, 인증·권한, 오류 처리와 저장소 조건을 연결하세요.</p>${example.prerequisites?.length ? `<div><h3>실행 전 준비</h3><ul>${example.prerequisites.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>` : ""}<h3>${escapeHtml(example.title)}</h3><pre><code>${escapeHtml(example.code)}</code></pre></section>`
-    : `<section id="example"><h2>복사 가능한 코드 예시는 아직 없습니다</h2><p>서비스와 프레임워크에 따라 API, 데이터 구조와 보안 경계가 달라집니다. 검증되지 않은 공통 코드는 제공하지 않습니다. 위 참고 문서에서 현재 API 계약과 적용 조건을 확인한 뒤 구현하세요.</p></section>`;
+    ? `<section id="example"><h2>${example.categoryPattern ? "카테고리 핵심 로직 패턴" : "핵심 로직 코드 예시"}</h2><p>${example.categoryPattern ? "이 복사 가능한 예시는 기능의 카테고리에 맞춘 독립 실행형 핵심 로직 패턴입니다. 기능 전체나 특정 프레임워크 연동을 구현하지 않으므로 실제 API·데이터 구조·권한 검증은 참고 문서와 서비스 계약에 맞춰 연결하세요." : "이 코드는 PackinWeb이 참고 문서를 바탕으로 작성한 예시이며, 공식 문서의 코드 조각을 그대로 복사한 것이 아닙니다. 프로젝트에 붙이기 전에 입력 검증, 인증·권한, 오류 처리와 저장소 조건을 연결하세요."}</p>${example.prerequisites?.length ? `<div><h3>실행 전 준비</h3><ul>${example.prerequisites.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>` : ""}<h3>${escapeHtml(example.title)}</h3><pre><code>${escapeHtml(example.code)}</code></pre></section>`
+    : `<section id="example"><h2>코드 예시를 준비하고 있습니다</h2><p>이 기능에 바로 적용할 수 있도록 검증된 예시를 정리하고 있습니다. 위 참고 문서에서 API 계약과 적용 조건을 확인하세요.</p></section>`;
   return (
     `<nav aria-label="현재 위치">${link("/", "모든 기능")} / ${link(`/categories/${category.id}/`, category.label)}</nav><h1>${escapeHtml(feature.title)} 기능 가이드</h1><p>${escapeHtml(feature.description)}</p>` +
     paragraph("기능 이해하기", feature.overview) +

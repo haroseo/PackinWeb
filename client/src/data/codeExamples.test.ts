@@ -3,30 +3,33 @@ import { features } from "./catalog";
 import { getCodeExample } from "./codeExamples";
 
 describe("구현 코드 예시", () => {
-  it("가이드에 직접 작성된 예시만 복사 가능한 코드로 노출한다", () => {
+  it("모든 기능에 복사 가능한 직접 예시 또는 카테고리 핵심 로직 패턴을 제공한다", () => {
     const curated = features.filter(feature => feature.codeExample);
     expect(curated.length).toBeGreaterThan(0);
+    expect(features.length).toBe(228);
 
     for (const feature of features) {
       const example = getCodeExample(feature);
-      expect(Boolean(example), feature.id).toBe(Boolean(feature.codeExample));
-      if (!feature.codeExample) continue;
-
-      expect(example?.code, feature.id).toBe(feature.codeExample.code);
+      expect(example, feature.id).toBeDefined();
       expect(example?.code.trim().length, feature.id).toBeGreaterThan(40);
       expect(example?.title, feature.id).toBeTruthy();
       expect(example?.preview, feature.id).toBe(feature.category);
       expect(feature.sources.length, feature.id).toBeGreaterThan(0);
+      expect(example?.categoryPattern, feature.id).toBe(!feature.codeExample);
+      if (feature.codeExample) {
+        expect(example?.code, feature.id).toBe(feature.codeExample.code);
+      }
       for (const source of feature.sources) {
         expect(source.url, `${feature.id}: ${source.url}`).toMatch(/^https:\/\//);
       }
     }
   });
 
-  it("가이드별 API 계약이 없는 기능에 공통 템플릿을 만들지 않는다", () => {
-    const examples = features
-      .filter(feature => !feature.codeExample)
-      .map(feature => getCodeExample(feature));
-    expect(examples.every(example => example === undefined)).toBe(true);
+  it("가이드에 직접 작성된 코드는 기존 내용과 준비 조건을 유지한다", () => {
+    for (const feature of features.filter(item => item.codeExample)) {
+      const example = getCodeExample(feature)!;
+      expect(example.code).toBe(feature.codeExample!.code);
+      expect(example.categoryPattern).toBeUndefined();
+    }
   });
 });

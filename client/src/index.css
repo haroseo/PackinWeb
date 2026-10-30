@@ -3484,7 +3484,7 @@ body {
 .code-panel pre {
   margin: 0;
   min-height: 270px;
-  padding: 19px;
+  padding: 12px 0;
   overflow: auto;
   color: #d5e0e5;
   font:
@@ -3493,7 +3493,63 @@ body {
     Menlo,
     Consolas,
     monospace;
-  white-space: pre;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.code-hover-hint {
+  margin: 0;
+  padding: 8px 15px;
+  border-bottom: 1px solid #39434b;
+  background: #252e35;
+  color: #aebdc6;
+  font-size: 11px;
+}
+.code-line {
+  display: block;
+  min-height: 1.85em;
+  padding: 0 16px 0 0;
+  border-left: 2px solid transparent;
+  cursor: help;
+}
+.code-line::before {
+  content: attr(data-line);
+  display: inline-block;
+  width: 3.2em;
+  margin-right: 1em;
+  color: #73828b;
+  text-align: right;
+  user-select: none;
+}
+.code-line:hover,
+.code-line:focus-visible,
+.code-line.is-active {
+  border-left-color: #9fc2d4;
+  background: #29343c;
+  outline: none;
+}
+.code-line-explanation {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 12px;
+  padding: 11px 15px;
+  border-top: 1px solid #39434b;
+  background: #252e35;
+  color: #d5e0e5;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.code-line-explanation strong {
+  color: #aac9d9;
+}
+.code-copy-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 9px 14px;
+  background: #fff0ed;
+  color: #913d2d;
+  font-size: 12px;
 }
 .code-preview {
   background: #f5f7f8;
