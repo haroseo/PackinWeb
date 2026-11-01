@@ -235,6 +235,8 @@ export default function Layout({ children }: { children: ReactNode }) {
                     ? "서비스 체크리스트"
                     : location === "/about"
                       ? "패킨웹 소개"
+                      : location === "/brand-resources"
+                        ? "패킨앱 브랜드 리소스"
                       : location.startsWith("/features/")
                         ? "기능 가이드"
                         : "둘러보기"}
@@ -298,6 +300,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               <Link href="/saved/">내 컬렉션</Link>
               <Link href="/compare/">기능 비교</Link>
               <Link href="/checklist/">서비스 체크리스트</Link>
+              <Link href="/brand-resources/">패킨앱 브랜드 리소스</Link>
               <Link href="/about/">패킨웹 소개</Link>
             </nav>
 

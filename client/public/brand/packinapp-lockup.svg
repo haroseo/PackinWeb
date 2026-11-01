@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 128" role="img" aria-labelledby="title">
+  <title id="title">PackinApp symbol and wordmark</title>
+  <rect x="0" y="8" width="112" height="112" rx="26" fill="#181818"/>
+  <g fill="#fff" transform="translate(-8 -8)">
+    <path d="M27 29h28v20H27zM73 29h28v20H73zM27 64h28v20H27zM73 64h28v20H73z"/>
+  </g>
+  <path d="M47 39h18M47 74h18M56 39v64" stroke="#fff" stroke-width="8"/>
+  <text x="142" y="91" fill="#202020" font-family="Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="86" font-weight="700" letter-spacing="-4.5">PackinApp</text>
+</svg>

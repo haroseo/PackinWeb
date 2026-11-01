@@ -10,6 +10,7 @@ import FeatureDetail from "@/pages/FeatureDetail";
 import Compare from "@/pages/Compare";
 import Checklist from "@/pages/Checklist";
 import About from "@/pages/About";
+import BrandResources from "@/pages/BrandResources";
 import NotFound from "@/pages/NotFound";
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
                 <Route path="/compare" component={Compare} />
                 <Route path="/checklist" component={Checklist} />
                 <Route path="/about" component={About} />
+                <Route path="/brand-resources" component={BrandResources} />
                 <Route component={NotFound} />
               </Switch>
             </Layout>

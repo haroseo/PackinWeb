@@ -6,6 +6,7 @@
     { "path": "/features/:id", "title": "기능 상세 가이드" },
     { "path": "/compare", "title": "기능 비교" },
     { "path": "/checklist", "title": "서비스 체크리스트" },
-    { "path": "/about", "title": "패킨웹 소개" }
+    { "path": "/about", "title": "패킨웹 소개" },
+    { "path": "/brand-resources", "title": "패킨앱 브랜드 리소스 센터" }
   ]
 }

@@ -26,7 +26,7 @@ pnpm build:static
 
 `client/src/data/`에는 분야별 JSON과 검색·저장 로직이 있습니다. `shared/catalog.ts`는 공통 분류, `shared/seo.ts`는 canonical과 구조화 데이터를 담당합니다. `scripts/seo-pages.ts`는 공개 HTML, sitemap.xml, llms.txt를 같은 데이터에서 자동 생성합니다. `client/public/`에는 robots.txt와 공개 소유권 확인 파일이 있습니다.
 
-페이지 경로는 `/`, `/categories/:id/`, `/features/:id/`, `/saved/`, `/compare/`, `/checklist/`, `/about/`이며 `client/public/manus-routes.json`에 동기화되어 있습니다. 기존 `/?category=...` 링크는 새 카테고리 주소로 이동합니다.
+페이지 경로는 `/`, `/categories/:id/`, `/features/:id/`, `/saved/`, `/compare/`, `/checklist/`, `/about/`, `/brand-resources/`이며 `client/public/manus-routes.json`에 동기화되어 있습니다. 기존 `/?category=...` 링크는 새 카테고리 주소로 이동합니다.
 
 ## 데이터와 범위
 
