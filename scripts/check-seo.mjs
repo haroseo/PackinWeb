@@ -32,6 +32,10 @@ for (const url of urls) {
   assert.ok(pathname.endsWith("/"), url);
   const html = read(pathname.slice(1) + "index.html");
   assert.ok(html.includes(`rel="canonical" href="${url}"`), url);
+  assert.ok(
+    html.includes('property="og:image" content="https://packinweb.pages.dev/brand/packinapp-og.png"'),
+    url
+  );
   assert.ok(html.includes('content="index,follow'), url);
   assert.equal((html.match(/<h1[ >]/g) || []).length, 1, url);
   assert.equal(

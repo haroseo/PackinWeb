@@ -7,6 +7,7 @@ import {
   HOME_TITLE,
   HOME_DESCRIPTION,
   pageSchema,
+  SITE_ORIGIN,
 } from "../shared/seo";
 import { getCodeExample } from "../client/src/data/codeExamples";
 
@@ -132,7 +133,7 @@ export function vitePluginSeoPages(): Plugin {
           )
           .replace(
             "</head>",
-            `<meta name="description" content="${escapeHtml(description)}"/><meta name="robots" content="${noindex ? "noindex,follow" : "index,follow,max-image-preview:large"}"/><link rel="canonical" href="${url}"/><meta property="og:type" content="${pathname.startsWith("/features/") ? "article" : "website"}"/><meta property="og:site_name" content="PackinWeb"/><meta property="og:locale" content="ko_KR"/><meta property="og:title" content="${escapeHtml(title)}"/><meta property="og:description" content="${escapeHtml(description)}"/><meta property="og:url" content="${url}"/><meta property="og:image" content="${canonicalUrl("/brand/packinapp-og.png")}"/><meta property="og:image:alt" content="PackinApp 브랜드 리소스 OG 이미지"/><meta property="og:image:type" content="image/png"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="${escapeHtml(title)}"/><meta name="twitter:description" content="${escapeHtml(description)}"/><script id="page-schema" type="application/ld+json">${noindex ? "{}" : schema}</script></head>`
+            `<meta name="description" content="${escapeHtml(description)}"/><meta name="robots" content="${noindex ? "noindex,follow" : "index,follow,max-image-preview:large"}"/><link rel="canonical" href="${url}"/><meta property="og:type" content="${pathname.startsWith("/features/") ? "article" : "website"}"/><meta property="og:site_name" content="PackinWeb"/><meta property="og:locale" content="ko_KR"/><meta property="og:title" content="${escapeHtml(title)}"/><meta property="og:description" content="${escapeHtml(description)}"/><meta property="og:url" content="${url}"/><meta property="og:image" content="${new URL("/brand/packinapp-og.png", SITE_ORIGIN).href}"/><meta property="og:image:alt" content="PackinApp 브랜드 리소스 OG 이미지"/><meta property="og:image:type" content="image/png"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="${escapeHtml(title)}"/><meta name="twitter:description" content="${escapeHtml(description)}"/><script id="page-schema" type="application/ld+json">${noindex ? "{}" : schema}</script></head>`
           )
           .replace(
             /<div id="root">[\s\S]*?<\/div>/,
