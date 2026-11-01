@@ -1,4 +1,4 @@
-import { SITE_NAME, canonicalUrl, pageSchema } from "@shared/seo";
+import { SITE_NAME, SITE_ORIGIN, canonicalUrl, pageSchema } from "@shared/seo";
 import { features } from "@/data/catalog";
 export { SITE_ORIGIN, SITE_NAME } from "@shared/seo";
 
@@ -41,7 +41,11 @@ export function applySeo({
   upsertMeta("property", "og:url", url);
   upsertMeta("property", "og:site_name", SITE_NAME);
   upsertMeta("property", "og:locale", "ko_KR");
-  upsertMeta("property", "og:image", canonicalUrl("/brand/packinapp-og.png"));
+  upsertMeta(
+    "property",
+    "og:image",
+    new URL("/brand/packinapp-og.png", SITE_ORIGIN).href
+  );
   upsertMeta("property", "og:image:alt", "PackinApp 브랜드 리소스 OG 이미지");
   upsertMeta("property", "og:image:type", "image/png");
   upsertMeta("property", "og:image:width", "1200");
