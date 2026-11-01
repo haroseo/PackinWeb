@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">PackinApp brand resources</title>
+  <desc id="desc">패킨앱 브랜드 리소스 센터의 로고와 사용 기준</desc>
+  <rect width="1200" height="630" fill="#f7f7f5"/>
+  <rect x="64" y="54" width="60" height="60" rx="15" fill="#181818"/>
+  <g fill="#fff">
+    <path d="M76 69h13v9H76zM99 69h13v9H99zM76 86h13v9H76zM99 86h13v9H99z"/>
+  </g>
+  <path d="M89 73.5h10M89 90.5h10M94 73.5v37" stroke="#fff" stroke-width="4"/>
+  <text x="145" y="94" fill="#202020" font-family="Pretendard, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="-1.5">PackinApp</text>
+  <text x="1136" y="89" text-anchor="end" fill="#777" font-family="Arial, sans-serif" font-size="13" letter-spacing="2.2">BRAND RESOURCES</text>
+  <path d="M64 146h1072" stroke="#dededb"/>
+  <text x="66" y="203" fill="#777" font-family="Arial, sans-serif" font-size="13" letter-spacing="2.2">01 — 05 / PACKINAPP IDENTITY</text>
+  <text x="61" y="303" fill="#202020" font-family="Pretendard, Arial, sans-serif" font-size="70" font-weight="700" letter-spacing="-4">패킨앱 브랜드</text>
+  <text x="61" y="388" fill="#202020" font-family="Pretendard, Arial, sans-serif" font-size="70" font-weight="700" letter-spacing="-4">리소스 센터</text>
+  <text x="66" y="450" fill="#6f6f6f" font-family="Pretendard, Arial, sans-serif" font-size="21">소개 · 심벌 · 워드마크 · OG 이미지</text>
+  <rect x="798" y="193" width="338" height="300" rx="12" fill="#ececea"/>
+  <rect x="881" y="236" width="172" height="172" rx="40" fill="#181818"/>
+  <g fill="#fff">
+    <path d="M901 264h40v28h-40zM993 264h40v28h-40zM901 313h40v28h-40zM993 313h40v28h-40z"/>
+  </g>
+  <path d="M941 278h52M941 327h52M967 278v91" stroke="#fff" stroke-width="11"/>
+  <text x="967" y="448" text-anchor="middle" fill="#777" font-family="Arial, sans-serif" font-size="12" letter-spacing="2">ONE SYMBOL, THREE FORMATS</text>
+  <path d="M64 550h1072" stroke="#dededb"/>
+  <text x="66" y="584" fill="#777" font-family="Arial, sans-serif" font-size="12" letter-spacing="1.4">PACKINAPP / BRAND GUIDELINES</text>
+  <text x="1136" y="584" text-anchor="end" fill="#777" font-family="Arial, sans-serif" font-size="12" letter-spacing="1.4">PACKINWEB.PAGES.DEV</text>
+</svg>
