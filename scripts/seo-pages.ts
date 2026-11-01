@@ -132,7 +132,7 @@ export function vitePluginSeoPages(): Plugin {
           )
           .replace(
             "</head>",
-            `<meta name="description" content="${escapeHtml(description)}"/><meta name="robots" content="${noindex ? "noindex,follow" : "index,follow,max-image-preview:large"}"/><link rel="canonical" href="${url}"/><meta property="og:type" content="${pathname.startsWith("/features/") ? "article" : "website"}"/><meta property="og:site_name" content="PackinWeb"/><meta property="og:locale" content="ko_KR"/><meta property="og:title" content="${escapeHtml(title)}"/><meta property="og:description" content="${escapeHtml(description)}"/><meta property="og:url" content="${url}"/><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="${escapeHtml(title)}"/><meta name="twitter:description" content="${escapeHtml(description)}"/><script id="page-schema" type="application/ld+json">${noindex ? "{}" : schema}</script></head>`
+            `<meta name="description" content="${escapeHtml(description)}"/><meta name="robots" content="${noindex ? "noindex,follow" : "index,follow,max-image-preview:large"}"/><link rel="canonical" href="${url}"/><meta property="og:type" content="${pathname.startsWith("/features/") ? "article" : "website"}"/><meta property="og:site_name" content="PackinWeb"/><meta property="og:locale" content="ko_KR"/><meta property="og:title" content="${escapeHtml(title)}"/><meta property="og:description" content="${escapeHtml(description)}"/><meta property="og:url" content="${url}"/><meta property="og:image" content="${canonicalUrl("/brand/packinapp-og.png")}"/><meta property="og:image:alt" content="PackinApp 브랜드 리소스 OG 이미지"/><meta property="og:image:type" content="image/png"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="${escapeHtml(title)}"/><meta name="twitter:description" content="${escapeHtml(description)}"/><script id="page-schema" type="application/ld+json">${noindex ? "{}" : schema}</script></head>`
           )
           .replace(
             /<div id="root">[\s\S]*?<\/div>/,
@@ -185,6 +185,13 @@ export function vitePluginSeoPages(): Plugin {
         "<h1>웹을 이루는 기능을 누구나 이해할 수 있게</h1><p>패킨웹(PackinWeb, 패킨앱)은 기획자, 디자이너, 개발자를 위한 웹사이트 기능 모음입니다. 기능별 목적, 사용자 흐름, 예외 상황, 보안, 접근성, 구현 방식과 공식 참고 자료를 확인할 수 있습니다.</p><h2>이용 방법</h2><p>카테고리와 검색으로 기능을 찾고, 가이드와 구현 체크리스트를 읽고, 필요한 기능을 컬렉션에 저장하거나 비교하세요.</p><h2>가이드의 범위</h2><p>패킨웹은 학습과 기획용 레퍼런스입니다. 실제 구현 전 공식 문서의 최신 내용을 확인하세요. 법률 자문이나 운영 환경에서의 안전성을 보증하지 않습니다.</p>" +
           categoryLinks
       );
+      emitPage(
+        "/brand-resources/",
+        "패킨앱 브랜드 리소스 센터 — PackinApp",
+        "패킨앱 브랜드 소개와 심벌 로고, 글자 로고, 조합 로고, 공유용 OG 이미지 및 자산별 사용 기준을 확인하세요.",
+        `<h1>패킨앱 브랜드 리소스</h1><section><h2>01 소개</h2><p>패킨앱은 웹서비스에 필요한 기능을 목적, 사용자 흐름, 구현 로직과 함께 살펴보도록 정리하는 프로젝트입니다. 현재 공개 사이트는 PackinWeb 이름으로 운영됩니다.</p></section><section><h2>02 심벌 로고</h2><p>정사각형 비율과 검정 바탕·흰색 심벌의 대비를 유지합니다. 최소 24 × 24px으로 표시하고 심벌 너비의 1/4 이상 여백을 둡니다. 아이콘이나 프로필처럼 이름을 쓸 공간이 좁을 때 사용합니다.</p><p><a href="/brand/packinapp-symbol.svg" download>심벌 SVG 다운로드</a></p></section><section><h2>03 글자 로고</h2><p>영문 표기 PackinApp과 Pretendard Bold 계열을 유지합니다. 표시 너비 96px 이상과 글자 높이 절반 이상의 여백을 확보하고 글자 간격을 임의로 바꾸지 않습니다.</p><p><a href="/brand/packinapp-wordmark.svg" download>글자 로고 SVG 다운로드</a></p></section><section><h2>04 심벌과 글자 로고</h2><p>심벌과 글자의 비율, 간격, 배치를 함께 유지하고 최소 너비 160px과 심벌 높이 절반 이상의 여백을 확보합니다. 좁은 공간에는 심벌을 사용합니다.</p><p><a href="/brand/packinapp-lockup.svg" download>조합 로고 SVG 다운로드</a></p></section><section><h2>05 OG 이미지</h2><p>원본은 PNG 1200 × 630px입니다. 1.91:1 비율을 유지하고 가장자리에서 60px 이상 안쪽에 제목과 심벌을 둡니다.</p><p><a href="/brand/packinapp-og.png" download>OG 이미지 PNG 다운로드</a> · <a href="/brand/packinapp-og.svg" download>편집 가능한 SVG 원본</a></p><img src="/brand/packinapp-og.png" alt="PackinApp 브랜드 리소스 OG 이미지" width="1200" height="630"/></section><p><a href="/brand-guide.md" download>전체 브랜드 기준 Markdown 다운로드</a></p>` +
+          categoryLinks
+      );
       for (const [route, title] of [
         ["saved", "내 컬렉션"],
         ["compare", "기능 비교"],
@@ -212,7 +219,7 @@ export function vitePluginSeoPages(): Plugin {
       this.emitFile({
         type: "asset",
         fileName: "llms.txt",
-        source: `# PackinWeb · 패킨웹 · 패킨앱\n\n> 웹사이트 기능을 설명하는 한국어 기획·구현 레퍼런스. 학습 자료이며 최신 공식 문서를 대체하지 않습니다.\n\n## 카테고리\n${categories.map(c => `- [${c.label}](${canonicalUrl(`/categories/${c.id}`)}): ${c.description}`).join("\n")}\n\n## 기능 가이드\n${features.map(f => `- [${f.title}](${canonicalUrl(`/features/${f.id}`)}): ${f.description}`).join("\n")}\n\n## 사이트\n- [소개](${canonicalUrl("/about")})\n- [서비스 체크리스트](${canonicalUrl("/checklist")})\n- [사이트맵](https://packinweb.pages.dev/sitemap.xml)\n`,
+        source: `# PackinWeb · 패킨웹 · 패킨앱\n\n> 웹사이트 기능을 설명하는 한국어 기획·구현 레퍼런스. 학습 자료이며 최신 공식 문서를 대체하지 않습니다.\n\n## 카테고리\n${categories.map(c => `- [${c.label}](${canonicalUrl(`/categories/${c.id}`)}): ${c.description}`).join("\n")}\n\n## 기능 가이드\n${features.map(f => `- [${f.title}](${canonicalUrl(`/features/${f.id}`)}): ${f.description}`).join("\n")}\n\n## 사이트\n- [소개](${canonicalUrl("/about")})\n- [서비스 체크리스트](${canonicalUrl("/checklist")})\n- [패킨앱 브랜드 리소스](${canonicalUrl("/brand-resources")})\n- [사이트맵](https://packinweb.pages.dev/sitemap.xml)\n`,
       });
     },
   };

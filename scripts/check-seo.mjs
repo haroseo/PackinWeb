@@ -25,7 +25,7 @@ features.push(...expandedGuides.map(guide => ({
   sources: [{ title: "reference", url: guide.source }],
 })));
 const categoryIds = new Set(features.map(feature => feature.category));
-assert.equal(urls.length, features.length + categoryIds.size + 3);
+assert.equal(urls.length, features.length + categoryIds.size + 4);
 assert.equal(new Set(urls).size, urls.length);
 for (const url of urls) {
   const pathname = new URL(url).pathname;
