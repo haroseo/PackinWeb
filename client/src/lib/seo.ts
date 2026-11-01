@@ -41,7 +41,12 @@ export function applySeo({
   upsertMeta("property", "og:url", url);
   upsertMeta("property", "og:site_name", SITE_NAME);
   upsertMeta("property", "og:locale", "ko_KR");
-  upsertMeta("name", "twitter:card", "summary");
+  upsertMeta("property", "og:image", canonicalUrl("/brand/packinapp-og.png"));
+  upsertMeta("property", "og:image:alt", "PackinApp 브랜드 리소스 OG 이미지");
+  upsertMeta("property", "og:image:type", "image/png");
+  upsertMeta("property", "og:image:width", "1200");
+  upsertMeta("property", "og:image:height", "630");
+  upsertMeta("name", "twitter:card", "summary_large_image");
   upsertMeta("name", "twitter:title", title);
   upsertMeta("name", "twitter:description", description);
 
